@@ -12,8 +12,14 @@ import ui.Theme
 @Preview
 fun App() {
 
+    val scope = rememberCoroutineScope()
+    val viewModel = remember { MainScreenViewModel(scope) }
+
     Theme {
-        MainScreen()
+        MainScreen(
+            viewModel.onlineStatus,
+            viewModel.tradingLog
+        )
     }
 }
 

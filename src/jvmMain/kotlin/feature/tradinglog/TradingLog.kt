@@ -12,9 +12,7 @@ import androidx.compose.ui.Modifier
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun TradingLogBox(state: StateFlow<List<String>>, modifier: Modifier = Modifier) {
-    val log: List<String> by state.collectAsState()
-
+fun TradingLogBox(log: List<String>, modifier: Modifier = Modifier) {
     println("log")
 
     Box(modifier = modifier) {
