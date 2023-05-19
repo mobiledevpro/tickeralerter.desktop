@@ -6,12 +6,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import common.domain.model.Ticker
 import feature.chart.ChartBox
 import feature.tickerlist.TickersBox
 import feature.tradinglog.TradingLogBox
@@ -20,8 +23,13 @@ import ui.lightGreen
 import ui.red
 
 @Composable
-fun MainScreen(onlineState: StateFlow<Boolean>, tradingLogState: StateFlow<List<String>>) {
+fun MainScreen(
+    onlineState: StateFlow<Boolean>,
+    tradingLogState: StateFlow<List<String>>,
+    tickerListState: StateFlow<List<Ticker>>
+) {
 
+    val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
     val online by onlineState.collectAsState()
 
@@ -30,10 +38,11 @@ fun MainScreen(onlineState: StateFlow<Boolean>, tradingLogState: StateFlow<List<
         Box(modifier = Modifier.fillMaxSize()) {
             Row {
                 TickersBox(
+                    tickerList,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .width(200.dp)
-                        .border(width = 2.dp, color = Color.Gray)
+                        .defaultMinSize(minWidth = 300.dp)
+                        .border(width = 1.dp, color = Color.Gray)
                 )
 
                 Column(
@@ -42,7 +51,7 @@ fun MainScreen(onlineState: StateFlow<Boolean>, tradingLogState: StateFlow<List<
 
                     ChartBox(
                         modifier = Modifier
-                            .border(width = 2.dp, color = Color.Gray)
+                            .border(width = 1.dp, color = Color.Gray)
                             .fillMaxHeight(0.5f)
                             .fillMaxWidth()
                     )
@@ -50,7 +59,7 @@ fun MainScreen(onlineState: StateFlow<Boolean>, tradingLogState: StateFlow<List<
                     TradingLogBox(
                         tradingLog,
                         modifier = Modifier
-                            .border(width = 2.dp, color = Color.Gray)
+                            .border(width = 1.dp, color = Color.Gray)
                             .fillMaxHeight()
                             .fillMaxWidth()
                     )

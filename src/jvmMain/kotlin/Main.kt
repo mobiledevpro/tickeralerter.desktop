@@ -17,8 +17,9 @@ fun App() {
 
     Theme {
         MainScreen(
-            viewModel.onlineStatus,
-            viewModel.tradingLog
+            onlineState = viewModel.onlineStatus,
+            tradingLogState = viewModel.tradingLog,
+            tickerListState = viewModel.tickerList
         )
     }
 }
