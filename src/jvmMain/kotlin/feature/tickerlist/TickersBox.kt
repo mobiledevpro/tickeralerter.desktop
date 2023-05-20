@@ -1,7 +1,10 @@
 package feature.tickerlist
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
@@ -13,13 +16,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import common.domain.model.Ticker
 import common.domain.model.getPriceColor
+import ui.component.WidgetBox
 import ui.white
 
 
 @Composable
 fun TickersBox(list: List<Ticker>, modifier: Modifier = Modifier) {
     println("Show Ticker list")
-    Box(modifier = modifier) {
+    WidgetBox(modifier = modifier) {
         LazyColumn {
             items(list) { ticker ->
                 TickerItem(ticker)

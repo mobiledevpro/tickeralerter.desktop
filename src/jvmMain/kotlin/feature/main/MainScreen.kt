@@ -1,7 +1,6 @@
 package feature.main
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -11,7 +10,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import common.domain.model.Ticker
@@ -36,13 +34,12 @@ fun MainScreen(
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Box(modifier = Modifier.fillMaxSize()) {
-            Row {
+            Row(modifier = Modifier.padding(bottom = 24.dp)) {
                 TickersBox(
                     tickerList,
                     modifier = Modifier
                         .fillMaxHeight()
                         .defaultMinSize(minWidth = 300.dp)
-                        .border(width = 1.dp, color = Color.Gray)
                 )
 
                 Column(
@@ -51,15 +48,13 @@ fun MainScreen(
 
                     ChartBox(
                         modifier = Modifier
-                            .border(width = 1.dp, color = Color.Gray)
-                            .fillMaxHeight(0.5f)
+                            .fillMaxHeight(0.7f)
                             .fillMaxWidth()
                     )
 
                     TradingLogBox(
                         tradingLog,
                         modifier = Modifier
-                            .border(width = 1.dp, color = Color.Gray)
                             .fillMaxHeight()
                             .fillMaxWidth()
                     )
