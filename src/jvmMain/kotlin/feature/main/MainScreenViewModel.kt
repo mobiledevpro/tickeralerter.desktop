@@ -1,5 +1,6 @@
 package feature.main
 
+import common.domain.interactor.MainScreenInteractor
 import common.domain.model.Ticker
 import common.domain.model.fakeTickerListFirst
 import common.domain.model.fakeTickerListSecond
@@ -10,10 +11,12 @@ import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import network.isInternetAvailable
 import java.util.*
 
-class MainScreenViewModel(private val scope: CoroutineScope) {
+class MainScreenViewModel(
+    private val scope: CoroutineScope,
+    private val interactor: MainScreenInteractor
+) {
 
     private val _tradingLog = MutableStateFlow<List<String>>(emptyList())
     val tradingLog: StateFlow<List<String>> = _tradingLog.asStateFlow()
@@ -21,13 +24,13 @@ class MainScreenViewModel(private val scope: CoroutineScope) {
     private val _tickerList = MutableStateFlow<List<Ticker>>(emptyList())
     val tickerList: StateFlow<List<Ticker>> = _tickerList.asStateFlow()
 
-    private val _onlineStatus = MutableStateFlow(false)
-    val onlineStatus: StateFlow<Boolean> = _onlineStatus
+    private val _serverTime = MutableStateFlow(0L)
+    val serverTime: StateFlow<Long> = _serverTime
 
     init {
         observeNetworkConnection()
-        observeLog()
-        observeTickerList()
+        // observeLog()
+        //observeTickerList()
     }
 
     private fun observeLog() {
@@ -55,7 +58,7 @@ class MainScreenViewModel(private val scope: CoroutineScope) {
     @OptIn(ObsoleteCoroutinesApi::class)
     private fun observeTickerList() {
         scope.launch(Dispatchers.IO) {
-            //TODO: for demoing
+            //TODO: for demoi
             ticker(2000, 0).consumeEach {
                 fakeTickerListFirst()
                     .also { list ->
@@ -75,10 +78,12 @@ class MainScreenViewModel(private val scope: CoroutineScope) {
     }
 
 
+    @OptIn(ObsoleteCoroutinesApi::class)
     private fun observeNetworkConnection() {
         scope.launch {
-            isInternetAvailable().collectLatest { online ->
-                _onlineStatus.update { online }
+            interactor.getServerTime().collectLatest { timeMs ->
+                println("Time $timeMs")
+                _serverTime.update { timeMs }
             }
         }
     }

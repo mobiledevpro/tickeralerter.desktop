@@ -13,8 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import common.domain.model.Ticker
+import common.util.timeToString
 import feature.chart.ChartBox
-import feature.tickerlist.TickersBox
+import feature.tickerlist.view.TickersBox
 import feature.tradinglog.TradingLogBox
 import kotlinx.coroutines.flow.StateFlow
 import ui.lightGreen
@@ -22,14 +23,16 @@ import ui.red
 
 @Composable
 fun MainScreen(
-    onlineState: StateFlow<Boolean>,
+    serverTimeState: StateFlow<Long>,
     tradingLogState: StateFlow<List<String>>,
     tickerListState: StateFlow<List<Ticker>>
 ) {
 
     val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
-    val online by onlineState.collectAsState()
+    val serverTime by serverTimeState.collectAsState()
+
+    println("Time state $serverTime")
 
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
@@ -65,13 +68,20 @@ fun MainScreen(
             /*Online status*/
             Box(
                 modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(20.dp)
-                    .background(color = if (online) MaterialTheme.colors.lightGreen else MaterialTheme.colors.red)
+                    .background(color = if (serverTime > 0) MaterialTheme.colors.lightGreen else MaterialTheme.colors.red)
             ) {
                 Text(
-                    text = if (online) "Online" else "Offline",
+                    text = if (serverTime > 0) "Online" else "Offline",
                     style = MaterialTheme.typography.body2,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
+                )
+
+                Text(
+                    text = "Server time: ${serverTime.timeToString()}",
+                    style = MaterialTheme.typography.body2,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                 )
             }
 
