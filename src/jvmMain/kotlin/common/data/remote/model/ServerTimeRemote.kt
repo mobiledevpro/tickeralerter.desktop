@@ -1,8 +1,8 @@
-package network.model
+package common.data.remote.model
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ServerTime(
+data class ServerTimeRemote(
     val serverTime: Long
 )

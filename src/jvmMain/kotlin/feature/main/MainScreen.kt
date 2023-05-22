@@ -77,12 +77,13 @@ fun MainScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Text(
-                    text = "Server time: ${serverTime.timeToString()}",
-                    style = MaterialTheme.typography.body2,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-                )
+                if (serverTime > 0)
+                    Text(
+                        text = "Server time: ${serverTime.timeToString()}",
+                        style = MaterialTheme.typography.body2,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                    )
             }
 
         }

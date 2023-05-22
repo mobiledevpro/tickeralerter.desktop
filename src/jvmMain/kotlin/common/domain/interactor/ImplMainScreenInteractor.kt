@@ -1,5 +1,8 @@
 package common.domain.interactor
 
+import common.domain.model.Ticker
+import common.mapper.toDomain
+import common.mapper.toLocal
 import feature.tickerlist.data.repository.TickerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -16,9 +19,8 @@ class ImplMainScreenInteractor(
     @OptIn(ObsoleteCoroutinesApi::class)
     override fun getServerTime(): Flow<Long> = flow {
 
-        ticker(5000, 0)
+        ticker(3000, 0)
             .consumeEach {
-                println("Get time")
                 try {
                     tickersRepository.getServerTime().also { timeMs ->
                         emit(timeMs)
@@ -31,4 +33,14 @@ class ImplMainScreenInteractor(
             }
 
     }.flowOn(Dispatchers.IO)
+
+    override fun getTickerList(): Flow<List<Ticker>> = flow {
+
+        //TODO: for debugging
+        tickersRepository.getTickerListRemote()
+            .map { it.toLocal() }
+            .map { it.toDomain() }
+            .also { emit(it) }
+    }.flowOn(Dispatchers.IO)
+
 }

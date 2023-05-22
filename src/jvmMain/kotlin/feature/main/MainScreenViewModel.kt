@@ -2,13 +2,9 @@ package feature.main
 
 import common.domain.interactor.MainScreenInteractor
 import common.domain.model.Ticker
-import common.domain.model.fakeTickerListFirst
-import common.domain.model.fakeTickerListSecond
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.channels.consumeEach
-import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
@@ -29,8 +25,8 @@ class MainScreenViewModel(
 
     init {
         observeNetworkConnection()
-        // observeLog()
-        //observeTickerList()
+        observeLog()
+        observeTickerList()
     }
 
     private fun observeLog() {
@@ -57,8 +53,8 @@ class MainScreenViewModel(
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private fun observeTickerList() {
-        scope.launch(Dispatchers.IO) {
-            //TODO: for demoi
+        /*scope.launch(Dispatchers.IO) {
+            //TODO: for demo
             ticker(2000, 0).consumeEach {
                 fakeTickerListFirst()
                     .also { list ->
@@ -73,6 +69,14 @@ class MainScreenViewModel(
                     .also { list ->
                         _tickerList.update { list }
                     }
+            }
+        }
+
+         */
+
+        scope.launch {
+            interactor.getTickerList().collectLatest { list ->
+                _tickerList.update { list }
             }
         }
     }
