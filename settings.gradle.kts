@@ -21,6 +21,7 @@ pluginManagement {
 rootProject.name = "tickeralerter"
 
 include(
-    //":common:database",
+    ":common:database",
+    ":common:main",
     ":desktop"
 )

@@ -1,7 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 val ktorVersion: String = extra["ktor.version"] as String
-val sqlDelightVersion: String = extra["sqldelight.version"] as String
 
 plugins {
     kotlin("multiplatform")
@@ -27,7 +26,7 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                // implementation(project(":common"))
+                implementation(project(":common:database"))
                 implementation(compose.desktop.currentOs)
                 // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4")
                 implementation("io.ktor:ktor-client:$ktorVersion")
@@ -36,10 +35,6 @@ kotlin {
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-                //Database
-                implementation("app.cash.sqldelight:sqlite-driver:$sqlDelightVersion")
-                implementation("app.cash.sqldelight:runtime:$$sqlDelightVersion")
-                implementation("app.cash.sqldelight:coroutines-extensions:$sqlDelightVersion")
             }
         }
         val jvmTest by getting
@@ -53,15 +48,6 @@ compose.desktop {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "tickeralerter"
             packageVersion = "1.0.0"
-        }
-    }
-}
-
-sqldelight {
-    databases {
-        create("AppDatabase") {
-            packageName.set("com.mobiledevpro")
-            // sourceFolders.set(listOf("src/jvmMain/sqldelight"))
         }
     }
 }
