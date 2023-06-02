@@ -16,17 +16,13 @@ kotlin {
             dependencies {
                 //Database
                 implementation("app.cash.sqldelight:sqlite-driver:$sqlDelightVersion")
-                implementation("app.cash.sqldelight:runtime:$$sqlDelightVersion")
-                implementation("app.cash.sqldelight:coroutines-extensions:$sqlDelightVersion")
+                api("app.cash.sqldelight:runtime:$$sqlDelightVersion")
+                api("app.cash.sqldelight:coroutines-extensions:$sqlDelightVersion")
 
             }
         }
 
-        val jvmMain by getting {
-            dependencies {
-
-            }
-        }
+        val jvmMain by getting
     }
 }
 

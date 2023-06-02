@@ -1,19 +1,19 @@
-CREATE TABLE ticker (
+CREATE TABLE tickerEntry (
   symbol TEXT NOT NULL,
-  last_price REAL NOT NULL,
-  price_change REAL NOT NULL,
-  price_change_percent REAL NOT NULL
+  lastPrice REAL NOT NULL,
+  priceChange REAL NOT NULL,
+  priceChangePercent REAL NOT NULL
 );
 
-CREATE INDEX ticker_symbol ON ticker(symbol);
+CREATE INDEX ticker_symbol ON tickerEntry(symbol);
 
 insertItem:
 INSERT OR REPLACE
-INTO ticker (symbol, last_price, price_change, price_change_percent)
+INTO tickerEntry (symbol, lastPrice, priceChange, priceChangePercent)
 VALUES (?, ?, ?, ?);
 
 selectAll:
-SELECT * FROM ticker;
+SELECT * FROM tickerEntry;
 
 deleteAll:
-DELETE FROM ticker;
+DELETE FROM tickerEntry;

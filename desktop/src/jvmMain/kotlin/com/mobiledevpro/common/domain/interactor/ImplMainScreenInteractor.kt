@@ -11,10 +11,22 @@ import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 class ImplMainScreenInteractor(
     private val tickersRepository: TickerRepository
 ) : MainScreenInteractor {
+
+    override suspend fun syncTickerList() {
+        withContext(Dispatchers.IO) {
+            tickersRepository.getTickerListRemote()
+                .map { it.toLocal() }
+                .also {
+                    tickersRepository.cacheTickerListLocal(it)
+                }
+        }
+    }
 
     @OptIn(ObsoleteCoroutinesApi::class)
     override fun getServerTime(): Flow<Long> = flow {
@@ -34,13 +46,9 @@ class ImplMainScreenInteractor(
 
     }.flowOn(Dispatchers.IO)
 
-    override fun getTickerList(): Flow<List<Ticker>> = flow {
-
-        //TODO: for debugging
-        tickersRepository.getTickerListRemote()
-            .map { it.toLocal() }
+    override fun getTickerList(): Flow<List<Ticker>> =
+        tickersRepository.getTickerListLocal()
             .map { it.toDomain() }
-            .also { emit(it) }
-    }.flowOn(Dispatchers.IO)
+            .flowOn(Dispatchers.IO)
 
 }

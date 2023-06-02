@@ -10,6 +10,8 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.mobiledevpro.common.domain.interactor.ImplMainScreenInteractor
 import com.mobiledevpro.common.domain.interactor.MainScreenInteractor
+import com.mobiledevpro.database.AppDatabase
+import com.mobiledevpro.database.DriverFactory
 import com.mobiledevpro.feature.main.MainScreen
 import com.mobiledevpro.feature.main.MainScreenViewModel
 import com.mobiledevpro.feature.tickerlist.data.repository.ImplTickerListRepository
@@ -27,10 +29,10 @@ fun App() {
     // AppDatabase.Schema.create(driver)
 
 
-    //TickerTa
+    val database = AppDatabase(DriverFactory().createDriver())
 
     val httpClient: HttpClient = BinanceHTTPClientFactory.build()
-    val tickerRepository: TickerRepository = ImplTickerListRepository(httpClient)
+    val tickerRepository: TickerRepository = ImplTickerListRepository(httpClient, database)
     val mainInteractor: MainScreenInteractor = ImplMainScreenInteractor(tickerRepository)
 
     val scope = rememberCoroutineScope()

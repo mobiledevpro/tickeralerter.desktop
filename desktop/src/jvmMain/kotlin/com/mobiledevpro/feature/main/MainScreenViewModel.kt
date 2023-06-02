@@ -34,7 +34,7 @@ class MainScreenViewModel(
 
             val mutableList = ArrayList<String>()
 
-            for (i in 0..9) {
+            for (i in 0..99) {
                 val event: String = "${getTime()} | Test event $i"
                 mutableList.add(event)
                 println("Add to log ${mutableList.size}: Thread ${Thread.currentThread().name}")
@@ -53,32 +53,17 @@ class MainScreenViewModel(
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private fun observeTickerList() {
-        /*scope.launch(Dispatchers.IO) {
-            //TODO: for demo
-            ticker(2000, 0).consumeEach {
-                fakeTickerListFirst()
-                    .also { list ->
-                        _tickerList.update { list }
-                    }
-            }
+        scope.launch {
+            interactor.syncTickerList()
         }
-
-        scope.launch(Dispatchers.IO) {
-            ticker(2000, 1000).consumeEach {
-                fakeTickerListSecond()
-                    .also { list ->
-                        _tickerList.update { list }
-                    }
-            }
-        }
-
-         */
 
         scope.launch {
             interactor.getTickerList().collectLatest { list ->
+                println("Get local ticker list: ${list.size}")
                 _tickerList.update { list }
             }
         }
+
     }
 
 

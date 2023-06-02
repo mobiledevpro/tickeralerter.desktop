@@ -26,8 +26,8 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":common:database"))
                 implementation(compose.desktop.currentOs)
+                implementation(project(":common:database"))
                 // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4")
                 implementation("io.ktor:ktor-client:$ktorVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
