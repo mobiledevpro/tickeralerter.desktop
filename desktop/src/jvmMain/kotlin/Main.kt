@@ -6,6 +6,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import app.cash.sqldelight.db.SqlDriver
+import app.cash.sqldelight.driver.jdbc.sqlite.JdbcSqliteDriver
 import common.domain.interactor.ImplMainScreenInteractor
 import common.domain.interactor.MainScreenInteractor
 import feature.main.MainScreen
@@ -19,6 +21,13 @@ import ui.Theme
 @Composable
 @Preview
 fun App() {
+
+    //database
+    val driver: SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
+    // AppDatabase.Schema.create(driver)
+
+
+    //TickerTa
 
     val httpClient: HttpClient = BinanceHTTPClientFactory.build()
     val tickerRepository: TickerRepository = ImplTickerListRepository(httpClient)
