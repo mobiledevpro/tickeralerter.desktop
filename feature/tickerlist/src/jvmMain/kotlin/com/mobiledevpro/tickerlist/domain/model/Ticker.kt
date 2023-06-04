@@ -1,4 +1,4 @@
-package com.mobiledevpro.common.domain.model
+package com.mobiledevpro.tickerlist.domain.model
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable

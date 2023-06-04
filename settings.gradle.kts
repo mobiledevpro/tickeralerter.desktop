@@ -22,6 +22,9 @@ rootProject.name = "tickeralerter"
 
 include(
     ":common:database",
+    ":common:network",
+    ":common:ui",
     ":common:main",
-    ":desktop"
+    ":desktop",
+    ":feature:tickerlist"
 )

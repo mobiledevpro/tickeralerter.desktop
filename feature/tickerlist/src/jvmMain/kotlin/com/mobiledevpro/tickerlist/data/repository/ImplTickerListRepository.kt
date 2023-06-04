@@ -1,4 +1,4 @@
-package com.mobiledevpro.feature.tickerlist.data.repository
+package com.mobiledevpro.tickerlist.data.repository
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
@@ -7,6 +7,7 @@ import com.mobiledevpro.common.data.remote.model.ServerTimeRemote
 import com.mobiledevpro.common.data.remote.model.SymbolRemote
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.TickerEntry
+import com.mobiledevpro.feature.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.network.getExchangeInfo
 import com.mobiledevpro.network.getServerTime
 import io.ktor.client.*

@@ -1,4 +1,4 @@
-package com.mobiledevpro.feature.tickerlist.view
+package com.mobiledevpro.tickerlist.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
@@ -14,8 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mobiledevpro.common.domain.model.Ticker
-import com.mobiledevpro.common.domain.model.getPriceColor
+import com.mobiledevpro.tickerlist.domain.model.Ticker
+import com.mobiledevpro.tickerlist.domain.model.getPriceColor
 import com.mobiledevpro.ui.component.WidgetBox
 import com.mobiledevpro.ui.white
 

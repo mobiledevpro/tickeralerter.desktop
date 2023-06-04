@@ -11,7 +11,11 @@
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/common/database" />
             <option value="$PROJECT_DIR$/common/main" />
+            <option value="$PROJECT_DIR$/common/network" />
+            <option value="$PROJECT_DIR$/common/ui" />
             <option value="$PROJECT_DIR$/desktop" />
+            <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/tickerlist" />
           </set>
         </option>
       </GradleProjectSettings>

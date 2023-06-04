@@ -1,9 +1,9 @@
 package com.mobiledevpro.common.domain.interactor
 
-import com.mobiledevpro.common.domain.model.Ticker
-import com.mobiledevpro.common.mapper.toDomain
-import com.mobiledevpro.common.mapper.toLocal
 import com.mobiledevpro.feature.tickerlist.data.repository.TickerRepository
+import com.mobiledevpro.tickerlist.domain.model.Ticker
+import com.mobiledevpro.tickerlist.mapper.toDomain
+import com.mobiledevpro.tickerlist.mapper.toLocal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach

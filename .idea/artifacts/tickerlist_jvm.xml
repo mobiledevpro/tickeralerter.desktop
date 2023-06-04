@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="tickerlist-jvm">
+    <output-path>$PROJECT_DIR$/feature/tickerlist/build/libs</output-path>
+    <root id="archive" name="tickerlist-jvm.jar">
+      <element id="module-output" name="tickeralerter.feature.tickerlist.jvmMain" />
+    </root>
+  </artifact>
+</component>

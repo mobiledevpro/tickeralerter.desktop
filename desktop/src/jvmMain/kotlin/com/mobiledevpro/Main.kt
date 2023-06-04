@@ -1,5 +1,6 @@
 package com.mobiledevpro
 
+
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -14,9 +15,9 @@ import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.DriverFactory
 import com.mobiledevpro.feature.main.MainScreen
 import com.mobiledevpro.feature.main.MainScreenViewModel
-import com.mobiledevpro.feature.tickerlist.data.repository.ImplTickerListRepository
 import com.mobiledevpro.feature.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.network.BinanceHTTPClientFactory
+import com.mobiledevpro.tickerlist.data.repository.ImplTickerListRepository
 import com.mobiledevpro.ui.Theme
 import io.ktor.client.*
 

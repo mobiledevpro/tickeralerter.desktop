@@ -12,11 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mobiledevpro.common.domain.model.Ticker
 import com.mobiledevpro.common.util.timeToString
 import com.mobiledevpro.feature.chart.ChartBox
-import com.mobiledevpro.feature.tickerlist.view.TickersBox
 import com.mobiledevpro.feature.tradinglog.TradingLogBox
+import com.mobiledevpro.tickerlist.domain.model.Ticker
+import com.mobiledevpro.tickerlist.view.TickersBox
 import com.mobiledevpro.ui.lightGreen
 import com.mobiledevpro.ui.red
 import kotlinx.coroutines.flow.StateFlow

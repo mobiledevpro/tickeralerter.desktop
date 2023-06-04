@@ -1,6 +1,6 @@
 package com.mobiledevpro.common.domain.interactor
 
-import com.mobiledevpro.common.domain.model.Ticker
+import com.mobiledevpro.tickerlist.domain.model.Ticker
 import kotlinx.coroutines.flow.Flow
 
 interface MainScreenInteractor {
