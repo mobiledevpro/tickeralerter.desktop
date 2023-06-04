@@ -5,7 +5,7 @@
 ### Roadmap
 
 * [ ] Connect to Binance API WebSocket
-* [ ] Getting all available tickers from API
+* [x] Getting all available tickers from API
 * [ ] Subscribe to all tickers to getting update from WebSocket
 * [ ] On selecting ticker in UI get historical data and save it into local database
 * [ ] Draw chart by historical data
