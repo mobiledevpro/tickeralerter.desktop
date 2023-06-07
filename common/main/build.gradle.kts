@@ -1,5 +1,6 @@
 plugins {
     id("kotlin-multiplatform")
+    id("org.jetbrains.compose")
 }
 
 kotlin {
@@ -10,21 +11,12 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                // implementation(project(":common:utils"))
-                //  implementation(project(":common:database"))
-                // implementation(Deps.ArkIvanov.Decompose.decompose)
-                // implementation(Deps.ArkIvanov.MVIKotlin.mvikotlin)
-                // implementation(Deps.ArkIvanov.MVIKotlin.mvikotlinExtensionsReaktive)
-                // implementation(Deps.Badoo.Reaktive.reaktive)
+                api(project(":common:ui"))
+                api(project(":common:database"))
+                api(project(":common:network"))
             }
         }
 
-        val commonTest by getting {
-            dependencies {
-                //   implementation(Deps.ArkIvanov.MVIKotlin.mvikotlinMain)
-                //   implementation(Deps.Badoo.Reaktive.reaktiveTesting)
-                //   implementation(Deps.Badoo.Reaktive.utils)
-            }
-        }
+        val jvmMain by getting
     }
 }

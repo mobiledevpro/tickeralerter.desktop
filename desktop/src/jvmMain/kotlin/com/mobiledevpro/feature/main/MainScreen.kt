@@ -12,13 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.common.util.timeToString
 import com.mobiledevpro.feature.chart.ChartBox
 import com.mobiledevpro.feature.tradinglog.TradingLogBox
-import com.mobiledevpro.tickerlist.domain.model.Ticker
-import com.mobiledevpro.tickerlist.view.TickersBox
 import com.mobiledevpro.ui.lightGreen
 import com.mobiledevpro.ui.red
+import com.mobiledevpro.watchlist.view.WatchlistBox
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -38,7 +38,7 @@ fun MainScreen(
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Box(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.padding(bottom = 24.dp)) {
-                TickersBox(
+                WatchlistBox(
                     tickerList,
                     modifier = Modifier
                         .fillMaxHeight()

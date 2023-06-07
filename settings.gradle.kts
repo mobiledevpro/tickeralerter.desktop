@@ -26,5 +26,6 @@ include(
     ":common:ui",
     ":common:main",
     ":desktop",
-    ":feature:tickerlist"
+    ":feature:tickerlist",
+    ":feature:watchlist"
 )

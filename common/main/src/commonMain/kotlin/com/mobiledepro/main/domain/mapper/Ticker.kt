@@ -1,8 +1,8 @@
-package com.mobiledevpro.tickerlist.mapper
+package com.mobiledepro.main.domain.mapper
 
+import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.common.data.remote.model.SymbolRemote
 import com.mobiledevpro.database.TickerEntry
-import com.mobiledevpro.tickerlist.domain.model.Ticker
 
 fun SymbolRemote.toLocal(): TickerEntry =
     TickerEntry(

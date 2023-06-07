@@ -1,7 +1,7 @@
 package com.mobiledevpro.feature.main
 
+import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.common.domain.interactor.MainScreenInteractor
-import com.mobiledevpro.tickerlist.domain.model.Ticker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi

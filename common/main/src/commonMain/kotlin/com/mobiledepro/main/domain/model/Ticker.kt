@@ -1,11 +1,4 @@
-package com.mobiledevpro.tickerlist.domain.model
-
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import com.mobiledevpro.ui.lightGreen
-import com.mobiledevpro.ui.red
-import com.mobiledevpro.ui.white
+package com.mobiledepro.main.domain.model
 
 data class Ticker(
     val symbol: String,
@@ -13,14 +6,6 @@ data class Ticker(
     val priceChange: Double,
     val priceChangePercent: Double
 )
-
-@Composable
-fun Ticker.getPriceColor(): Color = when {
-    priceChange > 0 -> MaterialTheme.colors.lightGreen
-    priceChange < 0 -> MaterialTheme.colors.red
-    else -> MaterialTheme.colors.white
-}
-
 
 fun fakeTickerListFirst() = listOf(
     Ticker(

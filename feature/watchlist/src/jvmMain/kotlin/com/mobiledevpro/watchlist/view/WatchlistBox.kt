@@ -1,4 +1,4 @@
-package com.mobiledevpro.tickerlist.view
+package com.mobiledevpro.watchlist.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
@@ -21,19 +21,19 @@ import com.mobiledevpro.ui.white
 
 
 @Composable
-fun TickersBox(list: List<Ticker>, modifier: Modifier = Modifier) {
-    println("Show Ticker list")
+fun WatchlistBox(list: List<Ticker>, modifier: Modifier = Modifier) {
+    println("Show Watchlist")
     WidgetBox(modifier = modifier) {
         LazyColumn {
             items(list) { ticker ->
-                TickerItem(ticker)
+                WatchlistItem(ticker)
             }
         }
     }
 }
 
 @Composable
-fun TickerItem(ticker: Ticker) {
+fun WatchlistItem(ticker: Ticker) {
     Row(modifier = Modifier.height(24.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
         TickerText(
             value = ticker.symbol,

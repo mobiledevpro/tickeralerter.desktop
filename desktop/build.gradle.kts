@@ -22,8 +22,9 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":common:ui"))
+                implementation(project(":common:main"))
                 implementation(project(":feature:tickerlist"))
+                implementation(project(":feature:watchlist"))
 
                 // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4")
             }
