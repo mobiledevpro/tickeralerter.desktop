@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -16,6 +14,7 @@ import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.common.util.timeToString
 import com.mobiledevpro.feature.chart.ChartBox
 import com.mobiledevpro.feature.tradinglog.TradingLogBox
+import com.mobiledevpro.tickerlist.view.TickerListSurface
 import com.mobiledevpro.ui.lightGreen
 import com.mobiledevpro.ui.red
 import com.mobiledevpro.watchlist.view.WatchlistBox
@@ -34,15 +33,19 @@ fun MainScreen(
 
     println("Time state $serverTime")
 
+    val tickerListDialogVisible = remember { mutableStateOf(false) }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Box(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.padding(bottom = 24.dp)) {
                 WatchlistBox(
-                    tickerList,
+                    list = tickerList,
+                    onClickAdd = {
+                        tickerListDialogVisible.value = true
+                    },
                     modifier = Modifier
                         .fillMaxHeight()
-                        .defaultMinSize(minWidth = 300.dp)
+                        .widthIn(min = 300.dp, max = 400.dp)
                 )
 
                 Column(
@@ -88,6 +91,12 @@ fun MainScreen(
 
         }
 
-
+        //Show a dialog to add tickers to watchlist
+        if (tickerListDialogVisible.value)
+            TickerListSurface(
+                onClose = {
+                    tickerListDialogVisible.value = false
+                }
+            )
     }
 }

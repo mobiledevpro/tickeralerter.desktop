@@ -15,3 +15,7 @@ val Colors.red: Color
 @get:Composable
 val Colors.white: Color
     get() = Color(0x99FFFFFF)
+
+@get:Composable
+val Colors.backgroundTransparent: Color
+    get() = Color(0xFF121212).copy(alpha = 0.5F)

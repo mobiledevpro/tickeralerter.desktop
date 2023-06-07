@@ -1,13 +1,11 @@
 package com.mobiledevpro.tickerlist.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,10 +13,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledepro.main.domain.model.fakeTickerListFirst
 import com.mobiledepro.main.view.ext.getPriceColor
+import com.mobiledevpro.ui.backgroundTransparent
 import com.mobiledevpro.ui.component.WidgetBox
 import com.mobiledevpro.ui.white
 
+@Composable
+fun TickerListSurface(
+    onClose: () -> Unit
+) {
+    println("Show dialog")
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.backgroundTransparent
+    ) {
+        TickersBox(
+            list = fakeTickerListFirst(),
+            modifier = Modifier.padding(32.dp).fillMaxHeight().width(300.dp)
+        )
+    }
+}
 
 @Composable
 fun TickersBox(list: List<Ticker>, modifier: Modifier = Modifier) {

@@ -1,32 +1,54 @@
 package com.mobiledevpro.watchlist.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledepro.main.domain.model.fakeTickerListFirst
 import com.mobiledepro.main.view.ext.getPriceColor
+import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.component.WidgetBox
 import com.mobiledevpro.ui.white
 
 
 @Composable
-fun WatchlistBox(list: List<Ticker>, modifier: Modifier = Modifier) {
+fun WatchlistBox(list: List<Ticker>, modifier: Modifier = Modifier, onClickAdd: () -> Unit) {
     println("Show Watchlist")
     WidgetBox(modifier = modifier) {
-        LazyColumn {
-            items(list) { ticker ->
-                WatchlistItem(ticker)
+        Column {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Watchlist",
+                    style = MaterialTheme.typography.body1,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+                IconButton(
+                    onClick = onClickAdd
+                ) {
+                    Icon(imageVector = Icons.Default.Add, contentDescription = null)
+                }
+            }
+
+            LazyColumn {
+                items(list) { ticker ->
+                    WatchlistItem(ticker)
+                }
             }
         }
     }
@@ -75,6 +97,11 @@ fun TickerText(
 
 @Preview
 @Composable
-fun TickerItemPreview() {
-
+fun WatchlistBoxPreview() {
+    Theme {
+        WatchlistBox(
+            list = fakeTickerListFirst(),
+            onClickAdd = {}
+        )
+    }
 }
