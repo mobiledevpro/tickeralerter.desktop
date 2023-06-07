@@ -8,4 +8,8 @@ interface MainScreenInteractor {
 
     fun getServerTime(): Flow<Long>
     fun getTickerList(): Flow<List<Ticker>>
+
+    fun getWatchList(): Flow<List<Ticker>>
+
+    suspend fun addToWatchList(ticker: Ticker)
 }

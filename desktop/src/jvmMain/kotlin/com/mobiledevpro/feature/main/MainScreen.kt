@@ -24,9 +24,12 @@ import kotlinx.coroutines.flow.StateFlow
 fun MainScreen(
     serverTimeState: StateFlow<Long>,
     tradingLogState: StateFlow<List<String>>,
-    tickerListState: StateFlow<List<Ticker>>
+    tickerListState: StateFlow<List<Ticker>>,
+    watchListState: StateFlow<List<Ticker>>,
+    onAddToWatchList: (Ticker) -> Unit
 ) {
 
+    val watchList by watchListState.collectAsState()
     val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
     val serverTime by serverTimeState.collectAsState()
@@ -39,7 +42,7 @@ fun MainScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             Row(modifier = Modifier.padding(bottom = 24.dp)) {
                 WatchlistBox(
-                    list = tickerList,
+                    list = watchList,
                     onClickAdd = {
                         tickerListDialogVisible.value = true
                     },
@@ -94,6 +97,8 @@ fun MainScreen(
         //Show a dialog to add tickers to watchlist
         if (tickerListDialogVisible.value)
             TickerListSurface(
+                list = tickerList,
+                onSelect = onAddToWatchList,
                 onClose = {
                     tickerListDialogVisible.value = false
                 }

@@ -20,13 +20,23 @@ class MainScreenViewModel(
     private val _tickerList = MutableStateFlow<List<Ticker>>(emptyList())
     val tickerList: StateFlow<List<Ticker>> = _tickerList.asStateFlow()
 
+    private val _watchlist = MutableStateFlow<List<Ticker>>(emptyList())
+    val watchlist: StateFlow<List<Ticker>> = _watchlist.asStateFlow()
+
     private val _serverTime = MutableStateFlow(0L)
     val serverTime: StateFlow<Long> = _serverTime
 
     init {
         observeNetworkConnection()
         observeLog()
+        observeWatchlist()
         observeTickerList()
+    }
+
+    fun addToWatchlist(ticker: Ticker) {
+        scope.launch {
+            interactor.addToWatchList(ticker)
+        }
     }
 
     private fun observeLog() {
@@ -66,6 +76,14 @@ class MainScreenViewModel(
 
     }
 
+    private fun observeWatchlist() {
+        scope.launch {
+            interactor.getWatchList().collectLatest { list ->
+                println("Get local watchlist: ${list.size}")
+                _watchlist.update { list }
+            }
+        }
+    }
 
     @OptIn(ObsoleteCoroutinesApi::class)
     private fun observeNetworkConnection() {

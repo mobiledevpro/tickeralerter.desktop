@@ -15,10 +15,12 @@ import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.DriverFactory
 import com.mobiledevpro.feature.main.MainScreen
 import com.mobiledevpro.feature.main.MainScreenViewModel
-import com.mobiledevpro.feature.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.network.BinanceHTTPClientFactory
 import com.mobiledevpro.tickerlist.data.repository.ImplTickerListRepository
+import com.mobiledevpro.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.watchlist.data.repository.ImplWatchListRepository
+import com.mobiledevpro.watchlist.data.repository.WatchListRepository
 import io.ktor.client.*
 
 @Composable
@@ -34,7 +36,8 @@ fun App() {
 
     val httpClient: HttpClient = BinanceHTTPClientFactory.build()
     val tickerRepository: TickerRepository = ImplTickerListRepository(httpClient, database)
-    val mainInteractor: MainScreenInteractor = ImplMainScreenInteractor(tickerRepository)
+    val watchlistRepository: WatchListRepository = ImplWatchListRepository(database)
+    val mainInteractor: MainScreenInteractor = ImplMainScreenInteractor(tickerRepository, watchlistRepository)
 
     val scope = rememberCoroutineScope()
     val viewModel = remember { MainScreenViewModel(scope, mainInteractor) }
@@ -43,7 +46,9 @@ fun App() {
         MainScreen(
             serverTimeState = viewModel.serverTime,
             tradingLogState = viewModel.tradingLog,
-            tickerListState = viewModel.tickerList
+            tickerListState = viewModel.tickerList,
+            watchListState = viewModel.watchlist,
+            onAddToWatchList = viewModel::addToWatchlist
         )
     }
 }

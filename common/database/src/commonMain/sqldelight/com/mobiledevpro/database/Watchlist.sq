@@ -1,0 +1,16 @@
+CREATE TABLE watchlistEntry (
+  symbol TEXT NOT NULL,
+  lastPrice REAL NOT NULL,
+  priceChange REAL NOT NULL,
+  priceChangePercent REAL NOT NULL
+);
+
+CREATE INDEX watchlist_symbol ON watchlistEntry(symbol);
+
+insertItem:
+INSERT OR REPLACE
+INTO watchlistEntry (symbol, lastPrice, priceChange, priceChangePercent)
+VALUES (?, ?, ?, ?);
+
+selectAll:
+SELECT * FROM watchlistEntry ORDER BY symbol ASC;

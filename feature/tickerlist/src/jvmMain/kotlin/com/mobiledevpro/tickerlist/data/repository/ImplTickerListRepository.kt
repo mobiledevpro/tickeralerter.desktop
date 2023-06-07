@@ -7,7 +7,6 @@ import com.mobiledevpro.common.data.remote.model.ServerTimeRemote
 import com.mobiledevpro.common.data.remote.model.SymbolRemote
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.TickerEntry
-import com.mobiledevpro.feature.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.network.getExchangeInfo
 import com.mobiledevpro.network.getServerTime
 import io.ktor.client.*
@@ -27,7 +26,7 @@ class ImplTickerListRepository(
     }
 
     override fun getTickerListLocal(): Flow<List<TickerEntry>> =
-        database.appDatabaseQueries.selectAll()
+        database.tickerListQueries.selectAll()
             .asFlow()
             .mapToList(Dispatchers.IO)
 
@@ -36,9 +35,9 @@ class ImplTickerListRepository(
 
     override suspend fun cacheTickerListLocal(list: List<TickerEntry>) {
         measureTimeMillis {
-            database.appDatabaseQueries.transaction {
+            database.tickerListQueries.transaction {
                 list.forEach { ticker ->
-                    database.appDatabaseQueries.insertItem(
+                    database.tickerListQueries.insertItem(
                         symbol = ticker.symbol,
                         baseAsset = ticker.baseAsset,
                         contractType = ticker.contractType,

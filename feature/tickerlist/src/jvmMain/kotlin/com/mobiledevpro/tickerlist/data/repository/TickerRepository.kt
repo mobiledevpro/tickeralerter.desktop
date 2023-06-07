@@ -1,4 +1,4 @@
-package com.mobiledevpro.feature.tickerlist.data.repository
+package com.mobiledevpro.tickerlist.data.repository
 
 import com.mobiledevpro.common.data.remote.model.SymbolRemote
 import com.mobiledevpro.database.TickerEntry
