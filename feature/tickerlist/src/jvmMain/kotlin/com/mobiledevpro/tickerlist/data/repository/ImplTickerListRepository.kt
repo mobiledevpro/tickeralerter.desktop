@@ -40,6 +40,8 @@ class ImplTickerListRepository(
                 list.forEach { ticker ->
                     database.appDatabaseQueries.insertItem(
                         symbol = ticker.symbol,
+                        baseAsset = ticker.baseAsset,
+                        contractType = ticker.contractType,
                         lastPrice = ticker.lastPrice,
                         priceChange = ticker.priceChange,
                         priceChangePercent = ticker.priceChangePercent

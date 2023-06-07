@@ -1,6 +1,8 @@
 CREATE TABLE tickerEntry (
   symbol TEXT NOT NULL,
   lastPrice REAL NOT NULL,
+  baseAsset TEXT NOT NULL,
+  contractType TEXT NOT NULL,
   priceChange REAL NOT NULL,
   priceChangePercent REAL NOT NULL
 );
@@ -9,8 +11,8 @@ CREATE INDEX ticker_symbol ON tickerEntry(symbol);
 
 insertItem:
 INSERT OR REPLACE
-INTO tickerEntry (symbol, lastPrice, priceChange, priceChangePercent)
-VALUES (?, ?, ?, ?);
+INTO tickerEntry (symbol, baseAsset,contractType, lastPrice, priceChange, priceChangePercent)
+VALUES (?, ?, ?, ?, ?, ?);
 
 selectAll:
 SELECT * FROM tickerEntry;

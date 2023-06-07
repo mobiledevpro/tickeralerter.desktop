@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 data class SymbolRemote(
     val symbol: String,
     val baseAsset: String,
-    val quoteAsset: String
+    val quoteAsset: String,
+    val contractType: String
 )

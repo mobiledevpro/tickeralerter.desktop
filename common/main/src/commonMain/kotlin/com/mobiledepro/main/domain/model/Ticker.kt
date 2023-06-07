@@ -2,26 +2,37 @@ package com.mobiledepro.main.domain.model
 
 data class Ticker(
     val symbol: String,
+    val baseAsset: String,
+    val contractType: String,
     val lastPrice: Double,
     val priceChange: Double,
-    val priceChangePercent: Double
-)
+    val priceChangePercent: Double,
+    val selected: Boolean = false
+) {
+    fun details(): String = "$baseAsset / ${contractType.uppercase()} CONTRACT"
+}
 
 fun fakeTickerListFirst() = listOf(
     Ticker(
         "BTCUSDT",
+        "BTC",
+        "PERPETUAL",
         26903.2,
         96.6,
         0.36
     ),
     Ticker(
         "BNBUSDT",
+        "BNB",
+        "PERPETUAL",
         309.63,
         0.49,
         0.16
     ),
     Ticker(
         "ETHUSDT",
+        "ETH",
+        "PERPETUAL",
         1821.49,
         20.63,
         1.15
@@ -29,6 +40,8 @@ fun fakeTickerListFirst() = listOf(
 
     Ticker(
         "ATOMUSDT",
+        "ATOM",
+        "PERPETUAL",
         10.575,
         -0.165,
         -1.55
@@ -36,42 +49,9 @@ fun fakeTickerListFirst() = listOf(
 
     Ticker(
         "ADAUSDT",
+        "ADA",
+        "PERPETUAL",
         0.3696,
-        -0.0018,
-        -0.48
-    )
-)
-
-fun fakeTickerListSecond() = listOf(
-    Ticker(
-        "BTCUSDT",
-        26903.5,
-        96.8,
-        0.38
-    ),
-    Ticker(
-        "BNBUSDT",
-        310.63,
-        0.50,
-        0.17
-    ),
-    Ticker(
-        "ETHUSDT",
-        1818.19,
-        20.00,
-        1.00
-    ),
-
-    Ticker(
-        "ATOMUSDT",
-        10.560,
-        -0.170,
-        -1.60
-    ),
-
-    Ticker(
-        "ADAUSDT",
-        0.3697,
         -0.0018,
         -0.48
     )

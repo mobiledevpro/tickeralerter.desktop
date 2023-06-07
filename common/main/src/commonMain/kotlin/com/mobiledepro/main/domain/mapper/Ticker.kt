@@ -7,6 +7,8 @@ import com.mobiledevpro.database.TickerEntry
 fun SymbolRemote.toLocal(): TickerEntry =
     TickerEntry(
         symbol = symbol,
+        baseAsset = baseAsset,
+        contractType = contractType,
         lastPrice = 0.0,
         priceChange = 0.0,
         priceChangePercent = 0.0
@@ -17,7 +19,7 @@ fun List<SymbolRemote>.toLocal(): List<TickerEntry> =
 
 fun TickerEntry.toDomain(): Ticker =
     Ticker(
-        symbol, lastPrice, priceChange, priceChangePercent
+        symbol, baseAsset, contractType, lastPrice, priceChange, priceChangePercent
     )
 
 fun List<TickerEntry>.toDomain(): List<Ticker> =
