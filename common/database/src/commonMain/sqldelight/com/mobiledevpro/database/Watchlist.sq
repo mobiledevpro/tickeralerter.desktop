@@ -15,5 +15,8 @@ VALUES (?, ?, ?, ?);
 selectAll:
 SELECT * FROM watchlistEntry ORDER BY symbol ASC;
 
+selectIsExist:
+SELECT count() FROM watchlistEntry WHERE symbol = ?;
+
 deleteItem:
 DELETE FROM watchlistEntry WHERE symbol = ?;

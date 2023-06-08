@@ -16,12 +16,17 @@ class ImplWatchListRepository(
             .mapToList(Dispatchers.IO)
 
     override suspend fun addLocal(entry: WatchlistEntry) {
-        database.watchlistQueries.insertItem(
-            symbol = entry.symbol,
-            lastPrice = entry.lastPrice,
-            priceChange = entry.priceChange,
-            priceChangePercent = entry.priceChangePercent
-        )
+        //check entry is exists
+        val isExist = database.watchlistQueries.selectIsExist(entry.symbol)
+            .executeAsOne() > 0
+
+        if (!isExist)
+            database.watchlistQueries.insertItem(
+                symbol = entry.symbol,
+                lastPrice = entry.lastPrice,
+                priceChange = entry.priceChange,
+                priceChangePercent = entry.priceChangePercent
+            )
     }
 
     override suspend fun removeLocal(entry: WatchlistEntry) {
