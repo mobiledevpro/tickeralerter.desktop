@@ -4,6 +4,7 @@ import com.mobiledepro.main.domain.mapper.toDomain
 import com.mobiledepro.main.domain.mapper.toLocal
 import com.mobiledepro.main.domain.mapper.toWatchlistLocal
 import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledevpro.database.TickerEntry
 import com.mobiledevpro.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.watchlist.data.repository.WatchListRepository
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +52,7 @@ class ImplMainScreenInteractor(
 
     override fun getTickerList(): Flow<List<Ticker>> =
         tickersRepository.getTickerListLocal()
-            .map { it.toDomain() }
+            .map(List<TickerEntry>::toDomain)
             .flowOn(Dispatchers.IO)
 
     override fun getWatchList(): Flow<List<Ticker>> =
@@ -64,6 +65,15 @@ class ImplMainScreenInteractor(
             ticker.toWatchlistLocal()
                 .also {
                     watchListRepository.addLocal(it)
+                }
+        }
+    }
+
+    override suspend fun removeFromWatchlist(ticker: Ticker) {
+        withContext(Dispatchers.IO) {
+            ticker.toWatchlistLocal()
+                .also {
+                    watchListRepository.removeLocal(it)
                 }
         }
     }

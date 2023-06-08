@@ -39,6 +39,12 @@ class MainScreenViewModel(
         }
     }
 
+    fun removeFromWatchlist(ticker: Ticker) {
+        scope.launch {
+            interactor.removeFromWatchlist(ticker)
+        }
+    }
+
     private fun observeLog() {
         scope.launch(Dispatchers.IO) {
 

@@ -1,12 +1,14 @@
 package com.mobiledevpro.watchlist.view
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -17,12 +19,16 @@ import com.mobiledevpro.ui.white
 
 
 @Composable
-fun WatchlistItem(ticker: Ticker) {
-    Row(modifier = Modifier.height(24.dp), horizontalArrangement = Arrangement.SpaceEvenly) {
+fun WatchlistItem(ticker: Ticker, onRemove: () -> Unit) {
+    Row(
+        modifier = Modifier.height(32.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         TickerText(
             value = ticker.symbol,
             textAlign = TextAlign.Start,
-            modifier = Modifier.width(120.dp)
+            modifier = Modifier.width(100.dp)
         )
         TickerText(
             value = ticker.lastPrice.toString(),
@@ -38,6 +44,11 @@ fun WatchlistItem(ticker: Ticker) {
             color = ticker.getPriceColor(),
             modifier = Modifier.width(80.dp)
         )
+
+        RemoveButton(
+            onClick = onRemove
+        )
+
     }
 }
 
@@ -55,4 +66,18 @@ fun TickerText(
         color = color,
         modifier = modifier
     )
+}
+
+@Composable
+fun RemoveButton(onClick: () -> Unit) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier.padding(start = 16.dp).size(16.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Close,
+            contentDescription = null,
+            tint = MaterialTheme.colors.onSurface.copy(alpha = 0.3F)
+        )
+    }
 }

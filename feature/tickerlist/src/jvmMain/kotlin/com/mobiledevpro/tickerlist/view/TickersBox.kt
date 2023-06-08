@@ -24,8 +24,6 @@ fun TickerListSurface(
     onClose: () -> Unit,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
-    println("Show dialog")
-
     Surface(
         modifier = modifier,
         color = MaterialTheme.colors.backgroundTransparent

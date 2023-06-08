@@ -21,7 +21,12 @@ import com.mobiledevpro.ui.component.WidgetBox
 
 
 @Composable
-fun WatchlistBox(list: List<Ticker>, modifier: Modifier = Modifier, onClickAdd: () -> Unit) {
+fun WatchlistBox(
+    list: List<Ticker>,
+    modifier: Modifier = Modifier,
+    onClickAdd: () -> Unit,
+    onClickRemove: (Ticker) -> Unit
+) {
     println("Show Watchlist")
     WidgetBox(modifier = modifier) {
         Column {
@@ -45,7 +50,10 @@ fun WatchlistBox(list: List<Ticker>, modifier: Modifier = Modifier, onClickAdd: 
 
             LazyColumn {
                 items(list) { ticker ->
-                    WatchlistItem(ticker)
+                    WatchlistItem(
+                        ticker = ticker,
+                        onRemove = { onClickRemove(ticker) }
+                    )
                 }
             }
         }
@@ -59,7 +67,8 @@ fun WatchlistBoxPreview() {
     Theme {
         WatchlistBox(
             list = fakeTickerListFirst(),
-            onClickAdd = {}
+            onClickAdd = {},
+            onClickRemove = {}
         )
     }
 }

@@ -7,4 +7,6 @@ interface WatchListRepository {
     fun getListLocal(): Flow<List<WatchlistEntry>>
 
     suspend fun addLocal(entry: WatchlistEntry)
+
+    suspend fun removeLocal(entry: WatchlistEntry)
 }

@@ -23,4 +23,8 @@ class ImplWatchListRepository(
             priceChangePercent = entry.priceChangePercent
         )
     }
+
+    override suspend fun removeLocal(entry: WatchlistEntry) {
+        database.watchlistQueries.deleteItem(entry.symbol)
+    }
 }

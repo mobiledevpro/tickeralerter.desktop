@@ -14,3 +14,6 @@ VALUES (?, ?, ?, ?);
 
 selectAll:
 SELECT * FROM watchlistEntry ORDER BY symbol ASC;
+
+deleteItem:
+DELETE FROM watchlistEntry WHERE symbol = ?;

@@ -7,9 +7,12 @@ interface MainScreenInteractor {
     suspend fun syncTickerList()
 
     fun getServerTime(): Flow<Long>
+
     fun getTickerList(): Flow<List<Ticker>>
 
     fun getWatchList(): Flow<List<Ticker>>
 
     suspend fun addToWatchList(ticker: Ticker)
+
+    suspend fun removeFromWatchlist(ticker: Ticker)
 }

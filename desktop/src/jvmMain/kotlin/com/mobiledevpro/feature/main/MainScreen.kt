@@ -26,7 +26,8 @@ fun MainScreen(
     tradingLogState: StateFlow<List<String>>,
     tickerListState: StateFlow<List<Ticker>>,
     watchListState: StateFlow<List<Ticker>>,
-    onAddToWatchList: (Ticker) -> Unit
+    onAddToWatchList: (Ticker) -> Unit,
+    onRemoveFromWatchlist: (Ticker) -> Unit
 ) {
 
     val watchList by watchListState.collectAsState()
@@ -46,9 +47,10 @@ fun MainScreen(
                     onClickAdd = {
                         tickerListDialogVisible.value = true
                     },
+                    onClickRemove = onRemoveFromWatchlist,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .widthIn(min = 300.dp, max = 400.dp)
+                        .widthIn(min = 400.dp, max = 450.dp)
                 )
 
                 Column(
