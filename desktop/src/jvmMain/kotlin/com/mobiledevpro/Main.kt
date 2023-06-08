@@ -49,7 +49,8 @@ fun App() {
             tickerListState = viewModel.tickerList,
             watchListState = viewModel.watchlist,
             onAddToWatchList = viewModel::addToWatchlist,
-            onRemoveFromWatchlist = viewModel::removeFromWatchlist
+            onRemoveFromWatchlist = viewModel::removeFromWatchlist,
+            onTickerListSearch = viewModel::tickerListSearch
         )
     }
 }

@@ -15,6 +15,7 @@ import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.domain.model.fakeTickerListFirst
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.backgroundTransparent
+import com.mobiledevpro.ui.component.TickerSearchBar
 import com.mobiledevpro.ui.component.WidgetBox
 
 @Composable
@@ -23,6 +24,7 @@ fun TickerListSurface(
     onAdd: (Ticker) -> Unit,
     onRemove: (Ticker) -> Unit,
     onClose: () -> Unit,
+    onSearch: (String) -> Unit,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
     Surface(
@@ -36,6 +38,7 @@ fun TickerListSurface(
                 onClickAdd = onAdd,
                 onClickRemove = onRemove,
                 onClickClose = onClose,
+                onSearchChanged = onSearch,
                 modifier = Modifier.padding(32.dp)
                     .fillMaxHeight()
                     .widthIn(min = 500.dp, max = 600.dp)
@@ -52,9 +55,10 @@ fun TickersBox(
     modifier: Modifier = Modifier,
     onClickAdd: (Ticker) -> Unit,
     onClickRemove: (Ticker) -> Unit,
-    onClickClose: () -> Unit
+    onClickClose: () -> Unit,
+    onSearchChanged: (String) -> Unit
 ) {
-    println("Show Ticker list")
+
     WidgetBox(modifier = modifier) {
         Column {
             Row(
@@ -72,7 +76,14 @@ fun TickersBox(
                     Icon(imageVector = Icons.Default.Close, contentDescription = null)
                 }
             }
+
             Divider(thickness = 1.dp)
+
+            TickerSearchBar(
+                onSearchChange = onSearchChanged,
+                modifier = Modifier.fillMaxWidth().padding(all = 8.dp)
+            )
+
             LazyColumn {
                 items(list) { ticker ->
                     TickerItem(
@@ -95,7 +106,8 @@ fun TickerItemPreview() {
             list = fakeTickerListFirst(),
             onAdd = {},
             onRemove = {},
-            onClose = {}
+            onClose = {},
+            onSearch = {}
         )
     }
 }

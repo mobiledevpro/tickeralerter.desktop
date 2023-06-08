@@ -27,7 +27,8 @@ fun MainScreen(
     tickerListState: StateFlow<List<Ticker>>,
     watchListState: StateFlow<List<Ticker>>,
     onAddToWatchList: (Ticker) -> Unit,
-    onRemoveFromWatchlist: (Ticker) -> Unit
+    onRemoveFromWatchlist: (Ticker) -> Unit,
+    onTickerListSearch: (String) -> Unit
 ) {
 
     val watchList by watchListState.collectAsState()
@@ -102,6 +103,7 @@ fun MainScreen(
                 list = tickerList,
                 onAdd = onAddToWatchList,
                 onRemove = onRemoveFromWatchlist,
+                onSearch = onTickerListSearch,
                 onClose = {
                     tickerListDialogVisible.value = false
                 }

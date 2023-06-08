@@ -45,6 +45,10 @@ class MainScreenViewModel(
         }
     }
 
+    fun tickerListSearch(value: String) {
+        //TODO: search locally
+    }
+
     private fun observeLog() {
         scope.launch(Dispatchers.IO) {
 
