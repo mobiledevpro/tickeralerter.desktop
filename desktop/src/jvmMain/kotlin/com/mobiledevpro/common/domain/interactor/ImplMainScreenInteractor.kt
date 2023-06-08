@@ -11,10 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.ticker
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
 class ImplMainScreenInteractor(
@@ -50,10 +47,19 @@ class ImplMainScreenInteractor(
 
     }.flowOn(Dispatchers.IO)
 
-    override fun getTickerList(): Flow<List<Ticker>> =
-        tickersRepository.getTickerListLocal()
+    override fun getTickerList(): Flow<List<Ticker>> {
+
+        val tickerListFlow = tickersRepository.getTickerListLocal()
             .map(List<TickerEntry>::toDomain)
-            .flowOn(Dispatchers.IO)
+        val watchlistFlow = watchListRepository.getListLocal()
+            .map { it.toDomain() }
+
+        return tickerListFlow.combine(watchlistFlow) { tickers: List<Ticker>, watchlist: List<Ticker> ->
+            tickers.onEach { ticker ->
+                ticker.selected = watchlist.find { it.symbol == ticker.symbol } != null
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 
     override fun getWatchList(): Flow<List<Ticker>> =
         watchListRepository.getListLocal()

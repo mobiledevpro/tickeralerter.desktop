@@ -7,7 +7,7 @@ data class Ticker(
     val lastPrice: Double,
     val priceChange: Double,
     val priceChangePercent: Double,
-    val selected: Boolean = false
+    var selected: Boolean = false
 ) {
     fun details(): String = "$baseAsset / ${contractType.uppercase()} CONTRACT"
 }

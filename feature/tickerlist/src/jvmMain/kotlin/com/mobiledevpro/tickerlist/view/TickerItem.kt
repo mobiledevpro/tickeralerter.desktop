@@ -19,7 +19,7 @@ import com.mobiledevpro.ui.accent
 import com.mobiledevpro.ui.white
 
 @Composable
-fun TickerItem(ticker: Ticker, onClick: () -> Unit) {
+fun TickerItem(ticker: Ticker, onClickAdd: () -> Unit, onClickRemove: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -40,14 +40,17 @@ fun TickerItem(ticker: Ticker, onClick: () -> Unit) {
         )
 
         Button(
-            onClick = onClick,
+            onClick = if (ticker.selected) onClickRemove else onClickAdd,
             colors = ButtonDefaults.buttonColors(
                 contentColor = MaterialTheme.colors.white,
-                backgroundColor = MaterialTheme.colors.accent
+                backgroundColor = if (ticker.selected)
+                    MaterialTheme.colors.surface
+                else
+                    MaterialTheme.colors.accent
             )
         ) {
             Text(
-                text = if (ticker.selected) "Remove" else "Add",
+                text = if (ticker.selected) "Del" else "Add",
                 style = MaterialTheme.typography.button
             )
         }

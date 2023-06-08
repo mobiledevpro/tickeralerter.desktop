@@ -100,7 +100,8 @@ fun MainScreen(
         if (tickerListDialogVisible.value)
             TickerListSurface(
                 list = tickerList,
-                onSelect = onAddToWatchList,
+                onAdd = onAddToWatchList,
+                onRemove = onRemoveFromWatchlist,
                 onClose = {
                     tickerListDialogVisible.value = false
                 }

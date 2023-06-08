@@ -20,7 +20,8 @@ import com.mobiledevpro.ui.component.WidgetBox
 @Composable
 fun TickerListSurface(
     list: List<Ticker>,
-    onSelect: (Ticker) -> Unit,
+    onAdd: (Ticker) -> Unit,
+    onRemove: (Ticker) -> Unit,
     onClose: () -> Unit,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
@@ -32,7 +33,8 @@ fun TickerListSurface(
 
             TickersBox(
                 list = list,
-                onSelect = onSelect,
+                onClickAdd = onAdd,
+                onClickRemove = onRemove,
                 onClickClose = onClose,
                 modifier = Modifier.padding(32.dp)
                     .fillMaxHeight()
@@ -48,7 +50,8 @@ fun TickerListSurface(
 fun TickersBox(
     list: List<Ticker>,
     modifier: Modifier = Modifier,
-    onSelect: (Ticker) -> Unit,
+    onClickAdd: (Ticker) -> Unit,
+    onClickRemove: (Ticker) -> Unit,
     onClickClose: () -> Unit
 ) {
     println("Show Ticker list")
@@ -74,9 +77,8 @@ fun TickersBox(
                 items(list) { ticker ->
                     TickerItem(
                         ticker = ticker,
-                        onClick = {
-                            onSelect(ticker)
-                        }
+                        onClickAdd = { onClickAdd(ticker) },
+                        onClickRemove = { onClickRemove(ticker) }
                     )
                 }
             }
@@ -91,7 +93,8 @@ fun TickerItemPreview() {
     Theme {
         TickerListSurface(
             list = fakeTickerListFirst(),
-            onSelect = {},
+            onAdd = {},
+            onRemove = {},
             onClose = {}
         )
     }
