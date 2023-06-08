@@ -26,6 +26,7 @@ class MainScreenViewModel(
     private val _serverTime = MutableStateFlow(0L)
     val serverTime: StateFlow<Long> = _serverTime
 
+
     init {
         observeNetworkConnection()
         observeLog()
@@ -46,7 +47,9 @@ class MainScreenViewModel(
     }
 
     fun tickerListSearch(value: String) {
-        //TODO: search locally
+        scope.launch {
+            interactor.setTickerListSearch(value)
+        }
     }
 
     private fun observeLog() {

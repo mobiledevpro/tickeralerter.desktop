@@ -19,6 +19,8 @@ class ImplMainScreenInteractor(
     private val watchListRepository: WatchListRepository
 ) : MainScreenInteractor {
 
+    private val tickerListSearchTerm = MutableStateFlow("")
+
     override suspend fun syncTickerList() {
         withContext(Dispatchers.IO) {
             tickersRepository.getTickerListRemote()
@@ -54,10 +56,20 @@ class ImplMainScreenInteractor(
         val watchlistFlow = watchListRepository.getListLocal()
             .map { it.toDomain() }
 
-        return tickerListFlow.combine(watchlistFlow) { tickers: List<Ticker>, watchlist: List<Ticker> ->
+        return combine(
+            tickerListFlow,
+            watchlistFlow,
+            tickerListSearchTerm
+        ) { tickers: List<Ticker>, watchlist: List<Ticker>, searchTerm: String ->
             tickers.onEach { ticker ->
                 ticker.selected = watchlist.find { it.symbol == ticker.symbol } != null
+            }.let { list ->
+                if (searchTerm.isNotEmpty())
+                    list.filter { it.symbol.lowercase().contains(searchTerm.lowercase()) }
+                else
+                    list
             }
+
         }.flowOn(Dispatchers.IO)
     }
 
@@ -84,4 +96,9 @@ class ImplMainScreenInteractor(
         }
     }
 
+    override suspend fun setTickerListSearch(value: String) {
+        withContext(Dispatchers.IO) {
+            tickerListSearchTerm.value = value
+        }
+    }
 }
