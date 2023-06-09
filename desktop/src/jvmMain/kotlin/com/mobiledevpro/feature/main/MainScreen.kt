@@ -105,6 +105,8 @@ fun MainScreen(
                 onRemove = onRemoveFromWatchlist,
                 onSearch = onTickerListSearch,
                 onClose = {
+                    //clear ticker list search
+                    onTickerListSearch("")
                     tickerListDialogVisible.value = false
                 }
             )

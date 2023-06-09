@@ -101,4 +101,10 @@ class ImplMainScreenInteractor(
             tickerListSearchTerm.value = value
         }
     }
+
+    override suspend fun clearTickerListSearch() {
+        withContext(Dispatchers.IO) {
+            tickerListSearchTerm.value = ""
+        }
+    }
 }

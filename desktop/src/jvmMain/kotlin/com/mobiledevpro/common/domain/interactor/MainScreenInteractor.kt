@@ -17,4 +17,6 @@ interface MainScreenInteractor {
     suspend fun removeFromWatchlist(ticker: Ticker)
 
     suspend fun setTickerListSearch(value: String)
+
+    suspend fun clearTickerListSearch()
 }

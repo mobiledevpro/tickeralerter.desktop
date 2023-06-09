@@ -48,7 +48,10 @@ class MainScreenViewModel(
 
     fun tickerListSearch(value: String) {
         scope.launch {
-            interactor.setTickerListSearch(value)
+            if (value.isEmpty())
+                interactor.clearTickerListSearch()
+            else
+                interactor.setTickerListSearch(value)
         }
     }
 
