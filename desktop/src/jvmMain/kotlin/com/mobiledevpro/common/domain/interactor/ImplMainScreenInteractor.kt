@@ -5,8 +5,10 @@ import com.mobiledepro.main.domain.mapper.toLocal
 import com.mobiledepro.main.domain.mapper.toWatchlistLocal
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.database.TickerEntry
+import com.mobiledevpro.database.WatchlistEntry
 import com.mobiledevpro.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.watchlist.data.repository.WatchListRepository
+import io.ktor.websocket.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
@@ -28,6 +30,20 @@ class ImplMainScreenInteractor(
                 .also {
                     tickersRepository.cacheTickerListLocal(it)
                 }
+        }
+    }
+
+    override suspend fun syncWatchlist() {
+        withContext(Dispatchers.IO) {
+            watchListRepository.getListLocal().collectLatest { tickerList: List<WatchlistEntry> ->
+                if (tickerList.isEmpty()) return@collectLatest
+
+                watchListRepository.subscribeToListRemote(tickerList)
+                    .buffer()
+                    .collectLatest {
+                        println(":: Thread ${Thread.currentThread().name} :: SOCKET :: \n${it.readText()}")
+                    }
+            }
         }
     }
 
@@ -90,8 +106,11 @@ class ImplMainScreenInteractor(
     override suspend fun removeFromWatchlist(ticker: Ticker) {
         withContext(Dispatchers.IO) {
             ticker.toWatchlistLocal()
-                .also {
-                    watchListRepository.removeLocal(it)
+                .also { entry ->
+                    watchListRepository.removeLocal(entry)
+                    watchListRepository.unsubscribeFromRemote(entry).collectLatest {
+                        println(":: Thread ${Thread.currentThread().name} :: SOCKET UNSUBSCRIBE :: \n${it.readText()}")
+                    }
                 }
         }
     }

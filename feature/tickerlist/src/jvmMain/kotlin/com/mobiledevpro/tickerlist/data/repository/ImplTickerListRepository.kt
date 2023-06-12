@@ -16,8 +16,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.system.measureTimeMillis
 
 class ImplTickerListRepository(
-    private val httpClient: HttpClient,
-    private val database: AppDatabase
+    private val database: AppDatabase,
+    private val httpClient: HttpClient
 ) : TickerRepository {
 
     override suspend fun getServerTime(): Long = httpClient.getServerTime().let { resp ->

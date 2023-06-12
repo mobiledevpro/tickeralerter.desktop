@@ -4,6 +4,7 @@ import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.common.data.remote.model.SymbolRemote
 import com.mobiledevpro.database.TickerEntry
 import com.mobiledevpro.database.WatchlistEntry
+import com.mobiledevpro.network.api.BinanceSocket
 
 fun SymbolRemote.toLocal(): TickerEntry =
     TickerEntry(
@@ -49,3 +50,29 @@ fun Ticker.toWatchlistLocal(): WatchlistEntry =
         priceChange = 0.0,
         priceChangePercent = 0.0
     )
+
+fun List<WatchlistEntry>.toSocketRequest(method: BinanceSocket.Method, streamType: String): BinanceSocket.Request =
+    mapTo(ArrayList<String>()) { ticker ->
+        "${ticker.symbol.lowercase()}@$streamType"
+    }.toTypedArray()
+        .let { params ->
+            BinanceSocket.Request(
+                method = method,
+                params = params,
+                id = 1
+            )
+        }
+
+fun WatchlistEntry.toSocketRequest(method: BinanceSocket.Method, streamType: String): BinanceSocket.Request =
+    listOf<WatchlistEntry>(this)
+        .mapTo(ArrayList<String>()) { ticker ->
+            "${ticker.symbol.lowercase()}@$streamType"
+        }.toTypedArray()
+        .let { params ->
+            BinanceSocket.Request(
+                method = method,
+                params = params,
+                id = 1
+            )
+        }
+

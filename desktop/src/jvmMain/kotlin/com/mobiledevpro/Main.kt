@@ -16,6 +16,7 @@ import com.mobiledevpro.database.DriverFactory
 import com.mobiledevpro.feature.main.MainScreen
 import com.mobiledevpro.feature.main.MainScreenViewModel
 import com.mobiledevpro.network.BinanceHTTPClientFactory
+import com.mobiledevpro.network.BinanceSocketClientFactory
 import com.mobiledevpro.tickerlist.data.repository.ImplTickerListRepository
 import com.mobiledevpro.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.ui.Theme
@@ -35,8 +36,9 @@ fun App() {
     val database = AppDatabase(DriverFactory().createDriver())
 
     val httpClient: HttpClient = BinanceHTTPClientFactory.build()
-    val tickerRepository: TickerRepository = ImplTickerListRepository(httpClient, database)
-    val watchlistRepository: WatchListRepository = ImplWatchListRepository(database)
+    val socketClient: HttpClient = BinanceSocketClientFactory.build()
+    val tickerRepository: TickerRepository = ImplTickerListRepository(database, httpClient)
+    val watchlistRepository: WatchListRepository = ImplWatchListRepository(database, socketClient)
     val mainInteractor: MainScreenInteractor = ImplMainScreenInteractor(tickerRepository, watchlistRepository)
 
     val scope = rememberCoroutineScope()

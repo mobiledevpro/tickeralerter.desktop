@@ -29,7 +29,7 @@ class MainScreenViewModel(
 
     init {
         observeNetworkConnection()
-        observeLog()
+       // observeLog()
         observeWatchlist()
         observeTickerList()
     }
@@ -60,7 +60,7 @@ class MainScreenViewModel(
 
             val mutableList = ArrayList<String>()
 
-            for (i in 0..99) {
+            for (i in 0..9) {
                 val event: String = "${getTime()} | Test event $i"
                 mutableList.add(event)
                 println("Add to log ${mutableList.size}: Thread ${Thread.currentThread().name}")
@@ -77,7 +77,6 @@ class MainScreenViewModel(
 
     }
 
-    @OptIn(ObsoleteCoroutinesApi::class)
     private fun observeTickerList() {
         scope.launch {
             interactor.syncTickerList()
@@ -89,15 +88,21 @@ class MainScreenViewModel(
                 _tickerList.update { list }
             }
         }
-
     }
 
     private fun observeWatchlist() {
+
+        //Get watchlist saved locally
         scope.launch {
             interactor.getWatchList().collectLatest { list ->
                 println("Get local watchlist: ${list.size}")
                 _watchlist.update { list }
             }
+        }
+
+        //Update watchlist tickers price from socket
+        scope.launch {
+            interactor.syncWatchlist()
         }
     }
 

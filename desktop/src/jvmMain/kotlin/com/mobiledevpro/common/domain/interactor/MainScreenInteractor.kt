@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.Flow
 interface MainScreenInteractor {
     suspend fun syncTickerList()
 
+    suspend fun syncWatchlist()
+
     fun getServerTime(): Flow<Long>
 
     fun getTickerList(): Flow<List<Ticker>>

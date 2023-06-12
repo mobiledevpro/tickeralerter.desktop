@@ -18,7 +18,9 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+
                 api("io.ktor:ktor-client-okhttp:$ktorVersion")
+                api("io.ktor:ktor-client-websockets:$ktorVersion")
                 api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
             }
         }
