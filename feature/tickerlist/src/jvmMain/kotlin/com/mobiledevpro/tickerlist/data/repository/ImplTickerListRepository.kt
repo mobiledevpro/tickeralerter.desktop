@@ -4,7 +4,7 @@ import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.mobiledevpro.common.data.remote.model.ExchangeInfoRemote
 import com.mobiledevpro.common.data.remote.model.ServerTimeRemote
-import com.mobiledevpro.common.data.remote.model.SymbolRemote
+import com.mobiledevpro.common.data.remote.model.TickerRemote
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.TickerEntry
 import com.mobiledevpro.network.getExchangeInfo
@@ -30,7 +30,7 @@ class ImplTickerListRepository(
             .asFlow()
             .mapToList(Dispatchers.IO)
 
-    override suspend fun getTickerListRemote(): List<SymbolRemote> =
+    override suspend fun getTickerListRemote(): List<TickerRemote> =
         httpClient.getExchangeInfo().body<ExchangeInfoRemote>().symbols
 
     override suspend fun cacheTickerListLocal(list: List<TickerEntry>) {

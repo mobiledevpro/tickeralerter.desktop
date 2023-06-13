@@ -29,6 +29,7 @@ object BinanceSocketClientFactory {
     const val TEST_URL = "fstream.binance.com"
 }
 
+val jsonFormat = Json { ignoreUnknownKeys = true }
 
 fun HttpClient.wsSubscribe(request: BinanceSocket.Request) = flow<Frame.Text> {
     wss(host = BinanceSocketClientFactory.TEST_URL, path = "/ws") {
@@ -48,7 +49,7 @@ fun HttpClient.wsSubscribe(request: BinanceSocket.Request) = flow<Frame.Text> {
                     emit(it)
                 }
             } catch (e: Exception) {
-                println("WebSocket exception [subscribe]: ${e.localizedMessage}")
+                println("WebSocket exception [wsSubscribe]: ${e.localizedMessage}")
             }
         }
 

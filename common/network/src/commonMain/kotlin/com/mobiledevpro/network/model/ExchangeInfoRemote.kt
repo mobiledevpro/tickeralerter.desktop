@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ExchangeInfoRemote(
-    val symbols: List<SymbolRemote>
+    val symbols: List<TickerRemote>
 )

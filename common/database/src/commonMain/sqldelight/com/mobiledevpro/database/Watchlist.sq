@@ -1,5 +1,5 @@
 CREATE TABLE watchlistEntry (
-  symbol TEXT NOT NULL,
+  symbol TEXT NOT NULL PRIMARY KEY,
   lastPrice REAL NOT NULL,
   priceChange REAL NOT NULL,
   priceChangePercent REAL NOT NULL
@@ -14,6 +14,9 @@ VALUES (?, ?, ?, ?);
 
 selectAll:
 SELECT * FROM watchlistEntry ORDER BY symbol ASC;
+
+selectSymbols:
+SELECT symbol FROM watchlistEntry ORDER BY symbol ASC;
 
 selectIsExist:
 SELECT count() FROM watchlistEntry WHERE symbol = ?;

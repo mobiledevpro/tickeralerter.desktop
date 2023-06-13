@@ -5,16 +5,13 @@ import com.mobiledepro.main.domain.mapper.toLocal
 import com.mobiledepro.main.domain.mapper.toWatchlistLocal
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.database.TickerEntry
-import com.mobiledevpro.database.WatchlistEntry
 import com.mobiledevpro.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.watchlist.data.repository.WatchListRepository
 import io.ktor.websocket.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
 
 class ImplMainScreenInteractor(
     private val tickersRepository: TickerRepository,
@@ -22,6 +19,8 @@ class ImplMainScreenInteractor(
 ) : MainScreenInteractor {
 
     private val tickerListSearchTerm = MutableStateFlow("")
+    private val syncedSymbolsList = MutableStateFlow(listOf<String>())
+
 
     override suspend fun syncTickerList() {
         withContext(Dispatchers.IO) {
@@ -33,19 +32,30 @@ class ImplMainScreenInteractor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun syncWatchlist() {
-        withContext(Dispatchers.IO) {
-            watchListRepository.getListLocal().collectLatest { tickerList: List<WatchlistEntry> ->
-                if (tickerList.isEmpty()) return@collectLatest
-
-                watchListRepository.subscribeToListRemote(tickerList)
-                    .buffer()
-                    .collectLatest {
-                        println(":: Thread ${Thread.currentThread().name} :: SOCKET :: \n${it.readText()}")
-                    }
+        watchListRepository.getSymbolsListLocal()
+            .filter { localSymbolsList ->
+                //It allows to avoid re-subscribing to socket every time ticker updates
+                localSymbolsList != syncedSymbolsList.value
             }
-        }
+            .flatMapLatest { symbolList: List<String> ->
+                syncedSymbolsList.value = symbolList
+                //get updates from the socket
+                watchListRepository.subscribeToSymbolListRemote(symbolList)
+            }
+            .buffer()
+            .flowOn(Dispatchers.IO)
+            .mapLatest { symbolRemote ->
+                //Update watchlist locally
+                symbolRemote.toLocal()
+                    ?.let { entry -> watchListRepository.updateLocal(entry) }
+                    ?: false
+            }
+            .flowOn(Dispatchers.IO)
+            .collect()
     }
+
 
     @OptIn(ObsoleteCoroutinesApi::class)
     override fun getServerTime(): Flow<Long> = flow {
@@ -109,7 +119,7 @@ class ImplMainScreenInteractor(
                 .also { entry ->
                     watchListRepository.removeLocal(entry)
                     watchListRepository.unsubscribeFromRemote(entry).collectLatest {
-                        println(":: Thread ${Thread.currentThread().name} :: SOCKET UNSUBSCRIBE :: \n${it.readText()}")
+                        println(":: Thread ${Thread.currentThread().name} :: SOCKET UNSUBSCRIBE :: \n$it")
                     }
                 }
         }

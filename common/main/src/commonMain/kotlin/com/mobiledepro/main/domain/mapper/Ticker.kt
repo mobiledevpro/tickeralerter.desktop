@@ -1,12 +1,11 @@
 package com.mobiledepro.main.domain.mapper
 
 import com.mobiledepro.main.domain.model.Ticker
-import com.mobiledevpro.common.data.remote.model.SymbolRemote
+import com.mobiledevpro.common.data.remote.model.TickerRemote
 import com.mobiledevpro.database.TickerEntry
 import com.mobiledevpro.database.WatchlistEntry
-import com.mobiledevpro.network.api.BinanceSocket
 
-fun SymbolRemote.toLocal(): TickerEntry =
+fun TickerRemote.toLocal(): TickerEntry =
     TickerEntry(
         symbol = symbol,
         baseAsset = baseAsset,
@@ -16,8 +15,8 @@ fun SymbolRemote.toLocal(): TickerEntry =
         priceChangePercent = 0.0
     )
 
-fun List<SymbolRemote>.toLocal(): List<TickerEntry> =
-    mapTo(ArrayList<TickerEntry>(), SymbolRemote::toLocal)
+fun List<TickerRemote>.toLocal(): List<TickerEntry> =
+    mapTo(ArrayList<TickerEntry>(), TickerRemote::toLocal)
 
 fun TickerEntry.toDomain(): Ticker =
     Ticker(
@@ -51,28 +50,5 @@ fun Ticker.toWatchlistLocal(): WatchlistEntry =
         priceChangePercent = 0.0
     )
 
-fun List<WatchlistEntry>.toSocketRequest(method: BinanceSocket.Method, streamType: String): BinanceSocket.Request =
-    mapTo(ArrayList<String>()) { ticker ->
-        "${ticker.symbol.lowercase()}@$streamType"
-    }.toTypedArray()
-        .let { params ->
-            BinanceSocket.Request(
-                method = method,
-                params = params,
-                id = 1
-            )
-        }
 
-fun WatchlistEntry.toSocketRequest(method: BinanceSocket.Method, streamType: String): BinanceSocket.Request =
-    listOf<WatchlistEntry>(this)
-        .mapTo(ArrayList<String>()) { ticker ->
-            "${ticker.symbol.lowercase()}@$streamType"
-        }.toTypedArray()
-        .let { params ->
-            BinanceSocket.Request(
-                method = method,
-                params = params,
-                id = 1
-            )
-        }
 

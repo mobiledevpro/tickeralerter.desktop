@@ -3,15 +3,18 @@ package com.mobiledevpro.watchlist.data.repository
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.mobiledepro.main.domain.mapper.toSocketRequest
+import com.mobiledepro.main.domain.mapper.toWatchlistSymbol
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.WatchlistEntry
 import com.mobiledevpro.network.api.BinanceSocket
+import com.mobiledevpro.network.model.WatchlistSymbolRemote
 import com.mobiledevpro.network.wsSubscribe
 import com.mobiledevpro.network.wsUnsubscribe
 import io.ktor.client.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class ImplWatchListRepository(
     private val database: AppDatabase,
@@ -22,6 +25,12 @@ class ImplWatchListRepository(
         database.watchlistQueries.selectAll()
             .asFlow()
             .mapToList(Dispatchers.IO)
+
+    override fun getSymbolsListLocal(): Flow<List<String>> =
+        database.watchlistQueries.selectSymbols()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
+
 
     override suspend fun addLocal(entry: WatchlistEntry) {
         //check entry is exists
@@ -41,12 +50,29 @@ class ImplWatchListRepository(
         database.watchlistQueries.deleteItem(entry.symbol)
     }
 
-    override fun subscribeToListRemote(list: List<WatchlistEntry>): Flow<Frame.Text> =
-        list.toSocketRequest(BinanceSocket.Method.SUBSCRIBE, "miniTicker")
-            .let(socketClient::wsSubscribe)
+    override suspend fun updateLocal(entry: WatchlistEntry): Boolean {
+        println("Update local: ${Thread.currentThread().name}")
+        database.watchlistQueries.insertItem(
+            symbol = entry.symbol,
+            lastPrice = entry.lastPrice,
+            priceChange = entry.priceChange,
+            priceChangePercent = entry.priceChangePercent
+        )
 
-    override fun unsubscribeFromRemote(ticker: WatchlistEntry): Flow<Frame.Text> =
-        ticker.toSocketRequest(BinanceSocket.Method.UNSUBSCRIBE, "miniTicker")
+        return true
+    }
+
+    override fun subscribeToSymbolListRemote(list: List<String>): Flow<WatchlistSymbolRemote> =
+        list.toSocketRequest(BinanceSocket.Method.SUBSCRIBE, "ticker")
+            .let(socketClient::wsSubscribe)
+            .map {
+                println(":: Thread ${Thread.currentThread().name} :: SOCKET :: \n${it.readText()}")
+                it.toWatchlistSymbol()
+            }
+
+    override fun unsubscribeFromRemote(ticker: WatchlistEntry): Flow<String> =
+        ticker.toSocketRequest(BinanceSocket.Method.UNSUBSCRIBE, "ticker")
             .let(socketClient::wsUnsubscribe)
+            .map(Frame.Text::readText)
 
 }

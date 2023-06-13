@@ -3,7 +3,7 @@ package com.mobiledevpro.common.data.remote.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class SymbolRemote(
+data class TickerRemote(
     val symbol: String,
     val baseAsset: String,
     val quoteAsset: String,
