@@ -31,15 +31,18 @@ fun WatchlistItem(ticker: Ticker, onRemove: () -> Unit) {
             modifier = Modifier.width(100.dp)
         )
         TickerText(
+            textAlign = TextAlign.End,
             value = ticker.lastPrice.toString(),
             modifier = Modifier.width(80.dp)
         )
         TickerText(
+            textAlign = TextAlign.End,
             value = ticker.priceChange.toString(),
             color = ticker.getPriceColor(),
             modifier = Modifier.width(80.dp)
         )
         TickerText(
+            textAlign = TextAlign.End,
             value = ticker.priceChangePercent.toString(),
             color = ticker.getPriceColor(),
             modifier = Modifier.width(80.dp)
