@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.common.util.timeToString
-import com.mobiledevpro.feature.chart.ChartBox
 import com.mobiledevpro.feature.tradinglog.TradingLogBox
 import com.mobiledevpro.tickerlist.view.TickerListSurface
 import com.mobiledevpro.ui.lightGreen

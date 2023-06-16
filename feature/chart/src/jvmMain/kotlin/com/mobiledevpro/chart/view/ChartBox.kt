@@ -1,4 +1,4 @@
-package com.mobiledevpro.feature.chart
+package com.mobiledevpro.chart.view
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

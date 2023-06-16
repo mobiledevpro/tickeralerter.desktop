@@ -25,6 +25,7 @@ kotlin {
                 implementation(project(":common:main"))
                 implementation(project(":feature:tickerlist"))
                 implementation(project(":feature:watchlist"))
+                implementation(project(":feature:chart"))
 
                 // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4")
             }
