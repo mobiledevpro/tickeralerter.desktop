@@ -1,0 +1,30 @@
+CREATE TABLE candleEntry (
+  symbol TEXT NOT NULL,
+  timeFrame TEXT NOT NULL,
+  openTime INTEGER NOT NULL PRIMARY KEY,
+  closeTime INTEGER NOT NULL,
+  priceOpen REAL NOT NULL,
+  priceClose REAL NOT NULL,
+  priceLow REAL NOT NULL,
+  priceHigh REAL NOT NULL,
+  volume REAL NOT NULL
+);
+
+CREATE INDEX candle_symbol_time_frame ON candleEntry(symbol, timeFrame);
+
+insertItem:
+INSERT OR REPLACE
+INTO candleEntry (symbol, timeFrame, openTime,closeTime, priceOpen, priceClose, priceLow, priceHigh, volume)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+selectBySymbol:
+SELECT * FROM candleEntry WHERE symbol = ? AND timeFrame = ?;
+
+deleteAll:
+DELETE FROM candleEntry;
+
+deleteAllBySymbol:
+DELETE FROM candleEntry WHERE symbol = ?;
+
+checkIsExist:
+SELECT count() FROM candleEntry WHERE symbol = ? AND timeFrame = ? AND openTime = ?;

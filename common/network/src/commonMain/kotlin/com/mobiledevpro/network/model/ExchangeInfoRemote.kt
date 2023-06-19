@@ -1,5 +1,6 @@
 package com.mobiledevpro.common.data.remote.model
 
+import com.mobiledevpro.network.model.TickerRemote
 import kotlinx.serialization.Serializable
 
 @Serializable

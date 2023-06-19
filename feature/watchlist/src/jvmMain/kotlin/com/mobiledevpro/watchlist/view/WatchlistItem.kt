@@ -1,5 +1,6 @@
 package com.mobiledevpro.watchlist.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -19,11 +20,13 @@ import com.mobiledevpro.ui.white
 
 
 @Composable
-fun WatchlistItem(ticker: Ticker, onRemove: () -> Unit) {
+fun WatchlistItem(ticker: Ticker, onRemove: () -> Unit, onSelect: () -> Unit) {
     Row(
-        modifier = Modifier.height(32.dp),
+        modifier = Modifier.height(32.dp).clickable {
+            onSelect()
+        },
         horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         TickerText(
             value = ticker.symbol,

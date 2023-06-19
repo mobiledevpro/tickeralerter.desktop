@@ -1,7 +1,9 @@
 package com.mobiledevpro.feature.main
 
+import com.mobiledepro.main.domain.model.Candle
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.common.domain.interactor.MainScreenInteractor
+import io.ktor.utils.io.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -23,13 +25,15 @@ class MainScreenViewModel(
     private val _watchlist = MutableStateFlow<List<Ticker>>(emptyList())
     val watchlist: StateFlow<List<Ticker>> = _watchlist.asStateFlow()
 
+    private val _chartCandleList = MutableStateFlow<List<Candle>>(emptyList())
+    val chartCandleList: StateFlow<List<Candle>> = _chartCandleList.asStateFlow()
+
     private val _serverTime = MutableStateFlow(0L)
     val serverTime: StateFlow<Long> = _serverTime
 
-
     init {
         observeNetworkConnection()
-       // observeLog()
+        // observeLog()
         observeWatchlist()
         observeTickerList()
     }
@@ -53,6 +57,10 @@ class MainScreenViewModel(
             else
                 interactor.setTickerListSearch(value)
         }
+    }
+
+    fun selectFromWatchlist(ticker: Ticker) {
+        observeChartCandleList(ticker)
     }
 
     private fun observeLog() {
@@ -103,6 +111,23 @@ class MainScreenViewModel(
         //Update watchlist tickers price from socket
         scope.launch {
             interactor.syncWatchlist()
+        }
+    }
+
+    private fun observeChartCandleList(ticker: Ticker) {
+        scope.launch {
+            interactor.getChart(ticker, "1h").collectLatest { list ->
+                println("Get local candle list: ${list.size}")
+                _chartCandleList.update { list }
+            }
+        }
+
+        scope.launch {
+            try {
+                interactor.syncChart(ticker, "1h")
+            } catch (e: Exception) {
+                println("observeChartCandleList: ERROR ${e.printStack()}")
+            }
         }
     }
 

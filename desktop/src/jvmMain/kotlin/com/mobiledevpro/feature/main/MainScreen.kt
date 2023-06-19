@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.mobiledepro.main.domain.model.Candle
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.common.util.timeToString
@@ -26,8 +27,10 @@ fun MainScreen(
     tradingLogState: StateFlow<List<String>>,
     tickerListState: StateFlow<List<Ticker>>,
     watchListState: StateFlow<List<Ticker>>,
+    chartState: StateFlow<List<Candle>>,
     onAddToWatchList: (Ticker) -> Unit,
     onRemoveFromWatchlist: (Ticker) -> Unit,
+    onSelectFromWatchlist: (Ticker) -> Unit,
     onTickerListSearch: (String) -> Unit
 ) {
 
@@ -35,6 +38,7 @@ fun MainScreen(
     val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
     val serverTime by serverTimeState.collectAsState()
+    val chartCandleList by chartState.collectAsState()
 
     println("Time state $serverTime")
 
@@ -49,6 +53,7 @@ fun MainScreen(
                         tickerListDialogVisible.value = true
                     },
                     onClickRemove = onRemoveFromWatchlist,
+                    onSelect = onSelectFromWatchlist,
                     modifier = Modifier
                         .fillMaxHeight()
                         .widthIn(min = 400.dp, max = 450.dp)
@@ -59,6 +64,7 @@ fun MainScreen(
                 ) {
 
                     ChartBox(
+                        candleList = chartCandleList,
                         modifier = Modifier
                             .fillMaxHeight(0.7f)
                             .fillMaxWidth()

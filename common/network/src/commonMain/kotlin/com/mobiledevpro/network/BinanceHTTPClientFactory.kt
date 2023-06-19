@@ -71,3 +71,12 @@ suspend fun HttpClient.getServerTime(): HttpResponse =
 
 suspend fun HttpClient.getExchangeInfo(): HttpResponse =
     get("exchangeInfo")
+
+
+suspend fun HttpClient.getChart(symbol: String, timeFrame: String): HttpResponse =
+    get("klines") {
+        url {
+            parameters.append("symbol", symbol)
+            parameters.append("interval", timeFrame)
+        }
+    }

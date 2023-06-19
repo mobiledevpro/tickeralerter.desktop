@@ -1,7 +1,7 @@
 package com.mobiledevpro.tickerlist.data.repository
 
-import com.mobiledevpro.common.data.remote.model.TickerRemote
 import com.mobiledevpro.database.TickerEntry
+import com.mobiledevpro.network.model.TickerRemote
 import kotlinx.coroutines.flow.Flow
 
 interface TickerRepository {

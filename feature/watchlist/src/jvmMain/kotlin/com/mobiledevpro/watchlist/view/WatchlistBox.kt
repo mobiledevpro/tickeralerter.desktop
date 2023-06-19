@@ -23,7 +23,8 @@ fun WatchlistBox(
     list: List<Ticker>,
     modifier: Modifier = Modifier,
     onClickAdd: () -> Unit,
-    onClickRemove: (Ticker) -> Unit
+    onClickRemove: (Ticker) -> Unit,
+    onSelect: (Ticker) -> Unit
 ) {
     println("Show Watchlist")
     WidgetBox(modifier = modifier) {
@@ -62,7 +63,8 @@ fun WatchlistBox(
                 items(list) { ticker ->
                     WatchlistItem(
                         ticker = ticker,
-                        onRemove = { onClickRemove(ticker) }
+                        onRemove = { onClickRemove(ticker) },
+                        onSelect = { onSelect(ticker) }
                     )
                 }
             }
@@ -89,7 +91,8 @@ fun WatchlistBoxPreview() {
         WatchlistBox(
             list = fakeTickerListFirst(),
             onClickAdd = {},
-            onClickRemove = {}
+            onClickRemove = {},
+            onSelect = {}
         )
     }
 }

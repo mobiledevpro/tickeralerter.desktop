@@ -9,6 +9,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.mobiledevpro.chart.data.repository.ChartRepository
+import com.mobiledevpro.chart.data.repository.ImplChartRepository
 import com.mobiledevpro.common.domain.interactor.ImplMainScreenInteractor
 import com.mobiledevpro.common.domain.interactor.MainScreenInteractor
 import com.mobiledevpro.database.AppDatabase
@@ -37,9 +39,13 @@ fun App() {
 
     val httpClient: HttpClient = BinanceHTTPClientFactory.build()
     val socketClient: HttpClient = BinanceSocketClientFactory.build()
+
     val tickerRepository: TickerRepository = ImplTickerListRepository(database, httpClient)
     val watchlistRepository: WatchListRepository = ImplWatchListRepository(database, socketClient)
-    val mainInteractor: MainScreenInteractor = ImplMainScreenInteractor(tickerRepository, watchlistRepository)
+    val chartRepository: ChartRepository = ImplChartRepository(database, httpClient)
+
+    val mainInteractor: MainScreenInteractor =
+        ImplMainScreenInteractor(tickerRepository, watchlistRepository, chartRepository)
 
     val scope = rememberCoroutineScope()
     val viewModel = remember { MainScreenViewModel(scope, mainInteractor) }
@@ -50,9 +56,11 @@ fun App() {
             tradingLogState = viewModel.tradingLog,
             tickerListState = viewModel.tickerList,
             watchListState = viewModel.watchlist,
+            chartState = viewModel.chartCandleList,
             onAddToWatchList = viewModel::addToWatchlist,
             onRemoveFromWatchlist = viewModel::removeFromWatchlist,
-            onTickerListSearch = viewModel::tickerListSearch
+            onTickerListSearch = viewModel::tickerListSearch,
+            onSelectFromWatchlist = viewModel::selectFromWatchlist
         )
     }
 }

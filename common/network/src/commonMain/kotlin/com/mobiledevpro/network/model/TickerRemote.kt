@@ -1,4 +1,4 @@
-package com.mobiledevpro.common.data.remote.model
+package com.mobiledevpro.network.model
 
 import kotlinx.serialization.Serializable
 
