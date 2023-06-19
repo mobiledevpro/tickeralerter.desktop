@@ -56,7 +56,7 @@ fun App() {
             tradingLogState = viewModel.tradingLog,
             tickerListState = viewModel.tickerList,
             watchListState = viewModel.watchlist,
-            chartState = viewModel.chartCandleList,
+            chartState = viewModel.chart,
             onAddToWatchList = viewModel::addToWatchlist,
             onRemoveFromWatchlist = viewModel::removeFromWatchlist,
             onTickerListSearch = viewModel::tickerListSearch,

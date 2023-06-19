@@ -43,7 +43,7 @@ class ImplChartRepository(
                         .checkIsExist(candle.symbol, candle.timeFrame, candle.openTime)
                         .executeAsOne()
 
-                    println("Candle ${candle.openTime} exist $exist")
+                    println("Candle ${candle.openTime} | high ${candle.priceHigh} | low ${candle.priceLow} | open ${candle.priceOpen} | close ${candle.priceClose} exist $exist")
 
                     if (exist == 0L)
                         database.candleListQueries.insertItem(
