@@ -19,20 +19,34 @@ import kotlinx.serialization.json.Json
  */
 object BinanceSocketClientFactory {
 
-    fun build(): HttpClient =
+    fun build(isTestnet: Boolean): SocketClient =
         HttpClient(OkHttp) {
             install(WebSockets) {
                 this.pingInterval = 5000
             }
+            this.developmentMode = isTestnet
+        }.let { httpClient ->
+            SocketClient(httpClient, isTestnet)
         }
 
-    const val TEST_URL = "fstream.binance.com"
+    const val TEST_URL = "stream.binancefuture.com"
+    const val PROD_URL = "fstream.binance.com"
+}
+
+class SocketClient(
+    val httpClient: HttpClient,
+    val isTestNet: Boolean
+) {
+    fun url(): String = if (isTestNet)
+        BinanceSocketClientFactory.TEST_URL
+    else
+        BinanceSocketClientFactory.PROD_URL
 }
 
 val jsonFormat = Json { ignoreUnknownKeys = true }
 
-fun HttpClient.wsSubscribe(request: BinanceSocket.Request) = flow<Frame.Text> {
-    wss(host = BinanceSocketClientFactory.TEST_URL, path = "/ws") {
+fun SocketClient.wsSubscribe(request: BinanceSocket.Request) = flow<Frame.Text> {
+    httpClient.wss(host = url(), path = "/ws") {
         println("Send ${request.method}")
 
         Json.encodeToString(request)
@@ -57,8 +71,8 @@ fun HttpClient.wsSubscribe(request: BinanceSocket.Request) = flow<Frame.Text> {
 }.cancellable()
 
 
-fun HttpClient.wsUnsubscribe(request: BinanceSocket.Request) = flow<Frame.Text> {
-    wss(host = BinanceSocketClientFactory.TEST_URL, path = "/ws") {
+fun SocketClient.wsUnsubscribe(request: BinanceSocket.Request) = flow<Frame.Text> {
+    httpClient.wss(host = url(), path = "/ws") {
         println("Send ${request.method}")
 
         Json.encodeToString(request)

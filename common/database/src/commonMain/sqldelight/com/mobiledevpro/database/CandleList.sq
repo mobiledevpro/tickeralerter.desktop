@@ -27,4 +27,4 @@ deleteAllBySymbol:
 DELETE FROM candleEntry WHERE symbol = ?;
 
 checkIsExist:
-SELECT count() FROM candleEntry WHERE symbol = ? AND timeFrame = ? AND openTime = ?;
+SELECT count() FROM candleEntry WHERE symbol = ? AND timeFrame = ? AND openTime = ? AND closeTime = ?;

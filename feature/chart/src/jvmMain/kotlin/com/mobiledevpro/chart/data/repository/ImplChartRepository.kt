@@ -40,7 +40,7 @@ class ImplChartRepository(
                 entryList.forEach { candle ->
 
                     val exist = database.candleListQueries
-                        .checkIsExist(candle.symbol, candle.timeFrame, candle.openTime)
+                        .checkIsExist(candle.symbol, candle.timeFrame, candle.openTime, candle.closeTime)
                         .executeAsOne()
 
                     println("Candle ${candle.openTime} | high ${candle.priceHigh} | low ${candle.priceLow} | open ${candle.priceOpen} | close ${candle.priceClose} exist $exist")

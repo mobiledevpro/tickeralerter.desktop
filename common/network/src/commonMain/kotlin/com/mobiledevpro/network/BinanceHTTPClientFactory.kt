@@ -14,7 +14,7 @@ import kotlinx.serialization.json.Json
 
 object BinanceHTTPClientFactory {
 
-    fun build(): HttpClient = HttpClient(OkHttp) {
+    fun build(isTestNet: Boolean): HttpClient = HttpClient(OkHttp) {
         install(ContentNegotiation) {
             json(Json {
                 prettyPrint = true
@@ -51,17 +51,20 @@ object BinanceHTTPClientFactory {
         defaultRequest {
             url {
                 protocol = URLProtocol.HTTPS
-                host = TEST_URL
+                host = if (isTestNet) TEST_URL else PROD_URL
                 path("fapi/v1/")
             }
 
-            header("X-MBX-APIKEY", KEY)
+            header("X-MBX-APIKEY", if (isTestNet) TEST_KEY else PROD_KEY)
         }
     }
 
 
     const val TEST_URL = "testnet.binancefuture.com"
-    const val KEY = "a8ca86b682a36b97f7fe679d074c7e4e85495ca2f58d3c7c2870ffec77f85a4b"
+    const val PROD_URL = "fapi.binance.com"
+    const val TEST_KEY = "a8ca86b682a36b97f7fe679d074c7e4e85495ca2f58d3c7c2870ffec77f85a4b"
+    const val PROD_KEY = "l2UlS6ILK5iQuYA9EeIpzGV6Q7loLNaGpaktB42JWEbArQxvx2s9PDTFhAXMNgdr"
+
 
 }
 

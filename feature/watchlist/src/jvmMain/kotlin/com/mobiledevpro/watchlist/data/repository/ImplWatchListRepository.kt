@@ -6,11 +6,11 @@ import com.mobiledepro.main.domain.mapper.toSocketRequest
 import com.mobiledepro.main.domain.mapper.toWatchlistSymbol
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.WatchlistEntry
+import com.mobiledevpro.network.SocketClient
 import com.mobiledevpro.network.api.BinanceSocket
 import com.mobiledevpro.network.model.WatchlistSymbolRemote
 import com.mobiledevpro.network.wsSubscribe
 import com.mobiledevpro.network.wsUnsubscribe
-import io.ktor.client.*
 import io.ktor.websocket.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.map
 
 class ImplWatchListRepository(
     private val database: AppDatabase,
-    private val socketClient: HttpClient
+    private val socketClient: SocketClient
 ) : WatchListRepository {
 
     override fun getListLocal(): Flow<List<WatchlistEntry>> =

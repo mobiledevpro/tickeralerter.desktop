@@ -19,6 +19,7 @@ import com.mobiledevpro.feature.main.MainScreen
 import com.mobiledevpro.feature.main.MainScreenViewModel
 import com.mobiledevpro.network.BinanceHTTPClientFactory
 import com.mobiledevpro.network.BinanceSocketClientFactory
+import com.mobiledevpro.network.SocketClient
 import com.mobiledevpro.tickerlist.data.repository.ImplTickerListRepository
 import com.mobiledevpro.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.ui.Theme
@@ -34,11 +35,12 @@ fun App() {
     // val driver: SqlDriver = JdbcSqliteDriver(JdbcSqliteDriver.IN_MEMORY)
     // AppDatabase.Schema.create(driver)
 
+    val isTestnet = false //TODO: add switcher to UI
 
     val database = AppDatabase(DriverFactory().createDriver())
 
-    val httpClient: HttpClient = BinanceHTTPClientFactory.build()
-    val socketClient: HttpClient = BinanceSocketClientFactory.build()
+    val httpClient: HttpClient = BinanceHTTPClientFactory.build(isTestnet)
+    val socketClient: SocketClient = BinanceSocketClientFactory.build(isTestnet)
 
     val tickerRepository: TickerRepository = ImplTickerListRepository(database, httpClient)
     val watchlistRepository: WatchListRepository = ImplWatchListRepository(database, socketClient)
