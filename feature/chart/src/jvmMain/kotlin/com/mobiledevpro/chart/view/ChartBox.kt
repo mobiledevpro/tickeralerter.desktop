@@ -1,32 +1,31 @@
 package com.mobiledevpro.chart.view
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.mobiledepro.main.domain.model.Chart
-import com.mobiledevpro.ui.candleGreen
-import com.mobiledevpro.ui.candleRed
+import com.mobiledevpro.chart.view.ext.showChart
+import com.mobiledevpro.chart.view.ext.showEMALine
 import com.mobiledevpro.ui.component.WidgetBox
+import com.mobiledevpro.ui.ema200Color
+import com.mobiledevpro.ui.ema50Color
+import com.mobiledevpro.ui.negativeCandleColor
+import com.mobiledevpro.ui.positiveCandleColor
 
 @Composable
 fun ChartBox(chart: Chart, modifier: Modifier = Modifier) {
 
-    val candleRed: Color = MaterialTheme.colors.candleRed
-    val candleGreen: Color = MaterialTheme.colors.candleGreen
-
     val higherHighPrice = remember { mutableStateOf(0.0) }
     val lowerLowPrice = remember { mutableStateOf(0.0) }
-    val yPixelStep = remember { mutableStateOf(0.0) }
-    val xCandleWith = remember { mutableStateOf(0f) }
+    val pricePxFactor = remember { mutableStateOf(0.0) }
+    val candleWith = remember { mutableStateOf(0f) }
 
     WidgetBox(modifier = modifier) {
 
@@ -40,70 +39,48 @@ fun ChartBox(chart: Chart, modifier: Modifier = Modifier) {
             val ySize = size.height
 
             //Find price movement for 1 px
-            yPixelStep.value = higherHighPrice.value.minus(lowerLowPrice.value) / ySize
+            pricePxFactor.value = higherHighPrice.value.minus(lowerLowPrice.value) / ySize
 
             //Find candle width
-            xCandleWith.value = xSize / chart.candlesCount()
+            candleWith.value = xSize / chart.candlesCount()
 
             drawXAxis()
             drawYAxis()
         }
 
+        if (higherHighPrice.value == 0.0 || lowerLowPrice.value == 0.0) return@WidgetBox
+
         //Draw the chart
-        Spacer(modifier = Modifier.fillMaxSize().drawWithCache {
-            onDrawBehind {
-                chart.getLimitedCandleList().forEachIndexed { index, candle ->
-                    drawCandle(
-                        width = xCandleWith.value - 1, //1px for space between candles
-                        offsetX = (xCandleWith.value * index),
-                        lowY = (higherHighPrice.value.minus(candle.priceLow) / yPixelStep.value).toFloat(),
-                        highY = (higherHighPrice.value.minus(candle.priceHigh) / yPixelStep.value).toFloat(),
-                        openY = (higherHighPrice.value.minus(candle.priceOpen) / yPixelStep.value).toFloat(),
-                        closeY = (higherHighPrice.value.minus(candle.priceClose) / yPixelStep.value).toFloat(),
-                        color = if (candle.priceOpen < candle.priceClose) candleGreen else candleRed
-                    )
-                }
-            }
-        })
+        showChart(
+            candleList = chart.getLimitedCandleList(),
+            candleWidth = candleWith.value,
+            higherHighPrice = higherHighPrice.value,
+            pricePxFactor = pricePxFactor.value,
+            positiveCandleColor = MaterialTheme.colors.positiveCandleColor,
+            negativeCandleColor = MaterialTheme.colors.negativeCandleColor
+        )
 
-        /*
-        //Draw EMA
-        Spacer(modifier = Modifier.fillMaxSize().drawWithCache {
+        //Draw EMA 50
+        var emaPeriod = 50
+        showEMALine(
+            period = emaPeriod,
+            candleList = chart.candleList,
+            candleWidth = candleWith.value,
+            higherHighPrice = higherHighPrice.value,
+            pricePxFactor = pricePxFactor.value,
+            color = MaterialTheme.colors.ema50Color
+        )
 
-            val emaPoints : List<Double> = chart.calcEMA(50)
-
-            val path = Path()
-
-            emaPoints.forEach {price ->
-                val pointY
-
-            }
-            path.moveTo(0f, 0f)
-            path.lineTo(size.width / 2f, size.height / 2f)
-            path.lineTo(size.width, 0f)
-            path.close()
-
-            onDrawBehind {
-
-            }
-        })*/
-
-
-        /*
-                    chart.calcEMA(50)
-                        .also {
-                            drawEma(it)
-                        }
-
-         */
-
-
-        /*
-                    chart.calcEMA(200).forEach {
-                        println("EMA 200: $it ")
-                    }
-
-         */
+        //Draw EMA 200
+        emaPeriod = 200
+        showEMALine(
+            period = emaPeriod,
+            candleList = chart.candleList,
+            candleWidth = candleWith.value,
+            higherHighPrice = higherHighPrice.value,
+            pricePxFactor = pricePxFactor.value,
+            color = MaterialTheme.colors.ema200Color
+        )
 
     }
 
@@ -152,24 +129,3 @@ fun DrawScope.drawCandle(
         strokeWidth = width
     )
 }
-
-/*
-fun DrawScope.drawEma(points: List<Double>) {
-    Spacer(
-        modifier = Modifier
-            .drawWithCache {
-                val path = Path()
-                path.moveTo(0f, 0f)
-                path.lineTo(size.width / 2f, size.height / 2f)
-                path.lineTo(size.width, 0f)
-                path.close()
-                onDrawBehind {
-                    drawPath(path, Color.Magenta, style = Stroke(width = 10f))
-                }
-            }
-            .fillMaxSize()
-    )
-
-}
-
- */

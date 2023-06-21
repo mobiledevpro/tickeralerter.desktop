@@ -27,13 +27,17 @@ val Colors.backgroundTransparent: Color
     get() = Color(0xFF121212).copy(alpha = 0.7F)
 
 @get:Composable
-val Colors.candleGreen: Color
-    get() = Color(0xFF26A69A).copy(alpha = 0.9F)
+val Colors.positiveCandleColor: Color
+    get() = Color(0xFF26A69A)
 
 @get:Composable
-val Colors.candleGray: Color
+val Colors.negativeCandleColor: Color
     get() = Color(0xFF9598A2).copy(alpha = 0.9F)
 
 @get:Composable
-val Colors.candleRed: Color
-    get() = Color(0xFFF7525F).copy(alpha = 0.9F)
+val Colors.ema200Color: Color
+    get() = Color(0xFF1976D2).copy(alpha = 0.9F)
+
+@get:Composable
+val Colors.ema50Color: Color
+    get() = Color(0xFFFBC02D).copy(alpha = 0.9F)
