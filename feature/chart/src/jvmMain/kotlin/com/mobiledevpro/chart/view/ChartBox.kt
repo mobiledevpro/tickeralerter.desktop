@@ -4,53 +4,86 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.mobiledepro.main.domain.model.Chart
-import com.mobiledevpro.ui.candleGreen
-import com.mobiledevpro.ui.candleRed
+import com.mobiledevpro.chart.view.ext.showChart
+import com.mobiledevpro.chart.view.ext.showEMALine
 import com.mobiledevpro.ui.component.WidgetBox
+import com.mobiledevpro.ui.ema200Color
+import com.mobiledevpro.ui.ema50Color
+import com.mobiledevpro.ui.negativeCandleColor
+import com.mobiledevpro.ui.positiveCandleColor
 
 @Composable
 fun ChartBox(chart: Chart, modifier: Modifier = Modifier) {
 
-    val candleRed: Color = MaterialTheme.colors.candleRed
-    val candleGreen: Color = MaterialTheme.colors.candleGreen
+    val higherHighPrice = remember { mutableStateOf(0.0) }
+    val lowerLowPrice = remember { mutableStateOf(0.0) }
+    val pricePxFactor = remember { mutableStateOf(0.0) }
+    val candleWith = remember { mutableStateOf(0f) }
 
     WidgetBox(modifier = modifier) {
 
         Canvas(modifier = Modifier.fillMaxSize()) {
             println("Chart Canvas")
-            val higherHighPrice = chart.getHigherHighPrice()
-            val lowerLowPrice = chart.getLowerLowPrice()
+
+            higherHighPrice.value = chart.getHigherHighPrice()
+            lowerLowPrice.value = chart.getLowerLowPrice()
 
             val xSize = size.width
             val ySize = size.height
 
             //Find price movement for 1 px
-            val yPixelStep: Double = higherHighPrice.minus(lowerLowPrice) / ySize
+            pricePxFactor.value = higherHighPrice.value.minus(lowerLowPrice.value) / ySize
+
             //Find candle width
-            val xCandleWith: Float = xSize / chart.candlesCount()
+            candleWith.value = xSize / chart.candlesCount()
 
             drawXAxis()
             drawYAxis()
-
-            chart.candleList.forEachIndexed { index, candle ->
-                drawCandle(
-                    width = xCandleWith - 1, //1px for space between candles
-                    offsetX = (xCandleWith * index),
-                    lowY = (higherHighPrice.minus(candle.priceLow) / yPixelStep).toFloat(),
-                    highY = (higherHighPrice.minus(candle.priceHigh) / yPixelStep).toFloat(),
-                    openY = (higherHighPrice.minus(candle.priceOpen) / yPixelStep).toFloat(),
-                    closeY = (higherHighPrice.minus(candle.priceClose) / yPixelStep).toFloat(),
-                    color = if (candle.priceOpen < candle.priceClose) candleGreen else candleRed
-                )
-            }
         }
 
+        if (higherHighPrice.value == 0.0 || lowerLowPrice.value == 0.0) return@WidgetBox
+
+        //Draw the chart
+        showChart(
+            candleList = chart.getLimitedCandleList(),
+            candleWidth = candleWith.value,
+            higherHighPrice = higherHighPrice.value,
+            pricePxFactor = pricePxFactor.value,
+            positiveCandleColor = MaterialTheme.colors.positiveCandleColor,
+            negativeCandleColor = MaterialTheme.colors.negativeCandleColor
+        )
+
+        //Draw EMA 50
+        var emaPeriod = 50
+        showEMALine(
+            period = emaPeriod,
+            candleList = chart.candleList,
+            candleWidth = candleWith.value,
+            higherHighPrice = higherHighPrice.value,
+            pricePxFactor = pricePxFactor.value,
+            color = MaterialTheme.colors.ema50Color
+        )
+
+        //Draw EMA 200
+        emaPeriod = 200
+        showEMALine(
+            period = emaPeriod,
+            candleList = chart.candleList,
+            candleWidth = candleWith.value,
+            higherHighPrice = higherHighPrice.value,
+            pricePxFactor = pricePxFactor.value,
+            color = MaterialTheme.colors.ema200Color
+        )
+
     }
+
 }
 
 fun DrawScope.drawXAxis() {

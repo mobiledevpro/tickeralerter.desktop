@@ -81,6 +81,6 @@ suspend fun HttpClient.getChart(symbol: String, timeFrame: String): HttpResponse
         url {
             parameters.append("symbol", symbol)
             parameters.append("interval", timeFrame)
-            parameters.append("limit", "200")
+            parameters.append("limit", "400")
         }
     }
