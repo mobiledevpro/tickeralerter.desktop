@@ -8,6 +8,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
@@ -20,7 +21,7 @@ fun WidgetBox(
     Card(
         shape = RoundedCornerShape(16.dp),
         backgroundColor = backgroundColor,
-        modifier = modifier.padding(16.dp)
+        modifier = Modifier.padding(8.dp).composed { modifier }
     ) {
         Box(modifier = Modifier.padding(16.dp)) {
             content()

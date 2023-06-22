@@ -11,6 +11,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import com.mobiledepro.main.domain.model.Chart
+import com.mobiledepro.main.domain.model.ChartSettings
 import com.mobiledevpro.chart.view.ext.showChart
 import com.mobiledevpro.chart.view.ext.showEMALine
 import com.mobiledevpro.ui.component.WidgetBox
@@ -20,7 +21,7 @@ import com.mobiledevpro.ui.negativeCandleColor
 import com.mobiledevpro.ui.positiveCandleColor
 
 @Composable
-fun ChartBox(chart: Chart, modifier: Modifier = Modifier) {
+fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Modifier) {
 
     val higherHighPrice = remember { mutableStateOf(0.0) }
     val lowerLowPrice = remember { mutableStateOf(0.0) }
@@ -60,27 +61,28 @@ fun ChartBox(chart: Chart, modifier: Modifier = Modifier) {
             negativeCandleColor = MaterialTheme.colors.negativeCandleColor
         )
 
-        //Draw EMA 50
-        var emaPeriod = 50
-        showEMALine(
-            period = emaPeriod,
-            candleList = chart.candleList,
-            candleWidth = candleWith.value,
-            higherHighPrice = higherHighPrice.value,
-            pricePxFactor = pricePxFactor.value,
-            color = MaterialTheme.colors.ema50Color
-        )
 
+        if (chartSettings.ema50)
+        //Draw EMA 50
+            showEMALine(
+                period = 50,
+                candleList = chart.candleList,
+                candleWidth = candleWith.value,
+                higherHighPrice = higherHighPrice.value,
+                pricePxFactor = pricePxFactor.value,
+                color = MaterialTheme.colors.ema50Color
+            )
+
+        if (chartSettings.ema200)
         //Draw EMA 200
-        emaPeriod = 200
-        showEMALine(
-            period = emaPeriod,
-            candleList = chart.candleList,
-            candleWidth = candleWith.value,
-            higherHighPrice = higherHighPrice.value,
-            pricePxFactor = pricePxFactor.value,
-            color = MaterialTheme.colors.ema200Color
-        )
+            showEMALine(
+                period = 200,
+                candleList = chart.candleList,
+                candleWidth = candleWith.value,
+                higherHighPrice = higherHighPrice.value,
+                pricePxFactor = pricePxFactor.value,
+                color = MaterialTheme.colors.ema200Color
+            )
 
     }
 

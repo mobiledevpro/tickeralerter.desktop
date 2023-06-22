@@ -11,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Chart
+import com.mobiledepro.main.domain.model.ChartSettings
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.chart.view.ChartBox
+import com.mobiledevpro.chart.view.ChartSettingsBox
 import com.mobiledevpro.common.util.timeToString
 import com.mobiledevpro.feature.tradinglog.TradingLogBox
 import com.mobiledevpro.tickerlist.view.TickerListSurface
@@ -43,9 +45,10 @@ fun MainScreen(
     println("Time state $serverTime")
 
     val tickerListDialogVisible = remember { mutableStateOf(false) }
+    val chartSetting = remember { mutableStateOf(ChartSettings()) }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize().padding(8.dp)) {
             Row(modifier = Modifier.padding(bottom = 24.dp)) {
                 WatchlistBox(
                     list = watchList,
@@ -56,7 +59,7 @@ fun MainScreen(
                     onSelect = onSelectFromWatchlist,
                     modifier = Modifier
                         .fillMaxHeight()
-                        .widthIn(min = 400.dp, max = 450.dp)
+                        .widthIn(min = 400.dp, max = 420.dp)
                 )
 
                 Column(
@@ -65,17 +68,30 @@ fun MainScreen(
 
                     ChartBox(
                         chart = chart,
+                        chartSettings = chartSetting.value,
                         modifier = Modifier
                             .fillMaxHeight(0.7f)
                             .fillMaxWidth()
                     )
 
-                    TradingLogBox(
-                        tradingLog,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth()
-                    )
+                    Row {
+                        ChartSettingsBox(
+                            settings = chartSetting.value,
+                            onChangeSettings = { settings ->
+                                chartSetting.value = settings
+                            },
+                            modifier = Modifier.fillMaxWidth(0.3f).fillMaxHeight()
+                        )
+
+                        TradingLogBox(
+                            tradingLog,
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .fillMaxWidth()
+                        )
+
+                    }
+
 
                 }
             }
