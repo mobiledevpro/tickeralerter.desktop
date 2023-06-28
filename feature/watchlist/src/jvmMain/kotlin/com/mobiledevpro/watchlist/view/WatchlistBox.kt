@@ -26,7 +26,7 @@ fun WatchlistBox(
     onClickRemove: (Ticker) -> Unit,
     onSelect: (Ticker) -> Unit
 ) {
-    println("Show Watchlist")
+
     WidgetBox(modifier = modifier) {
         Column {
             Row(

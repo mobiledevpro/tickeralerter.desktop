@@ -29,36 +29,46 @@ fun ChartSettingsBox(
             )
             Divider(thickness = 1.dp)
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "EMA 50", style = MaterialTheme.typography.button)
+            IndicatorSwitcher(
+                text = "EMA 50",
+                isChecked = settings.ema50,
+                onChanged = { isOn ->
+                    settings.apply { ema50 = isOn }.also(onChangeSettings)
+                }
+            )
 
-                Switch(
-                    checked = settings.ema50,
-                    onCheckedChange = { isOn ->
-                        settings.apply { ema50 = isOn }.also(onChangeSettings)
-                    }
-                )
-            }
+            IndicatorSwitcher(
+                text = "EMA 200",
+                isChecked = settings.ema200,
+                onChanged = { isOn ->
+                    settings.apply { ema200 = isOn }.also(onChangeSettings)
+                }
+            )
 
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(text = "EMA 200", style = MaterialTheme.typography.button)
-
-                Switch(
-                    checked = settings.ema200,
-                    onCheckedChange = { isOn ->
-                        settings.apply { ema200 = isOn }.also(onChangeSettings)
-                    }
-                )
-            }
+            IndicatorSwitcher(
+                text = "EMA Ribbon",
+                isChecked = settings.emaRibbon,
+                onChanged = { isOn ->
+                    settings.apply { emaRibbon = isOn }.also(onChangeSettings)
+                }
+            )
         }
 
+    }
+}
+
+@Composable
+fun IndicatorSwitcher(text: String, isChecked: Boolean, onChanged: (Boolean) -> Unit) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text(text = text, style = MaterialTheme.typography.button)
+
+        Switch(
+            checked = isChecked,
+            onCheckedChange = onChanged
+        )
     }
 }
