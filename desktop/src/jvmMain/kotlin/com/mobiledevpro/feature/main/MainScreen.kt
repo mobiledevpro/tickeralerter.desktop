@@ -42,8 +42,6 @@ fun MainScreen(
     val serverTime by serverTimeState.collectAsState()
     val chart by chartState.collectAsState()
 
-    println("Time state $serverTime")
-
     val tickerListDialogVisible = remember { mutableStateOf(false) }
     val chartSetting = remember { mutableStateOf(ChartSettings()) }
 

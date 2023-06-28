@@ -5,11 +5,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.PointMode
+import androidx.compose.ui.graphics.StrokeCap
 import com.mobiledepro.main.domain.model.Candle
-import com.mobiledepro.main.domain.model.calcEMA
 import com.mobiledevpro.chart.view.drawCandle
 
 @Composable
@@ -40,34 +41,36 @@ fun showChart(
 
 @Composable
 fun showEMALine(
-    period: Int,
-    candleList: List<Candle>,
+    chartSize: Size,
+    emaPricePoints: List<Double>,
     candleWidth: Float,
     higherHighPrice: Double,
     pricePxFactor: Double,
-    color: Color
+    color: Color,
+    modifier: Modifier
 ) {
-    Spacer(modifier = Modifier.fillMaxSize().drawWithCache {
+    Spacer(modifier = modifier.drawWithCache {
 
-        val emaPoints: List<Double> = candleList.calcEMA(period)
+        val points = ArrayList<Offset>()
 
-        val path = Path()
-        var xPoint = 0f
-        var yPoint = 0f
+        emaPricePoints.forEachIndexed { index, price ->
+            val xPoint = (candleWidth * index) + candleWidth / 2
+            val yPoint = ((higherHighPrice - price) / pricePxFactor).toFloat()
 
-        emaPoints.forEachIndexed { index, price ->
-            //println("Draw EMA 50: [$index] $price")
-            xPoint = (candleWidth * index) + candleWidth / 2
-            yPoint = ((higherHighPrice - price) / pricePxFactor).toFloat()
-
-            if (index == 0)
-                path.moveTo(xPoint, yPoint)
-
-            path.lineTo(xPoint, yPoint)
+            //Don't draw outside the chart box
+            if (xPoint <= chartSize.width && yPoint <= chartSize.height)
+                Offset(x = xPoint, y = yPoint)
+                    .also(points::add)
         }
 
         onDrawWithContent {
-            drawPath(path, color, style = Stroke(width = 1f))
+            drawPoints(
+                points = points,
+                pointMode = PointMode.Polygon,
+                color = color,
+                cap = StrokeCap.Round,
+                strokeWidth = 1f
+            )
         }
     })
 }

@@ -10,7 +10,6 @@ import com.mobiledevpro.ui.component.WidgetBox
 
 @Composable
 fun TradingLogBox(log: List<String>, modifier: Modifier = Modifier) {
-    println("log")
 
     WidgetBox(modifier = modifier) {
         LazyColumn {
