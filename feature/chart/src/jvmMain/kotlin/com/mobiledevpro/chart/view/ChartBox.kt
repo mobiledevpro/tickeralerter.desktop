@@ -6,7 +6,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -25,8 +24,6 @@ import com.mobiledevpro.ui.positiveCandleColor
 
 @Composable
 fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Modifier) {
-
-    val coroutineScope = rememberCoroutineScope()
 
     val higherHighPrice = remember { mutableStateOf(0.0) }
     val lowerLowPrice = remember { mutableStateOf(0.0) }
@@ -67,8 +64,8 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
         )
 
 
-        if (chartSettings.ema50)
         //Draw EMA 50
+        if (chartSettings.ema50)
             showEMALine(
                 chartSize = chartSize.value,
                 emaPricePoints = chart.candleList.toEMAPrice(50),
@@ -79,8 +76,8 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
                 modifier = Modifier.fillMaxSize()
             )
 
-        if (chartSettings.ema200)
         //Draw EMA 200
+        if (chartSettings.ema200)
             showEMALine(
                 chartSize = chartSize.value,
                 emaPricePoints = chart.candleList.toEMAPrice(200),
@@ -90,6 +87,20 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
                 color = MaterialTheme.colors.ema200Color,
                 modifier = Modifier.fillMaxSize()
             )
+
+        //Draw EMA Ribbon lines
+        if (chartSettings.emaRibbon)
+            chartSettings.getRibbonMap().forEach { (period: Int, lineColor: Color) ->
+                showEMALine(
+                    chartSize = chartSize.value,
+                    emaPricePoints = chart.candleList.toEMAPrice(period),
+                    candleWidth = candleWith.value,
+                    higherHighPrice = higherHighPrice.value,
+                    pricePxFactor = pricePxFactor.value,
+                    color = lineColor,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
 
     }
 
