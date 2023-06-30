@@ -4,11 +4,16 @@
 
 ### Roadmap
 
-* [ ] Connect to Binance API WebSocket
+* [x] Connect to Binance API WebSocket
 * [x] Getting all available tickers from API
-* [ ] Subscribe to all tickers to getting update from WebSocket
-* [ ] On selecting ticker in UI get historical data and save it into local database
-* [ ] Draw chart by historical data
+* [x] Subscribe to tickers to getting update from WebSocket
+* [x] On selecting ticker in UI get historical data and save it into local database
+* [x] Draw chart by historical data
+* [ ] Simple alerts by price change (crossing, crossing up, crossing down)
+* [ ] EMA Ribbon strategy for Alerts
+* [ ] Real-time Chart by selected timeframe
+* [ ] Timeframe picker for Chart (5m, 15m, 30m, 1h, 4h, 1d, 1m)
+* [ ] Backtesting for selected period (date from - date to)
 * [ ] Think about strategy RSI + MACD ?
 * [ ] Calculate RSI and display for selected ticker
 * [ ] Calculate MACD
