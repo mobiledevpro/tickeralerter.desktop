@@ -10,9 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mobiledepro.main.domain.model.Chart
-import com.mobiledepro.main.domain.model.ChartSettings
-import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledepro.main.domain.model.*
 import com.mobiledevpro.alert.settings.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
@@ -30,6 +28,8 @@ fun MainScreen(
     tickerListState: StateFlow<List<Ticker>>,
     watchListState: StateFlow<List<Ticker>>,
     chartState: StateFlow<Chart>,
+    alertTriggerListState: StateFlow<List<AlertTrigger>>,
+    alertEventListState: StateFlow<List<AlertEvent>>,
     onAddToWatchList: (Ticker) -> Unit,
     onRemoveFromWatchlist: (Ticker) -> Unit,
     onSelectFromWatchlist: (Ticker) -> Unit,
@@ -41,6 +41,8 @@ fun MainScreen(
     val tradingLog by tradingLogState.collectAsState()
     val serverTime by serverTimeState.collectAsState()
     val chart by chartState.collectAsState()
+    val alertTriggers by alertTriggerListState.collectAsState()
+    val alertEvents by alertEventListState.collectAsState()
 
     val tickerListDialogVisible = remember { mutableStateOf(false) }
     val chartSetting = remember { mutableStateOf(ChartSettings()) }
@@ -66,6 +68,8 @@ fun MainScreen(
 
 
                     AlertsBox(
+                        alertTriggerList = alertTriggers,
+                        alertEventList = alertEvents,
                         modifier = Modifier
                             .fillMaxHeight()
                             .fillMaxWidth(),

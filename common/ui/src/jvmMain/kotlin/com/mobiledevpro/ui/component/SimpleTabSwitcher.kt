@@ -51,7 +51,7 @@ fun SimpleTabSwitcher(tabs: List<SimpleTab>, selectedTab: SimpleTab, onTabSelect
 @Composable
 internal fun SimpleTabBox(text: String, selected: Boolean, modifier: Modifier) {
     val backColor: Color = if (selected)
-        MaterialTheme.colors.accent.copy(alpha = 0.2f)
+        MaterialTheme.colors.accent.copy(alpha = 0.5f)
     else
         Color.Transparent
 

@@ -12,6 +12,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.mobiledepro.main.domain.model.AlertEvent
+import com.mobiledepro.main.domain.model.AlertTrigger
+import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.component.SimpleTab
 import com.mobiledevpro.ui.component.SimpleTabSwitcher
@@ -20,6 +23,8 @@ import com.mobiledevpro.ui.component.WidgetBox
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AlertsBox(
+    alertTriggerList: List<AlertTrigger>,
+    alertEventList: List<AlertEvent>,
     modifier: Modifier = Modifier,
     onClickAdd: () -> Unit
 ) {
@@ -64,6 +69,8 @@ fun AlertsBox(
 fun AlertsBoxPreview() {
     Theme {
         AlertsBox(
+            alertTriggerList = fakeAlertTriggersList(),
+            alertEventList = emptyList(),
             modifier = Modifier.fillMaxWidth(),
             onClickAdd = {}
         )
