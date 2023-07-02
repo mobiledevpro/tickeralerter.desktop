@@ -62,7 +62,7 @@ fun TriggerListItem(
                 )
                 Text(
                     text = if (item.active) "Active" else "Paused",
-                    style = MaterialTheme.typography.caption.copy(color = statusColor),
+                    style = MaterialTheme.typography.caption.copy(color = statusColor)
                 )
             }
 

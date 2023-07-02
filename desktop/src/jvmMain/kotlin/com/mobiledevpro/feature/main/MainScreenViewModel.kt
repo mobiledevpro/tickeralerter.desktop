@@ -147,6 +147,9 @@ class MainScreenViewModel(
             }
 
         //Alert events list
+        fakeAlertEventsList().let { list ->
+            _alertEventList.update { list }
+        }
 
         //TODO: Show new alerts as pop-up somehow
     }

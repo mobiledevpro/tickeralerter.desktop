@@ -20,7 +20,11 @@ import com.mobiledevpro.ui.accent
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SimpleTabSwitcher(tabs: List<SimpleTab>, selectedTab: SimpleTab, onTabSelected: (SimpleTab) -> Unit) {
+fun SimpleTabSwitcher(
+    tabs: List<SimpleTab>,
+    selectedTab: SimpleTab,
+    onTabSelected: (SimpleTab) -> Unit
+) {
     Box(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(16.dp))
