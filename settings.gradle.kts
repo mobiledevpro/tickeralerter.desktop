@@ -28,5 +28,6 @@ include(
     ":desktop",
     ":feature:tickerlist",
     ":feature:watchlist",
-    ":feature:chart"
+    ":feature:chart",
+    ":feature:alert_settings"
 )

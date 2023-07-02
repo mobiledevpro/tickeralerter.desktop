@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.ChartSettings
 import com.mobiledevpro.ui.component.WidgetBox
+import com.mobiledevpro.ui.white
 
 @Composable
 fun ChartSettingsBox(
@@ -64,7 +65,7 @@ fun IndicatorSwitcher(text: String, isChecked: Boolean, onChanged: (Boolean) -> 
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(text = text, style = MaterialTheme.typography.button)
+        Text(text = text, style = MaterialTheme.typography.button.copy(color = MaterialTheme.colors.white))
 
         Switch(
             checked = isChecked,

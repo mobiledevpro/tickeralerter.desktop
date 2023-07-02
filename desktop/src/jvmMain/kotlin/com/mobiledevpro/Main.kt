@@ -59,6 +59,8 @@ fun App() {
             tickerListState = viewModel.tickerList,
             watchListState = viewModel.watchlist,
             chartState = viewModel.chart,
+            alertTriggerListState = viewModel.alertTriggerList,
+            alertEventListState = viewModel.alertEventList,
             onAddToWatchList = viewModel::addToWatchlist,
             onRemoveFromWatchlist = viewModel::removeFromWatchlist,
             onTickerListSearch = viewModel::tickerListSearch,

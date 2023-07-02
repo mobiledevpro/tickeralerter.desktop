@@ -1,13 +1,12 @@
 package com.mobiledevpro.watchlist.view
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.view.ext.getPriceColor
+import com.mobiledevpro.ui.component.RemoveIconButton
 import com.mobiledevpro.ui.white
 
 
@@ -51,7 +51,7 @@ fun WatchlistItem(ticker: Ticker, onRemove: () -> Unit, onSelect: () -> Unit) {
             modifier = Modifier.width(80.dp)
         )
 
-        RemoveButton(
+        RemoveIconButton(
             onClick = onRemove
         )
 
@@ -74,16 +74,3 @@ fun TickerText(
     )
 }
 
-@Composable
-fun RemoveButton(onClick: () -> Unit) {
-    IconButton(
-        onClick = onClick,
-        modifier = Modifier.padding(start = 16.dp).size(16.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.Close,
-            contentDescription = null,
-            tint = MaterialTheme.colors.onSurface.copy(alpha = 0.3F)
-        )
-    }
-}

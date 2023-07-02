@@ -21,6 +21,10 @@ val Colors.white: Color
 val Colors.accent: Color
     get() = Color(0x9903DAC6)
 
+@get:Composable
+val Colors.orange: Color
+    get() = Color(0x99FF9800)
+
 
 @get:Composable
 val Colors.backgroundTransparent: Color

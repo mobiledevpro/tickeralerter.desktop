@@ -1,7 +1,6 @@
 package com.mobiledevpro.feature.main
 
-import com.mobiledepro.main.domain.model.Chart
-import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledepro.main.domain.model.*
 import com.mobiledevpro.common.domain.interactor.MainScreenInteractor
 import io.ktor.utils.io.*
 import kotlinx.coroutines.CoroutineScope
@@ -31,11 +30,18 @@ class MainScreenViewModel(
     private val _serverTime = MutableStateFlow(0L)
     val serverTime: StateFlow<Long> = _serverTime
 
+    private val _alertTriggerList = MutableStateFlow<List<AlertTrigger>>(emptyList())
+    val alertTriggerList: StateFlow<List<AlertTrigger>> = _alertTriggerList.asStateFlow()
+
+    private val _alertEventList = MutableStateFlow<List<AlertEvent>>(emptyList())
+    val alertEventList: StateFlow<List<AlertEvent>> = _alertEventList.asStateFlow()
+
     init {
         observeNetworkConnection()
         // observeLog()
         observeWatchlist()
         observeTickerList()
+        observeAlerts()
     }
 
     fun addToWatchlist(ticker: Ticker) {
@@ -131,6 +137,21 @@ class MainScreenViewModel(
                 println("observeChartCandleList: ERROR ${e.printStack()}")
             }
         }
+    }
+
+    private fun observeAlerts() {
+        //Alert triggers list
+        fakeAlertTriggersList()
+            .let { list ->
+                _alertTriggerList.update { list }
+            }
+
+        //Alert events list
+        fakeAlertEventsList().let { list ->
+            _alertEventList.update { list }
+        }
+
+        //TODO: Show new alerts as pop-up somehow
     }
 
     @OptIn(ObsoleteCoroutinesApi::class)

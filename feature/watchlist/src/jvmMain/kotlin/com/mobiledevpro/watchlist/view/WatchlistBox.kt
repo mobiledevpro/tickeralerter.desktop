@@ -52,7 +52,7 @@ fun WatchlistBox(
             ) {
                 RowTitle("Symbol", modifier = Modifier.width(100.dp))
                 RowTitle("Last", textAlign = TextAlign.End, modifier = Modifier.width(80.dp))
-                RowTitle("Chg", textAlign = TextAlign.End, modifier = Modifier.width(80.dp))
+                RowTitle("24h Chg", textAlign = TextAlign.End, modifier = Modifier.width(80.dp))
                 RowTitle("Chg %", textAlign = TextAlign.End, modifier = Modifier.width(80.dp))
                 RowTitle("", modifier = Modifier.width(80.dp))
             }
