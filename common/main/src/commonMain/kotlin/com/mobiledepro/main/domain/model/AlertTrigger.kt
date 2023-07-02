@@ -57,7 +57,7 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
             conditionType = ConditionType.CROSSING,
             conditionTarget = ConditionTarget.EMA_50
         ),
-        active = true
+        active = false
     ),
     AlertTrigger(
         1688182800000,

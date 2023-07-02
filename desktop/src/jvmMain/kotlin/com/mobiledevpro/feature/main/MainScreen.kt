@@ -16,7 +16,7 @@ import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
 import com.mobiledevpro.common.util.timeToString
 import com.mobiledevpro.tickerlist.view.TickerListSurface
-import com.mobiledevpro.ui.lightGreen
+import com.mobiledevpro.ui.positiveCandleColor
 import com.mobiledevpro.ui.red
 import com.mobiledevpro.watchlist.view.WatchlistBox
 import kotlinx.coroutines.flow.StateFlow
@@ -48,7 +48,7 @@ fun MainScreen(
     val chartSetting = remember { mutableStateOf(ChartSettings()) }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-        Box(modifier = Modifier.fillMaxSize().padding(8.dp)) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
                     .padding(bottom = 24.dp)
@@ -109,7 +109,12 @@ fun MainScreen(
             /*Online status*/
             Box(
                 modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(20.dp)
-                    .background(color = if (serverTime > 0) MaterialTheme.colors.lightGreen else MaterialTheme.colors.red)
+                    .background(
+                        color = if (serverTime > 0)
+                            MaterialTheme.colors.positiveCandleColor.copy(alpha = 0.5f)
+                        else
+                            MaterialTheme.colors.red
+                    )
             ) {
                 Text(
                     text = if (serverTime > 0) "Online" else "Offline",

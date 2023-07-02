@@ -3,6 +3,8 @@ package com.mobiledevpro.alert.settings.view
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -58,8 +60,39 @@ fun AlertsBox(
             )
 
             Divider(thickness = 1.dp, modifier = Modifier.padding(top = 4.dp))
+
+            when (selectedTab.value) {
+                SimpleTab.ALL -> TriggerList(alertTriggerList)
+                SimpleTab.LOG -> EventList(alertEventList)
+            }
+
         }
 
+    }
+}
+
+@Composable
+fun TriggerList(list: List<AlertTrigger>) {
+    LazyColumn {
+        items(list) { trigger ->
+            TriggerListItem(
+                item = trigger,
+                onPause = {},
+                onChange = {},
+                onRemove = {}
+            )
+        }
+    }
+}
+
+@Composable
+fun EventList(list: List<AlertEvent>) {
+    LazyColumn {
+        items(list) { event ->
+            EventListItem(
+                item = event
+            )
+        }
     }
 }
 
