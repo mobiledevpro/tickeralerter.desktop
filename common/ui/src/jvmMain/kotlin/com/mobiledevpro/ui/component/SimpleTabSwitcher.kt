@@ -23,13 +23,13 @@ import com.mobiledevpro.ui.accent
 fun SimpleTabSwitcher(
     tabs: List<SimpleTab>,
     selectedTab: SimpleTab,
-    onTabSelected: (SimpleTab) -> Unit
+    onTabSelected: (SimpleTab) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(shape = RoundedCornerShape(16.dp))
             .background(color = MaterialTheme.colors.onSurface.copy(alpha = 0.05f))
-            .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier

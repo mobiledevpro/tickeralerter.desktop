@@ -19,7 +19,7 @@ import com.mobiledevpro.ui.accent
 import com.mobiledevpro.ui.white
 
 @Composable
-fun TickerItem(ticker: Ticker, onClickAdd: () -> Unit, onClickRemove: () -> Unit) {
+internal fun TickerItem(ticker: Ticker, onClickAdd: () -> Unit, onClickRemove: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,

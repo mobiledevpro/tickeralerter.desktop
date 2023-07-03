@@ -60,7 +60,6 @@ fun AlertsBox(
                 selectedTab = selectedTab.value,
                 onTabSelected = { tab ->
                     selectedTab.value = tab
-
                 }
             )
 

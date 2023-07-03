@@ -11,11 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.*
+import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
 import com.mobiledevpro.alert.settings.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
 import com.mobiledevpro.common.util.timeToString
-import com.mobiledevpro.tickerlist.view.TickerListSurface
+import com.mobiledevpro.tickerlist.view.TickerListDialog
 import com.mobiledevpro.ui.positiveCandleColor
 import com.mobiledevpro.ui.red
 import com.mobiledevpro.watchlist.view.WatchlistBox
@@ -44,7 +45,8 @@ fun MainScreen(
     val alertTriggers by alertTriggerListState.collectAsState()
     val alertEvents by alertEventListState.collectAsState()
 
-    val tickerListDialogVisible = remember { mutableStateOf(false) }
+    val addToWatchlistDialogVisible = remember { mutableStateOf(false) }
+    val addToAlertsDialogVisible = remember { mutableStateOf(false) }
     val chartSetting = remember { mutableStateOf(ChartSettings()) }
 
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
@@ -57,7 +59,7 @@ fun MainScreen(
                     WatchlistBox(
                         list = watchList,
                         onClickAdd = {
-                            tickerListDialogVisible.value = true
+                            addToWatchlistDialogVisible.value = true
                         },
                         onClickRemove = onRemoveFromWatchlist,
                         onSelect = onSelectFromWatchlist,
@@ -73,7 +75,9 @@ fun MainScreen(
                         modifier = Modifier
                             .fillMaxHeight()
                             .fillMaxWidth(),
-                        onClickAdd = { /*Show dialog to add new alert*/ }
+                        onClickAdd = {
+                            addToAlertsDialogVisible.value = true
+                        }
                     )
                 }
 
@@ -135,8 +139,8 @@ fun MainScreen(
         }
 
         //Show a dialog to add tickers to watchlist
-        if (tickerListDialogVisible.value)
-            TickerListSurface(
+        if (addToWatchlistDialogVisible.value)
+            TickerListDialog(
                 list = tickerList,
                 onAdd = onAddToWatchList,
                 onRemove = onRemoveFromWatchlist,
@@ -144,8 +148,17 @@ fun MainScreen(
                 onClose = {
                     //clear ticker list search
                     onTickerListSearch("")
-                    tickerListDialogVisible.value = false
+                    addToWatchlistDialogVisible.value = false
                 }
             )
+
+        //Show a dialog to add/update alerts
+        if (addToAlertsDialogVisible.value)
+            AlertSettingsDialog(
+                onClose = {
+                    addToAlertsDialogVisible.value = false
+                }
+            )
+
     }
 }
