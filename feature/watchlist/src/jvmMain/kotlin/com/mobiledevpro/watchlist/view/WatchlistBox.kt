@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.domain.model.fakeTickerListFirst
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.WidgetBox
 
 
@@ -27,11 +28,13 @@ fun WatchlistBox(
     onSelect: (Ticker) -> Unit
 ) {
 
+    val modifierListItem = Modifier.height(32.dp)
+
     WidgetBox(modifier = modifier) {
         Column {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifierMaxWidth
             ) {
                 Text(
                     text = "Watchlist",
@@ -48,7 +51,7 @@ fun WatchlistBox(
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifierMaxWidth
             ) {
                 RowTitle("Symbol", modifier = Modifier.width(100.dp))
                 RowTitle("Last", textAlign = TextAlign.End, modifier = Modifier.width(80.dp))
@@ -62,6 +65,7 @@ fun WatchlistBox(
             LazyColumn {
                 items(list) { ticker ->
                     WatchlistItem(
+                        modifier = modifierListItem,
                         ticker = ticker,
                         onRemove = { onClickRemove(ticker) },
                         onSelect = { onSelect(ticker) }

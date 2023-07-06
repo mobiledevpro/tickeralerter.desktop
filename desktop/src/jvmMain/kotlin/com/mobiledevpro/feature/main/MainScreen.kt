@@ -1,24 +1,22 @@
 package com.mobiledevpro.feature.main
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.*
 import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
 import com.mobiledevpro.alert.settings.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
-import com.mobiledevpro.common.util.timeToString
+import com.mobiledevpro.feature.main.component.OnlineStatus
 import com.mobiledevpro.tickerlist.view.TickerListDialog
-import com.mobiledevpro.ui.positiveCandleColor
-import com.mobiledevpro.ui.red
+import com.mobiledevpro.ui.common.modifierMaxHeight
+import com.mobiledevpro.ui.common.modifierMaxSize
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.watchlist.view.WatchlistBox
 import kotlinx.coroutines.flow.StateFlow
 
@@ -36,7 +34,6 @@ fun MainScreen(
     onSelectFromWatchlist: (Ticker) -> Unit,
     onTickerListSearch: (String) -> Unit
 ) {
-
     val watchList by watchListState.collectAsState()
     val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
@@ -49,8 +46,11 @@ fun MainScreen(
     val addToAlertsDialogVisible = remember { mutableStateOf(false) }
     val chartSetting = remember { mutableStateOf(ChartSettings()) }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-        Box(modifier = Modifier.fillMaxSize()) {
+    Surface(
+        modifier = modifierMaxSize,
+        color = MaterialTheme.colors.background
+    ) {
+        Box(modifier = modifierMaxSize) {
             Row(
                 modifier = Modifier
                     .padding(bottom = 24.dp)
@@ -63,18 +63,15 @@ fun MainScreen(
                         },
                         onClickRemove = onRemoveFromWatchlist,
                         onSelect = onSelectFromWatchlist,
-                        modifier = Modifier
+                        modifier = modifierMaxWidth
                             .fillMaxHeight(0.5f)
-                            .fillMaxWidth()
                     )
 
 
                     AlertsBox(
                         alertTriggerList = alertTriggers,
                         alertEventList = alertEvents,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(),
+                        modifier = modifierMaxSize,
                         onClickAdd = {
                             addToAlertsDialogVisible.value = true
                         }
@@ -82,15 +79,14 @@ fun MainScreen(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = modifierMaxSize
                 ) {
 
                     ChartBox(
                         chart = chart,
                         chartSettings = chartSetting.value,
-                        modifier = Modifier
+                        modifier = modifierMaxWidth
                             .fillMaxHeight(0.7f)
-                            .fillMaxWidth()
                     )
 
                     Row {
@@ -99,7 +95,7 @@ fun MainScreen(
                             onChangeSettings = { settings ->
                                 chartSetting.value = settings
                             },
-                            modifier = Modifier.widthIn(max = 250.dp).fillMaxHeight()
+                            modifier = modifierMaxHeight.widthIn(max = 250.dp)
                         )
 
                         //trading bot box here
@@ -111,30 +107,12 @@ fun MainScreen(
             }
 
             /*Online status*/
-            Box(
-                modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(20.dp)
-                    .background(
-                        color = if (serverTime > 0)
-                            MaterialTheme.colors.positiveCandleColor.copy(alpha = 0.5f)
-                        else
-                            MaterialTheme.colors.red
-                    )
-            ) {
-                Text(
-                    text = if (serverTime > 0) "Online" else "Offline",
-                    style = MaterialTheme.typography.body2,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                if (serverTime > 0)
-                    Text(
-                        text = "Server time: ${serverTime.timeToString()}",
-                        style = MaterialTheme.typography.body2,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-                    )
-            }
+            OnlineStatus(
+                modifier = modifierMaxWidth
+                    .align(Alignment.BottomCenter)
+                    .height(20.dp),
+                serverTime = serverTime
+            )
 
         }
 

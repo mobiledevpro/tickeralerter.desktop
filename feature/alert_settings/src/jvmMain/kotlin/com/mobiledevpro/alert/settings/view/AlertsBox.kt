@@ -22,6 +22,8 @@ import com.mobiledepro.main.domain.model.AlertEvent
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.ui.common.modifierMaxSize
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.SimpleTab
 import com.mobiledevpro.ui.component.SimpleTabSwitcher
 import com.mobiledevpro.ui.component.WidgetBox
@@ -41,7 +43,7 @@ fun AlertsBox(
         Column {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifierMaxWidth
             ) {
                 Text(
                     text = "Alerts",
@@ -111,7 +113,7 @@ fun EventList(list: List<AlertEvent>) {
 
 @Composable
 fun NoEventsBox() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(modifier = modifierMaxSize, contentAlignment = Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -129,7 +131,7 @@ fun NoEventsBox() {
 
 @Composable
 fun NoTriggersBox() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(modifier = modifierMaxSize, contentAlignment = Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -153,7 +155,7 @@ fun AlertsBoxPreview() {
         AlertsBox(
             alertTriggerList = fakeAlertTriggersList(),
             alertEventList = emptyList(),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifierMaxWidth,
             onClickAdd = {}
         )
     }

@@ -3,7 +3,6 @@ package com.mobiledevpro.watchlist.view
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -20,9 +19,9 @@ import com.mobiledevpro.ui.white
 
 
 @Composable
-fun WatchlistItem(ticker: Ticker, onRemove: () -> Unit, onSelect: () -> Unit) {
+fun WatchlistItem(modifier: Modifier, ticker: Ticker, onRemove: () -> Unit, onSelect: () -> Unit) {
     Row(
-        modifier = Modifier.height(32.dp).clickable {
+        modifier = modifier.clickable {
             onSelect()
         },
         horizontalArrangement = Arrangement.SpaceEvenly,

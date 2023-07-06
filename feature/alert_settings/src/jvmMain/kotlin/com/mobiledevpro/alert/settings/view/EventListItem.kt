@@ -1,7 +1,6 @@
 package com.mobiledevpro.alert.settings.view
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
@@ -11,16 +10,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.AlertEvent
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.white
 
 @Composable
 fun EventListItem(item: AlertEvent) {
     //Text
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifierMaxWidth
     ) {
 
-        Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+        Column(modifier = modifierMaxWidth.padding(vertical = 4.dp)) {
             Text(
                 text = item.message,
                 style = MaterialTheme.typography.body2.copy(color = MaterialTheme.colors.white),

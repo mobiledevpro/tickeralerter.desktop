@@ -1,6 +1,9 @@
 package com.mobiledevpro.tickerlist.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -11,25 +14,28 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.TickerSearchBar
 import com.mobiledevpro.ui.component.WidgetBox
 
 
 @Composable
 internal fun TickerListBox(
-    list: List<Ticker>,
     modifier: Modifier = Modifier,
+    list: List<Ticker>,
     onClickAdd: (Ticker) -> Unit,
     onClickRemove: (Ticker) -> Unit,
     onClickClose: () -> Unit,
     onSearchChanged: (String) -> Unit
 ) {
 
+    val modifierListItem = modifierMaxWidth
+
     WidgetBox(modifier = modifier) {
         Column {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifierMaxWidth
             ) {
                 Text(
                     text = "Add Ticker",
@@ -47,12 +53,13 @@ internal fun TickerListBox(
 
             TickerSearchBar(
                 onSearchChange = onSearchChanged,
-                modifier = Modifier.fillMaxWidth().padding(all = 8.dp)
+                modifier = modifierMaxWidth.padding(all = 8.dp)
             )
 
             LazyColumn {
                 items(list) { ticker ->
                     TickerItem(
+                        modifier = modifierListItem,
                         ticker = ticker,
                         onClickAdd = { onClickAdd(ticker) },
                         onClickRemove = { onClickRemove(ticker) }

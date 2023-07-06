@@ -2,7 +2,6 @@ package com.mobiledevpro.tickerlist.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -19,11 +18,11 @@ import com.mobiledevpro.ui.accent
 import com.mobiledevpro.ui.white
 
 @Composable
-internal fun TickerItem(ticker: Ticker, onClickAdd: () -> Unit, onClickRemove: () -> Unit) {
+internal fun TickerItem(modifier: Modifier, ticker: Ticker, onClickAdd: () -> Unit, onClickRemove: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     ) {
         TickerText(
             value = ticker.symbol,

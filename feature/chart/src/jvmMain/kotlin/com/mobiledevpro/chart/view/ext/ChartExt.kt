@@ -1,7 +1,6 @@
 package com.mobiledevpro.chart.view.ext
 
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -20,9 +19,10 @@ fun showChart(
     higherHighPrice: Double,
     pricePxFactor: Double,
     positiveCandleColor: Color,
-    negativeCandleColor: Color
+    negativeCandleColor: Color,
+    modifier: Modifier,
 ) {
-    Spacer(modifier = Modifier.fillMaxSize().drawWithCache {
+    Spacer(modifier = modifier.drawWithCache {
         onDrawBehind {
             candleList.forEachIndexed { index, candle ->
                 drawCandle(

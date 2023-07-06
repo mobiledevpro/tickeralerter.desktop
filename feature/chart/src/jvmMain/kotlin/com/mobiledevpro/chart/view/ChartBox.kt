@@ -1,7 +1,6 @@
 package com.mobiledevpro.chart.view
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +15,7 @@ import com.mobiledepro.main.domain.model.ChartSettings
 import com.mobiledepro.main.domain.model.toEMAPrice
 import com.mobiledevpro.chart.view.ext.showChart
 import com.mobiledevpro.chart.view.ext.showEMALine
+import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.component.WidgetBox
 import com.mobiledevpro.ui.ema200Color
 import com.mobiledevpro.ui.ema50Color
@@ -33,7 +33,7 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
 
     WidgetBox(modifier = modifier) {
 
-        Canvas(modifier = Modifier.fillMaxSize()) {
+        Canvas(modifier = modifierMaxSize) {
             println("Chart Canvas")
 
             higherHighPrice.value = chart.getHigherHighPrice()
@@ -60,7 +60,8 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
             higherHighPrice = higherHighPrice.value,
             pricePxFactor = pricePxFactor.value,
             positiveCandleColor = MaterialTheme.colors.positiveCandleColor,
-            negativeCandleColor = MaterialTheme.colors.negativeCandleColor
+            negativeCandleColor = MaterialTheme.colors.negativeCandleColor,
+            modifier = modifierMaxSize,
         )
 
 
@@ -73,7 +74,7 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
                 higherHighPrice = higherHighPrice.value,
                 pricePxFactor = pricePxFactor.value,
                 color = MaterialTheme.colors.ema50Color,
-                modifier = Modifier.fillMaxSize()
+                modifier = modifierMaxSize
             )
 
         //Draw EMA 200
@@ -85,7 +86,7 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
                 higherHighPrice = higherHighPrice.value,
                 pricePxFactor = pricePxFactor.value,
                 color = MaterialTheme.colors.ema200Color,
-                modifier = Modifier.fillMaxSize()
+                modifier = modifierMaxSize
             )
 
         //Draw EMA Ribbon lines
@@ -98,7 +99,7 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
                     higherHighPrice = higherHighPrice.value,
                     pricePxFactor = pricePxFactor.value,
                     color = lineColor,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = modifierMaxSize
                 )
             }
 

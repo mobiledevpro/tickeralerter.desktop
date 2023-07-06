@@ -1,6 +1,9 @@
 package com.mobiledevpro.alert.settings.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -9,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.AlertTrigger
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.WidgetBox
 
 @Composable
@@ -20,7 +24,7 @@ internal fun AlertSettingsBox(modifier: Modifier = Modifier, alertTrigger: Alert
         Column {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifierMaxWidth
             ) {
                 Text(
                     text = if (isEdit) "Edit Alert" else "Add Alert",
