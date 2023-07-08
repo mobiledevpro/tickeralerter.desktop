@@ -2,9 +2,7 @@ package com.mobiledevpro.chart.view
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -25,40 +23,40 @@ import com.mobiledevpro.ui.positiveCandleColor
 @Composable
 fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Modifier) {
 
-    val higherHighPrice = remember { mutableStateOf(0.0) }
-    val lowerLowPrice = remember { mutableStateOf(0.0) }
-    val pricePxFactor = remember { mutableStateOf(0.0) }
-    val candleWith = remember { mutableStateOf(0f) }
-    val chartSize = remember { mutableStateOf(Size(0f, 0f)) }
+    var higherHighPrice by remember { mutableStateOf(0.0) }
+    var lowerLowPrice by remember { mutableStateOf(0.0) }
+    var pricePxFactor by remember { mutableStateOf(0.0) }
+    var candleWith by remember { mutableStateOf(0f) }
+    var chartSize by remember { mutableStateOf(Size(0f, 0f)) }
 
     WidgetBox(modifier = modifier) {
 
         Canvas(modifier = modifierMaxSize) {
             println("Chart Canvas")
 
-            higherHighPrice.value = chart.getHigherHighPrice()
-            lowerLowPrice.value = chart.getLowerLowPrice()
+            higherHighPrice = chart.getHigherHighPrice()
+            lowerLowPrice = chart.getLowerLowPrice()
 
-            chartSize.value = size
+            chartSize = size
 
             //Find price movement for 1 px
-            pricePxFactor.value = higherHighPrice.value.minus(lowerLowPrice.value) / size.height
+            pricePxFactor = higherHighPrice.minus(lowerLowPrice) / size.height
 
             //Find candle width
-            candleWith.value = size.width / chart.candlesCount()
+            candleWith = size.width / chart.candlesCount()
 
             drawXAxis(size)
             drawYAxis(size)
         }
 
-        if (higherHighPrice.value == 0.0 || lowerLowPrice.value == 0.0) return@WidgetBox
+        if (higherHighPrice == 0.0 || lowerLowPrice == 0.0) return@WidgetBox
 
         //Draw the chart
         showChart(
             candleList = chart.getLimitedCandleList(),
-            candleWidth = candleWith.value,
-            higherHighPrice = higherHighPrice.value,
-            pricePxFactor = pricePxFactor.value,
+            candleWidth = candleWith,
+            higherHighPrice = higherHighPrice,
+            pricePxFactor = pricePxFactor,
             positiveCandleColor = MaterialTheme.colors.positiveCandleColor,
             negativeCandleColor = MaterialTheme.colors.negativeCandleColor,
             modifier = modifierMaxSize,
@@ -68,11 +66,11 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
         //Draw EMA 50
         if (chartSettings.ema50)
             showEMALine(
-                chartSize = chartSize.value,
+                chartSize = chartSize,
                 emaPricePoints = chart.candleList.toEMAPrice(50),
-                candleWidth = candleWith.value,
-                higherHighPrice = higherHighPrice.value,
-                pricePxFactor = pricePxFactor.value,
+                candleWidth = candleWith,
+                higherHighPrice = higherHighPrice,
+                pricePxFactor = pricePxFactor,
                 color = MaterialTheme.colors.ema50Color,
                 modifier = modifierMaxSize
             )
@@ -80,11 +78,11 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
         //Draw EMA 200
         if (chartSettings.ema200)
             showEMALine(
-                chartSize = chartSize.value,
+                chartSize = chartSize,
                 emaPricePoints = chart.candleList.toEMAPrice(200),
-                candleWidth = candleWith.value,
-                higherHighPrice = higherHighPrice.value,
-                pricePxFactor = pricePxFactor.value,
+                candleWidth = candleWith,
+                higherHighPrice = higherHighPrice,
+                pricePxFactor = pricePxFactor,
                 color = MaterialTheme.colors.ema200Color,
                 modifier = modifierMaxSize
             )
@@ -93,11 +91,11 @@ fun ChartBox(chart: Chart, chartSettings: ChartSettings, modifier: Modifier = Mo
         if (chartSettings.emaRibbon)
             chartSettings.getRibbonMap().forEach { (period: Int, lineColor: Color) ->
                 showEMALine(
-                    chartSize = chartSize.value,
+                    chartSize = chartSize,
                     emaPricePoints = chart.candleList.toEMAPrice(period),
-                    candleWidth = candleWith.value,
-                    higherHighPrice = higherHighPrice.value,
-                    pricePxFactor = pricePxFactor.value,
+                    candleWidth = candleWith,
+                    higherHighPrice = higherHighPrice,
+                    pricePxFactor = pricePxFactor,
                     color = lineColor,
                     modifier = modifierMaxSize
                 )

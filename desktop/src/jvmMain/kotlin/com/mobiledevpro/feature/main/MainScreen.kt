@@ -42,9 +42,9 @@ fun MainScreen(
     val alertTriggers by alertTriggerListState.collectAsState()
     val alertEvents by alertEventListState.collectAsState()
 
-    val addToWatchlistDialogVisible = remember { mutableStateOf(false) }
-    val addToAlertsDialogVisible = remember { mutableStateOf(false) }
-    val chartSetting = remember { mutableStateOf(ChartSettings()) }
+    var addToWatchlistDialogVisible by remember { mutableStateOf(false) }
+    var addToAlertsDialogVisible by remember { mutableStateOf(false) }
+    var chartSetting by remember { mutableStateOf(ChartSettings()) }
 
     Surface(
         modifier = modifierMaxSize,
@@ -59,7 +59,7 @@ fun MainScreen(
                     WatchlistBox(
                         list = watchList,
                         onClickAdd = {
-                            addToWatchlistDialogVisible.value = true
+                            addToWatchlistDialogVisible = true
                         },
                         onClickRemove = onRemoveFromWatchlist,
                         onSelect = onSelectFromWatchlist,
@@ -73,7 +73,7 @@ fun MainScreen(
                         alertEventList = alertEvents,
                         modifier = modifierMaxSize,
                         onClickAdd = {
-                            addToAlertsDialogVisible.value = true
+                            addToAlertsDialogVisible = true
                         }
                     )
                 }
@@ -84,16 +84,16 @@ fun MainScreen(
 
                     ChartBox(
                         chart = chart,
-                        chartSettings = chartSetting.value,
+                        chartSettings = chartSetting,
                         modifier = modifierMaxWidth
                             .fillMaxHeight(0.7f)
                     )
 
                     Row {
                         ChartSettingsBox(
-                            settings = chartSetting.value,
+                            settings = chartSetting,
                             onChangeSettings = { settings ->
-                                chartSetting.value = settings
+                                chartSetting = settings
                             },
                             modifier = modifierMaxHeight.widthIn(max = 250.dp)
                         )
@@ -117,7 +117,7 @@ fun MainScreen(
         }
 
         //Show a dialog to add tickers to watchlist
-        if (addToWatchlistDialogVisible.value)
+        if (addToWatchlistDialogVisible)
             TickerListDialog(
                 list = tickerList,
                 onAdd = onAddToWatchList,
@@ -126,16 +126,20 @@ fun MainScreen(
                 onClose = {
                     //clear ticker list search
                     onTickerListSearch("")
-                    addToWatchlistDialogVisible.value = false
+                    addToWatchlistDialogVisible = false
                 }
             )
 
         //Show a dialog to add/update alerts
-        if (addToAlertsDialogVisible.value)
+        if (addToAlertsDialogVisible)
             AlertSettingsDialog(
                 onClose = {
-                    addToAlertsDialogVisible.value = false
-                }
+                    addToAlertsDialogVisible = false
+                },
+                onSave = {
+
+                },
+                watchList = watchList
             )
 
     }

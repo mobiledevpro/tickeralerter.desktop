@@ -38,7 +38,7 @@ fun SimpleTabSwitcher(
 
             tabs.forEach { tab ->
                 SimpleTabBox(
-                    text = tab.name.lowercase().replaceFirstChar { it.uppercase() },
+                    text = tab.toStr(),
                     selected = tab == selectedTab,
                     modifier = Modifier
                         .weight(1f)
@@ -78,5 +78,15 @@ internal fun SimpleTabBox(text: String, selected: Boolean, modifier: Modifier) {
 
 enum class SimpleTab {
     ALL,
-    LOG
+    LOG,
+    ONLY_ONCE,
+    EVERY_TIME
+}
+
+fun SimpleTab.toStr() = when (this) {
+    SimpleTab.ALL -> "All"
+    SimpleTab.LOG -> "Log"
+    SimpleTab.ONLY_ONCE -> "Only Once"
+    SimpleTab.EVERY_TIME -> "Every Time"
+
 }

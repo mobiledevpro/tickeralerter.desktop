@@ -11,9 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddAlert
 import androidx.compose.material.icons.filled.Alarm
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -37,7 +35,7 @@ fun AlertsBox(
     modifier: Modifier = Modifier,
     onClickAdd: () -> Unit
 ) {
-    val selectedTab = remember { mutableStateOf(SimpleTab.ALL) }
+    var selectedTab by remember { mutableStateOf(SimpleTab.ALL) }
 
     WidgetBox(modifier = modifier) {
         Column {
@@ -59,15 +57,15 @@ fun AlertsBox(
 
             SimpleTabSwitcher(
                 tabs = listOf(SimpleTab.ALL, SimpleTab.LOG),
-                selectedTab = selectedTab.value,
+                selectedTab = selectedTab,
                 onTabSelected = { tab ->
-                    selectedTab.value = tab
+                    selectedTab = tab
                 }
             )
 
             Divider(thickness = 1.dp, modifier = Modifier.padding(top = 4.dp))
 
-            when (selectedTab.value) {
+            when (selectedTab) {
                 SimpleTab.ALL ->
                     if (alertTriggerList.isEmpty())
                         NoTriggersBox()
@@ -79,6 +77,8 @@ fun AlertsBox(
                         NoEventsBox()
                     else
                         EventList(alertEventList)
+
+                else -> {}
             }
 
         }
