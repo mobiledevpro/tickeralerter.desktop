@@ -9,8 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mobiledepro.main.domain.model.AlertTrigger
-import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledepro.main.domain.model.*
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.SelectValueField
@@ -23,6 +22,8 @@ import com.mobiledevpro.ui.defaults.Defaults
 internal fun AlertSettingsBox(
     modifier: Modifier = Modifier,
     alertTrigger: AlertTrigger?,
+    alertCondition: AlertCondition,
+    onUpdate: (AlertCondition) -> Unit,
     onClickClose: () -> Unit,
     onClickSave: () -> Unit,
     watchList: List<Ticker>
@@ -35,7 +36,14 @@ internal fun AlertSettingsBox(
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
             Header(edit = isEdit, onClose = onClickClose)
-            ConditionRules(tickerList = watchList)
+            ConditionRules(
+                tickerList = watchList,
+                alertCondition = alertCondition,
+                onChange = { changedAlertCondition ->
+                    println("alert condition on change ")
+                    onUpdate(changedAlertCondition)
+                }
+            )
             Divider(thickness = 1.dp, modifier = Modifier.padding(vertical = 8.dp))
 
             TriggerRules(
@@ -49,7 +57,8 @@ internal fun AlertSettingsBox(
             Button(
                 modifier = Modifier.width(Defaults.Button.Large.Width),
                 onClick = onClickSave,
-                colors = Defaults.ButtonColors(false)
+                colors = Defaults.ButtonColors(false),
+                shape = Defaults.Button.Large.Shape
             ) {
                 Text(
                     text = "Save",
@@ -84,21 +93,53 @@ fun Header(edit: Boolean, onClose: () -> Unit) {
 }
 
 @Composable
-fun ConditionRules(tickerList: List<Ticker>) {
+fun ConditionRules(tickerList: List<Ticker>, alertCondition: AlertCondition, onChange: (AlertCondition) -> Unit) {
+    println("::condition rules")
+
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
         TextLabel("Condition")
 
         Column(modifier = modifierMaxWidth.weight(0.7f)) {
+            //Symbol
             SelectValueField(
                 modifier = modifierMaxWidth,
+                defaultValue = alertCondition.symbol,
                 valueList = tickerList.mapTo(ArrayList<String>()) { it.symbol },
-                onSelect = {})
+                onSelect = { symbol ->
+                    alertCondition.apply {
+                        this.symbol = symbol
+                    }.also(onChange)
+                }
+            )
 
-            SelectValueField(modifier = modifierMaxWidth, listOf("Crossing"), onSelect = {})
+            //Condition type
+            SelectValueField(modifier = modifierMaxWidth, valueList = conditionTypeList(), onSelect = { conditionType ->
+                alertCondition.apply {
+                    this.conditionType = conditionType.toConditionType()
+                }.also(onChange)
+            })
 
+            //Condition target
             Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifierMaxWidth) {
-                SelectValueField(modifier = modifierMaxWidth.weight(1f), listOf("Price"), onSelect = {})
-                SelectValueField(modifier = modifierMaxWidth.weight(1f), listOf("31,000"), onSelect = {})
+                SelectValueField(
+                    modifier = modifierMaxWidth.weight(1f),
+                    defaultValue = alertCondition.conditionTarget.toStr(),
+                    valueList = conditionTargetList(),
+                    onSelect = { conditionTarget ->
+                        alertCondition.apply {
+                            this.conditionTarget = conditionTarget.toConditionTarget()
+                        }.also(onChange)
+                    })
+
+
+
+                if (alertCondition.conditionTarget == ConditionTarget.PRICE)
+                    SelectValueField(
+                        modifier = modifierMaxWidth.weight(1f),
+                        defaultValue = tickerList.find { it.symbol == alertCondition.symbol }?.lastPrice.toString(),
+                        valueList = emptyList(),
+                        onSelect = {}
+                    )
             }
         }
 
@@ -138,10 +179,12 @@ fun TriggerRules(selectedTrigger: SimpleTab, onSelectTrigger: (SimpleTab) -> Uni
 fun RowScope.TextLabel(text: String) {
     Text(
         text = text,
+        color = Defaults.TextField.TextColorInactive,
+        fontSize = Defaults.TextField.FontSize,
         modifier = Modifier.weight(0.3F)
             .padding(8.dp)
             .fillMaxWidth()
-            .height(Defaults.TextFieldHeight),
+            .height(Defaults.TextFieldHeight)
     )
 }
 
@@ -150,8 +193,10 @@ fun RowScope.TextLabel(text: String) {
 fun AlertSettingsBoxPreview() {
     Theme {
         AlertSettingsDialog(
+            alertCondition = AlertCondition("BTCUSDT"),
             onClose = {},
             onSave = {},
+            onUpdate = {},
             watchList = emptyList()
         )
     }

@@ -37,11 +37,14 @@ object Defaults {
         val CursorColor: Color @Composable get() = MaterialTheme.colors.accent
         val Shape = RoundedCornerShape(TextFieldCornerSize)
         val TextColor: Color @Composable get() = MaterialTheme.colors.onSurface.copy(alpha = 0.8f)
+        val TextColorInactive: Color @Composable get() = MaterialTheme.colors.onSurface.copy(alpha = 0.5f)
+        val FontSize = 14.sp
     }
 
     object Button {
         object Large {
             val Width = 144.dp
+            val Shape = RoundedCornerShape(16.dp)
         }
     }
 }

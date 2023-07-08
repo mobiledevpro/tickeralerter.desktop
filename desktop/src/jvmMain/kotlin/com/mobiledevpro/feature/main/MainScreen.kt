@@ -29,10 +29,13 @@ fun MainScreen(
     chartState: StateFlow<Chart>,
     alertTriggerListState: StateFlow<List<AlertTrigger>>,
     alertEventListState: StateFlow<List<AlertEvent>>,
+    alertSettingsUIState: StateFlow<AlertSettingsUIState>,
     onAddToWatchList: (Ticker) -> Unit,
     onRemoveFromWatchlist: (Ticker) -> Unit,
     onSelectFromWatchlist: (Ticker) -> Unit,
-    onTickerListSearch: (String) -> Unit
+    onTickerListSearch: (String) -> Unit,
+    onAlertConditionUpdate: (AlertCondition) -> Unit,
+    onAlertConditionSave: () -> Unit,
 ) {
     val watchList by watchListState.collectAsState()
     val tickerList by tickerListState.collectAsState()
@@ -41,10 +44,13 @@ fun MainScreen(
     val chart by chartState.collectAsState()
     val alertTriggers by alertTriggerListState.collectAsState()
     val alertEvents by alertEventListState.collectAsState()
+    val alertSettingsState by alertSettingsUIState.collectAsState()
 
     var addToWatchlistDialogVisible by remember { mutableStateOf(false) }
     var addToAlertsDialogVisible by remember { mutableStateOf(false) }
     var chartSetting by remember { mutableStateOf(ChartSettings()) }
+
+    println(":collect as state: ")
 
     Surface(
         modifier = modifierMaxSize,
@@ -133,13 +139,13 @@ fun MainScreen(
         //Show a dialog to add/update alerts
         if (addToAlertsDialogVisible)
             AlertSettingsDialog(
+                alertCondition = (alertSettingsState as AlertSettingsUIState.Success).alertCondition,
                 onClose = {
                     addToAlertsDialogVisible = false
                 },
-                onSave = {
-
-                },
-                watchList = fakeTickerListFirst()
+                onSave = onAlertConditionSave,
+                onUpdate = onAlertConditionUpdate,
+                watchList = watchList//fakeTickerListFirst()
             )
 
     }

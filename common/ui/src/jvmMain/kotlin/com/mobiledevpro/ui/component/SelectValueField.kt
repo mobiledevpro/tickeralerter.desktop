@@ -20,6 +20,7 @@ import com.mobiledevpro.ui.white
 @Composable
 fun SelectValueField(
     modifier: Modifier,
+    defaultValue: String? = null,
     valueList: List<String>,
     hint: String = "",
     onSelect: (value: String) -> Unit
@@ -29,7 +30,7 @@ fun SelectValueField(
 
     var menuExpanded by remember { mutableStateOf(false) }
     var menuWidth by remember { mutableStateOf(0.dp) }
-    var selectedValue by remember { mutableStateOf(valueList[0]) }
+    var selectedValue by remember { mutableStateOf(defaultValue ?: valueList[0]) }
 
     val isMenuAvailable = valueList.size > 1
 

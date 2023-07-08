@@ -30,7 +30,8 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
             conditionSource = ConditionSource.TICKER_PRICE,
             conditionType = ConditionType.CROSSING_UP,
             conditionTarget = ConditionTarget.PRICE,
-            targetValue = 33_000.00
+            targetValue = 33_000.00,
+            symbol = "BTCUSDT"
         ),
         active = true
     ),
@@ -43,7 +44,8 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
             conditionSource = ConditionSource.TICKER_PRICE,
             conditionType = ConditionType.CROSSING_DOWN,
             conditionTarget = ConditionTarget.PRICE,
-            targetValue = 1_900.00
+            targetValue = 1_900.00,
+            symbol = "ETHUSDT"
         ),
         active = true
     ),
@@ -55,7 +57,8 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
         AlertCondition(
             conditionSource = ConditionSource.EMA_200,
             conditionType = ConditionType.CROSSING,
-            conditionTarget = ConditionTarget.EMA_50
+            conditionTarget = ConditionTarget.EMA_50,
+            symbol = "AAVEUSDT"
         ),
         active = false
     ),
@@ -66,7 +69,8 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
         AlertCondition(
             conditionSource = ConditionSource.TICKER_PRICE,
             conditionType = ConditionType.CROSSING_DOWN,
-            conditionTarget = ConditionTarget.EMA_RIBBON
+            conditionTarget = ConditionTarget.EMA_RIBBON,
+            symbol = "WOOUSDT"
         ),
         active = true
     )

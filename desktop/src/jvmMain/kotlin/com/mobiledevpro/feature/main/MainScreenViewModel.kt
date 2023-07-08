@@ -36,6 +36,9 @@ class MainScreenViewModel(
     private val _alertEventList = MutableStateFlow<List<AlertEvent>>(emptyList())
     val alertEventList: StateFlow<List<AlertEvent>> = _alertEventList.asStateFlow()
 
+    private val _alertSettingsUIState = MutableStateFlow(AlertSettingsUIState.Success(AlertCondition("BTCUSDT")))
+    val alertSettingsUIState: StateFlow<AlertSettingsUIState> = _alertSettingsUIState.asStateFlow()
+
     init {
         observeNetworkConnection()
         // observeLog()
@@ -67,6 +70,16 @@ class MainScreenViewModel(
 
     fun selectFromWatchlist(ticker: Ticker) {
         observeChartCandleList(ticker)
+    }
+
+    fun updateAlertCondition(alertCondition: AlertCondition) {
+
+        _alertSettingsUIState.value = AlertSettingsUIState.Success(alertCondition)
+        println("::updateAlertCondition")
+    }
+
+    fun saveAlertCondition() {
+        //TODO: update existing or add a new one
     }
 
     private fun observeLog() {
