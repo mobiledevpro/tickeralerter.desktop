@@ -2,10 +2,8 @@ package com.mobiledevpro.tickerlist.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,15 +13,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
-import com.mobiledevpro.ui.accent
+import com.mobiledevpro.ui.defaults.Defaults
 import com.mobiledevpro.ui.white
 
 @Composable
-fun TickerItem(ticker: Ticker, onClickAdd: () -> Unit, onClickRemove: () -> Unit) {
+internal fun TickerItem(modifier: Modifier, ticker: Ticker, onClickAdd: () -> Unit, onClickRemove: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier
     ) {
         TickerText(
             value = ticker.symbol,
@@ -41,13 +39,7 @@ fun TickerItem(ticker: Ticker, onClickAdd: () -> Unit, onClickRemove: () -> Unit
 
         Button(
             onClick = if (ticker.selected) onClickRemove else onClickAdd,
-            colors = ButtonDefaults.buttonColors(
-                contentColor = MaterialTheme.colors.white,
-                backgroundColor = if (ticker.selected)
-                    MaterialTheme.colors.surface
-                else
-                    MaterialTheme.colors.accent
-            )
+            colors = Defaults.ButtonColors(ticker.selected)
         ) {
             Text(
                 text = if (ticker.selected) "Del" else "Add",

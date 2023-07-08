@@ -11,9 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddAlert
 import androidx.compose.material.icons.filled.Alarm
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -22,6 +20,8 @@ import com.mobiledepro.main.domain.model.AlertEvent
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.ui.common.modifierMaxSize
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.SimpleTab
 import com.mobiledevpro.ui.component.SimpleTabSwitcher
 import com.mobiledevpro.ui.component.WidgetBox
@@ -35,13 +35,13 @@ fun AlertsBox(
     modifier: Modifier = Modifier,
     onClickAdd: () -> Unit
 ) {
-    val selectedTab = remember { mutableStateOf(SimpleTab.ALL) }
+    var selectedTab by remember { mutableStateOf(SimpleTab.ALL) }
 
     WidgetBox(modifier = modifier) {
         Column {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+                modifier = modifierMaxWidth
             ) {
                 Text(
                     text = "Alerts",
@@ -57,16 +57,15 @@ fun AlertsBox(
 
             SimpleTabSwitcher(
                 tabs = listOf(SimpleTab.ALL, SimpleTab.LOG),
-                selectedTab = selectedTab.value,
+                selectedTab = selectedTab,
                 onTabSelected = { tab ->
-                    selectedTab.value = tab
-
+                    selectedTab = tab
                 }
             )
 
             Divider(thickness = 1.dp, modifier = Modifier.padding(top = 4.dp))
 
-            when (selectedTab.value) {
+            when (selectedTab) {
                 SimpleTab.ALL ->
                     if (alertTriggerList.isEmpty())
                         NoTriggersBox()
@@ -78,6 +77,8 @@ fun AlertsBox(
                         NoEventsBox()
                     else
                         EventList(alertEventList)
+
+                else -> {}
             }
 
         }
@@ -112,7 +113,7 @@ fun EventList(list: List<AlertEvent>) {
 
 @Composable
 fun NoEventsBox() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(modifier = modifierMaxSize, contentAlignment = Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -130,7 +131,7 @@ fun NoEventsBox() {
 
 @Composable
 fun NoTriggersBox() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(modifier = modifierMaxSize, contentAlignment = Alignment.Center) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -154,7 +155,7 @@ fun AlertsBoxPreview() {
         AlertsBox(
             alertTriggerList = fakeAlertTriggersList(),
             alertEventList = emptyList(),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifierMaxWidth,
             onClickAdd = {}
         )
     }

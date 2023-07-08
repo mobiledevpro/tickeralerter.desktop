@@ -1,23 +1,22 @@
 package com.mobiledevpro.feature.main
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.*
+import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
 import com.mobiledevpro.alert.settings.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
-import com.mobiledevpro.common.util.timeToString
-import com.mobiledevpro.tickerlist.view.TickerListSurface
-import com.mobiledevpro.ui.positiveCandleColor
-import com.mobiledevpro.ui.red
+import com.mobiledevpro.feature.main.component.OnlineStatus
+import com.mobiledevpro.tickerlist.view.TickerListDialog
+import com.mobiledevpro.ui.common.modifierMaxHeight
+import com.mobiledevpro.ui.common.modifierMaxSize
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.watchlist.view.WatchlistBox
 import kotlinx.coroutines.flow.StateFlow
 
@@ -30,12 +29,14 @@ fun MainScreen(
     chartState: StateFlow<Chart>,
     alertTriggerListState: StateFlow<List<AlertTrigger>>,
     alertEventListState: StateFlow<List<AlertEvent>>,
+    alertSettingsUIState: StateFlow<AlertSettingsUIState>,
     onAddToWatchList: (Ticker) -> Unit,
     onRemoveFromWatchlist: (Ticker) -> Unit,
     onSelectFromWatchlist: (Ticker) -> Unit,
-    onTickerListSearch: (String) -> Unit
+    onTickerListSearch: (String) -> Unit,
+    onAlertConditionUpdate: (AlertCondition) -> Unit,
+    onAlertConditionSave: () -> Unit,
 ) {
-
     val watchList by watchListState.collectAsState()
     val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
@@ -43,12 +44,19 @@ fun MainScreen(
     val chart by chartState.collectAsState()
     val alertTriggers by alertTriggerListState.collectAsState()
     val alertEvents by alertEventListState.collectAsState()
+    val alertSettingsState by alertSettingsUIState.collectAsState()
 
-    val tickerListDialogVisible = remember { mutableStateOf(false) }
-    val chartSetting = remember { mutableStateOf(ChartSettings()) }
+    var addToWatchlistDialogVisible by remember { mutableStateOf(false) }
+    var addToAlertsDialogVisible by remember { mutableStateOf(false) }
+    var chartSetting by remember { mutableStateOf(ChartSettings()) }
 
-    Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-        Box(modifier = Modifier.fillMaxSize()) {
+    println(":collect as state: ")
+
+    Surface(
+        modifier = modifierMaxSize,
+        color = MaterialTheme.colors.background
+    ) {
+        Box(modifier = modifierMaxSize) {
             Row(
                 modifier = Modifier
                     .padding(bottom = 24.dp)
@@ -57,45 +65,43 @@ fun MainScreen(
                     WatchlistBox(
                         list = watchList,
                         onClickAdd = {
-                            tickerListDialogVisible.value = true
+                            addToWatchlistDialogVisible = true
                         },
                         onClickRemove = onRemoveFromWatchlist,
                         onSelect = onSelectFromWatchlist,
-                        modifier = Modifier
+                        modifier = modifierMaxWidth
                             .fillMaxHeight(0.5f)
-                            .fillMaxWidth()
                     )
 
 
                     AlertsBox(
                         alertTriggerList = alertTriggers,
                         alertEventList = alertEvents,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(),
-                        onClickAdd = { /*Show dialog to add new alert*/ }
+                        modifier = modifierMaxSize,
+                        onClickAdd = {
+                            addToAlertsDialogVisible = true
+                        }
                     )
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = modifierMaxSize
                 ) {
 
                     ChartBox(
                         chart = chart,
-                        chartSettings = chartSetting.value,
-                        modifier = Modifier
+                        chartSettings = chartSetting,
+                        modifier = modifierMaxWidth
                             .fillMaxHeight(0.7f)
-                            .fillMaxWidth()
                     )
 
                     Row {
                         ChartSettingsBox(
-                            settings = chartSetting.value,
+                            settings = chartSetting,
                             onChangeSettings = { settings ->
-                                chartSetting.value = settings
+                                chartSetting = settings
                             },
-                            modifier = Modifier.widthIn(max = 250.dp).fillMaxHeight()
+                            modifier = modifierMaxHeight.widthIn(max = 250.dp)
                         )
 
                         //trading bot box here
@@ -107,36 +113,18 @@ fun MainScreen(
             }
 
             /*Online status*/
-            Box(
-                modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth().height(20.dp)
-                    .background(
-                        color = if (serverTime > 0)
-                            MaterialTheme.colors.positiveCandleColor.copy(alpha = 0.5f)
-                        else
-                            MaterialTheme.colors.red
-                    )
-            ) {
-                Text(
-                    text = if (serverTime > 0) "Online" else "Offline",
-                    style = MaterialTheme.typography.body2,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                if (serverTime > 0)
-                    Text(
-                        text = "Server time: ${serverTime.timeToString()}",
-                        style = MaterialTheme.typography.body2,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-                    )
-            }
+            OnlineStatus(
+                modifier = modifierMaxWidth
+                    .align(Alignment.BottomCenter)
+                    .height(20.dp),
+                serverTime = serverTime
+            )
 
         }
 
         //Show a dialog to add tickers to watchlist
-        if (tickerListDialogVisible.value)
-            TickerListSurface(
+        if (addToWatchlistDialogVisible)
+            TickerListDialog(
                 list = tickerList,
                 onAdd = onAddToWatchList,
                 onRemove = onRemoveFromWatchlist,
@@ -144,8 +132,21 @@ fun MainScreen(
                 onClose = {
                     //clear ticker list search
                     onTickerListSearch("")
-                    tickerListDialogVisible.value = false
+                    addToWatchlistDialogVisible = false
                 }
             )
+
+        //Show a dialog to add/update alerts
+        if (addToAlertsDialogVisible)
+            AlertSettingsDialog(
+                alertCondition = (alertSettingsState as AlertSettingsUIState.Success).alertCondition,
+                onClose = {
+                    addToAlertsDialogVisible = false
+                },
+                onSave = onAlertConditionSave,
+                onUpdate = onAlertConditionUpdate,
+                watchList = watchList//fakeTickerListFirst()
+            )
+
     }
 }

@@ -61,10 +61,13 @@ fun App() {
             chartState = viewModel.chart,
             alertTriggerListState = viewModel.alertTriggerList,
             alertEventListState = viewModel.alertEventList,
+            alertSettingsUIState = viewModel.alertSettingsUIState,
             onAddToWatchList = viewModel::addToWatchlist,
             onRemoveFromWatchlist = viewModel::removeFromWatchlist,
             onTickerListSearch = viewModel::tickerListSearch,
-            onSelectFromWatchlist = viewModel::selectFromWatchlist
+            onSelectFromWatchlist = viewModel::selectFromWatchlist,
+            onAlertConditionUpdate = viewModel::updateAlertCondition,
+            onAlertConditionSave = viewModel::saveAlertCondition
         )
     }
 }

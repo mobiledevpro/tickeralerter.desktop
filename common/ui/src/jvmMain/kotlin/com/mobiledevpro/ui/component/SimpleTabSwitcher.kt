@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.onClick
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,29 +16,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobiledevpro.ui.accent
+import com.mobiledevpro.ui.common.modifierMaxWidth
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SimpleTabSwitcher(
     tabs: List<SimpleTab>,
     selectedTab: SimpleTab,
-    onTabSelected: (SimpleTab) -> Unit
+    onTabSelected: (SimpleTab) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(shape = RoundedCornerShape(16.dp))
             .background(color = MaterialTheme.colors.onSurface.copy(alpha = 0.05f))
-            .fillMaxWidth()
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = modifierMaxWidth,
             verticalAlignment = Alignment.CenterVertically
         ) {
 
             tabs.forEach { tab ->
                 SimpleTabBox(
-                    text = tab.name.lowercase().replaceFirstChar { it.uppercase() },
+                    text = tab.toStr(),
                     selected = tab == selectedTab,
                     modifier = Modifier
                         .weight(1f)
@@ -79,5 +78,15 @@ internal fun SimpleTabBox(text: String, selected: Boolean, modifier: Modifier) {
 
 enum class SimpleTab {
     ALL,
-    LOG
+    LOG,
+    ONLY_ONCE,
+    EVERY_TIME
+}
+
+fun SimpleTab.toStr() = when (this) {
+    SimpleTab.ALL -> "All"
+    SimpleTab.LOG -> "Log"
+    SimpleTab.ONLY_ONCE -> "Only Once"
+    SimpleTab.EVERY_TIME -> "Every Time"
+
 }

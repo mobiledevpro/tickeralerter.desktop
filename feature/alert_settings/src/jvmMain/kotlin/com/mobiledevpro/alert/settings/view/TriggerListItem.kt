@@ -14,6 +14,7 @@ import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.accent
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.PlayPauseIconButton
 import com.mobiledevpro.ui.component.RemoveIconButton
 import com.mobiledevpro.ui.component.SettingsIconButton
@@ -41,12 +42,12 @@ fun TriggerListItem(
             MaterialTheme.colors.orange
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifierMaxWidth
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)
+            modifier = modifierMaxWidth.padding(vertical = 4.dp)
         ) {
 
             //Text
@@ -94,7 +95,7 @@ fun TriggerListItem(
 @Composable
 fun TriggerListItemPreview() {
     Theme {
-        WidgetBox(modifier = Modifier.fillMaxWidth()) {
+        WidgetBox(modifier = modifierMaxWidth) {
             TriggerListItem(
                 item = fakeAlertTriggersList().get(0),
                 onPause = {},
