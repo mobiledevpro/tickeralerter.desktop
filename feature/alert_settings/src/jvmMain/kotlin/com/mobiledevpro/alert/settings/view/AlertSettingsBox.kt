@@ -1,8 +1,6 @@
 package com.mobiledevpro.alert.settings.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,7 +8,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.Ticker
@@ -32,14 +29,13 @@ internal fun AlertSettingsBox(
 ) {
 
     var selectedTrigger by remember { mutableStateOf(SimpleTab.ONLY_ONCE) }
-
     val isEdit: Boolean = alertTrigger?.let { true } ?: false
 
     WidgetBox(modifier = modifier) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
             Header(edit = isEdit, onClose = onClickClose)
-            ConditionRules()
+            ConditionRules(tickerList = watchList)
             Divider(thickness = 1.dp, modifier = Modifier.padding(vertical = 8.dp))
 
             TriggerRules(
@@ -88,17 +84,21 @@ fun Header(edit: Boolean, onClose: () -> Unit) {
 }
 
 @Composable
-fun ConditionRules() {
+fun ConditionRules(tickerList: List<Ticker>) {
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
         TextLabel("Condition")
 
         Column(modifier = modifierMaxWidth.weight(0.7f)) {
-            SelectValueField(modifier = modifierMaxWidth, value = "BTCUSDT")
-            SelectValueField(modifier = modifierMaxWidth, value = "Crossing")
+            SelectValueField(
+                modifier = modifierMaxWidth,
+                valueList = tickerList.mapTo(ArrayList<String>()) { it.symbol },
+                onSelect = {})
+
+            SelectValueField(modifier = modifierMaxWidth, listOf("Crossing"), onSelect = {})
 
             Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifierMaxWidth) {
-                SelectValueField(modifier = modifierMaxWidth.weight(1f), value = "Price")
-                SelectValueField(modifier = modifierMaxWidth.weight(1f), value = "31,000")
+                SelectValueField(modifier = modifierMaxWidth.weight(1f), listOf("Price"), onSelect = {})
+                SelectValueField(modifier = modifierMaxWidth.weight(1f), listOf("31,000"), onSelect = {})
             }
         }
 
@@ -125,6 +125,8 @@ fun TriggerRules(selectedTrigger: SimpleTab, onSelectTrigger: (SimpleTab) -> Uni
                 },
                 fontSize = Defaults.TextFieldFontSize,
                 style = MaterialTheme.typography.body2.copy(color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)),
+                minLines = 2,
+                maxLines = 2,
                 modifier = modifierMaxWidth.padding(8.dp)
             )
         }
@@ -136,36 +138,11 @@ fun TriggerRules(selectedTrigger: SimpleTab, onSelectTrigger: (SimpleTab) -> Uni
 fun RowScope.TextLabel(text: String) {
     Text(
         text = text,
-        modifier = Modifier.weight(0.3F).padding(8.dp).fillMaxWidth().height(Defaults.TextFieldHeight),
+        modifier = Modifier.weight(0.3F)
+            .padding(8.dp)
+            .fillMaxWidth()
+            .height(Defaults.TextFieldHeight),
     )
-}
-
-@Composable
-fun ConditionSelectTicker(modifier: Modifier, tickerList: List<Ticker>, onSelected: (Ticker) -> Unit) {
-    var expanded by remember { mutableStateOf(false) }
-
-    Box(modifier = modifier.wrapContentSize(Alignment.TopEnd)) {
-        Text(
-            text = "Ticker", modifier = Modifier.fillMaxWidth().clickable(onClick = { expanded = true }).background(
-                Color.Gray
-            )
-        )
-        DropdownMenu(
-            modifier = Modifier.matchParentSize(),
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            content = {
-                tickerList.forEachIndexed { index, ticker ->
-                    DropdownMenuItem(onClick = {
-                        expanded = false
-                    }, modifier = Modifier.fillMaxWidth()) {
-                        Text(text = ticker.details())
-                    }
-                }
-            }
-        )
-    }
-
 }
 
 @Composable

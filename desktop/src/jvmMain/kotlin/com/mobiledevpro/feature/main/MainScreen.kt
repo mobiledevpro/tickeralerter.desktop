@@ -139,7 +139,7 @@ fun MainScreen(
                 onSave = {
 
                 },
-                watchList = watchList
+                watchList = fakeTickerListFirst()
             )
 
     }
