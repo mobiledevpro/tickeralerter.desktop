@@ -5,7 +5,7 @@ data class AlertCondition(
     val conditionSource: ConditionSource = ConditionSource.TICKER_PRICE,
     var conditionType: ConditionType = ConditionType.CROSSING,
     var conditionTarget: ConditionTarget = ConditionTarget.PRICE,
-    val targetValue: Double? = null
+    var targetPrice: Double? = null
 )
 
 enum class ConditionSource {

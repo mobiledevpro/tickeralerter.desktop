@@ -40,7 +40,6 @@ internal fun AlertSettingsBox(
                 tickerList = watchList,
                 alertCondition = alertCondition,
                 onChange = { changedAlertCondition ->
-                    println("alert condition on change ")
                     onUpdate(changedAlertCondition)
                 }
             )
@@ -94,7 +93,12 @@ fun Header(edit: Boolean, onClose: () -> Unit) {
 
 @Composable
 fun ConditionRules(tickerList: List<Ticker>, alertCondition: AlertCondition, onChange: (AlertCondition) -> Unit) {
-    println("::condition rules")
+
+    val targetPrice: Double? =
+        if (alertCondition.conditionTarget == ConditionTarget.PRICE)
+            tickerList.find { it.symbol == alertCondition.symbol }?.lastPrice
+        else
+            null
 
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
         TextLabel("Condition")
@@ -108,16 +112,21 @@ fun ConditionRules(tickerList: List<Ticker>, alertCondition: AlertCondition, onC
                 onSelect = { symbol ->
                     alertCondition.apply {
                         this.symbol = symbol
+                        this.targetPrice = targetPrice
                     }.also(onChange)
                 }
             )
 
             //Condition type
-            SelectValueField(modifier = modifierMaxWidth, valueList = conditionTypeList(), onSelect = { conditionType ->
-                alertCondition.apply {
-                    this.conditionType = conditionType.toConditionType()
-                }.also(onChange)
-            })
+            SelectValueField(
+                modifier = modifierMaxWidth,
+                valueList = conditionTypeList(),
+                onSelect = { conditionType ->
+                    alertCondition.apply {
+                        this.conditionType = conditionType.toConditionType()
+                        this.targetPrice = targetPrice
+                    }.also(onChange)
+                })
 
             //Condition target
             Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifierMaxWidth) {
@@ -128,15 +137,15 @@ fun ConditionRules(tickerList: List<Ticker>, alertCondition: AlertCondition, onC
                     onSelect = { conditionTarget ->
                         alertCondition.apply {
                             this.conditionTarget = conditionTarget.toConditionTarget()
+                            this.targetPrice = targetPrice
                         }.also(onChange)
                     })
-
 
 
                 if (alertCondition.conditionTarget == ConditionTarget.PRICE)
                     SelectValueField(
                         modifier = modifierMaxWidth.weight(1f),
-                        defaultValue = tickerList.find { it.symbol == alertCondition.symbol }?.lastPrice.toString(),
+                        defaultValue = targetPrice?.toString(),
                         valueList = emptyList(),
                         onSelect = {}
                     )

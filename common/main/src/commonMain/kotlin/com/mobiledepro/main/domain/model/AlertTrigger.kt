@@ -15,7 +15,7 @@ data class AlertTrigger(
     }
 
     private fun target() = when (alertCondition.conditionTarget) {
-        ConditionTarget.PRICE -> "${alertCondition.targetValue}"
+        ConditionTarget.PRICE -> "${alertCondition.targetPrice}"
         else -> alertCondition.conditionTarget.toStr()
     }
 }
@@ -30,7 +30,7 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
             conditionSource = ConditionSource.TICKER_PRICE,
             conditionType = ConditionType.CROSSING_UP,
             conditionTarget = ConditionTarget.PRICE,
-            targetValue = 33_000.00,
+            targetPrice = 33_000.00,
             symbol = "BTCUSDT"
         ),
         active = true
@@ -44,7 +44,7 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
             conditionSource = ConditionSource.TICKER_PRICE,
             conditionType = ConditionType.CROSSING_DOWN,
             conditionTarget = ConditionTarget.PRICE,
-            targetValue = 1_900.00,
+            targetPrice = 1_900.00,
             symbol = "ETHUSDT"
         ),
         active = true
