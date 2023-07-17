@@ -1,7 +1,7 @@
-package com.mobiledevpro.feature.main
+package com.mobiledevpro.home.view.vm
 
 import com.mobiledepro.main.domain.model.*
-import com.mobiledevpro.common.domain.interactor.MainScreenInteractor
+import com.mobiledevpro.home.domain.interactor.HomeScreenInteractor
 import io.ktor.utils.io.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
-class MainScreenViewModel(
+class HomeScreenViewModel(
     private val scope: CoroutineScope,
-    private val interactor: MainScreenInteractor
+    private val interactor: HomeScreenInteractor
 ) {
 
     private val _tradingLog = MutableStateFlow<List<String>>(emptyList())

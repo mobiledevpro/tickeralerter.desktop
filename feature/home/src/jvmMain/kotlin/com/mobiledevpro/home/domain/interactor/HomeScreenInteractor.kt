@@ -1,10 +1,10 @@
-package com.mobiledevpro.common.domain.interactor
+package com.mobiledevpro.home.domain.interactor
 
 import com.mobiledepro.main.domain.model.Candle
 import com.mobiledepro.main.domain.model.Ticker
 import kotlinx.coroutines.flow.Flow
 
-interface MainScreenInteractor {
+interface HomeScreenInteractor {
     suspend fun syncTickerList()
 
     suspend fun syncWatchlist()

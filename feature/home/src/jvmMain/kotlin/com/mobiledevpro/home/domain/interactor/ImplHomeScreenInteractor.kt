@@ -1,4 +1,4 @@
-package com.mobiledevpro.common.domain.interactor
+package com.mobiledevpro.home.domain.interactor
 
 import com.mobiledepro.main.domain.mapper.toDomain
 import com.mobiledepro.main.domain.mapper.toLocal
@@ -15,11 +15,11 @@ import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
-class ImplMainScreenInteractor(
+class ImplHomeScreenInteractor(
     private val tickersRepository: TickerRepository,
     private val watchListRepository: WatchListRepository,
     private val chartRepository: ChartRepository
-) : MainScreenInteractor {
+) : HomeScreenInteractor {
 
     private val tickerListSearchTerm = MutableStateFlow("")
     private val syncedSymbolsList = MutableStateFlow(listOf<String>())

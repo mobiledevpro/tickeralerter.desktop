@@ -10,11 +10,11 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.mobiledevpro.chart.data.repository.ChartRepository
 import com.mobiledevpro.chart.data.repository.ImplChartRepository
-import com.mobiledevpro.common.domain.interactor.ImplMainScreenInteractor
-import com.mobiledevpro.common.domain.interactor.MainScreenInteractor
 import com.mobiledevpro.database.AppDatabase
-import com.mobiledevpro.feature.main.MainScreen
-import com.mobiledevpro.feature.main.MainScreenViewModel
+import com.mobiledevpro.home.domain.interactor.HomeScreenInteractor
+import com.mobiledevpro.home.domain.interactor.ImplHomeScreenInteractor
+import com.mobiledevpro.home.view.HomeScreen
+import com.mobiledevpro.home.view.vm.HomeScreenViewModel
 import com.mobiledevpro.network.SocketClient
 import com.mobiledevpro.tickerlist.data.repository.ImplTickerListRepository
 import com.mobiledevpro.tickerlist.data.repository.TickerRepository
@@ -43,16 +43,16 @@ fun App() {
     val watchlistRepository: WatchListRepository = ImplWatchListRepository(database, socketClient)
     val chartRepository: ChartRepository = ImplChartRepository(database, httpClient)
 
-    val mainInteractor: MainScreenInteractor =
-        ImplMainScreenInteractor(tickerRepository, watchlistRepository, chartRepository)
+    val mainInteractor: HomeScreenInteractor =
+        ImplHomeScreenInteractor(tickerRepository, watchlistRepository, chartRepository)
 
     val scope = rememberCoroutineScope()
-    val viewModel = MainScreenViewModel(scope, mainInteractor)
+    val viewModel = HomeScreenViewModel(scope, mainInteractor)
 
     val watchListViewModel: WatchlistViewModel by remember { scopeWatchlist().inject<WatchlistViewModel>() }
 
     Theme {
-        MainScreen(
+        HomeScreen(
             serverTimeState = viewModel.serverTime,
             tradingLogState = viewModel.tradingLog,
             tickerListState = viewModel.tickerList,

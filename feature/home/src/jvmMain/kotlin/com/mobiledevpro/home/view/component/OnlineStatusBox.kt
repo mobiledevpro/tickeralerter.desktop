@@ -1,4 +1,4 @@
-package com.mobiledevpro.feature.main.component
+package com.mobiledevpro.home.view.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mobiledevpro.common.util.timeToString
+import com.mobiledepro.main.util.timeToString
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.positiveCandleColor
 import com.mobiledevpro.ui.red

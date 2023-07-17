@@ -1,4 +1,4 @@
-package com.mobiledevpro.feature.main
+package com.mobiledevpro.home.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -12,7 +12,7 @@ import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
 import com.mobiledevpro.alert.settings.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
-import com.mobiledevpro.feature.main.component.OnlineStatus
+import com.mobiledevpro.home.view.component.OnlineStatus
 import com.mobiledevpro.tickerlist.view.TickerListDialog
 import com.mobiledevpro.ui.common.modifierMaxHeight
 import com.mobiledevpro.ui.common.modifierMaxSize
@@ -22,7 +22,7 @@ import com.mobiledevpro.watchlist.view.model.WatchlistUIState
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun MainScreen(
+fun HomeScreen(
     serverTimeState: StateFlow<Long>,
     tradingLogState: StateFlow<List<String>>,
     tickerListState: StateFlow<List<Ticker>>,

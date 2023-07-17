@@ -23,12 +23,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(project(":common:main"))
-                implementation(project(":feature:tickerlist"))
-                implementation(project(":feature:watchlist"))
-                implementation(project(":feature:chart"))
-                implementation(project(":feature:alert_settings"))
-
-                // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4")
+                implementation(project(":feature:home"))
             }
         }
         val jvmTest by getting
