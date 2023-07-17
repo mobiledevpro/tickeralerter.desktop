@@ -15,20 +15,23 @@ import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.domain.model.fakeTickerListFirst
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.WidgetBox
+import com.mobiledevpro.ui.white
+import com.mobiledevpro.watchlist.view.model.WatchlistUIState
 
 
 @Composable
 fun WatchlistBox(
-    list: List<Ticker>,
+    state: WatchlistUIState,
     modifier: Modifier = Modifier,
     onClickAdd: () -> Unit,
     onClickRemove: (Ticker) -> Unit,
     onSelect: (Ticker) -> Unit
 ) {
 
-    val modifierListItem = Modifier.height(32.dp)
+    println("::WatchList state: $state")
 
     WidgetBox(modifier = modifier) {
         Column {
@@ -62,17 +65,58 @@ fun WatchlistBox(
 
             Divider(thickness = 1.dp)
 
-            LazyColumn {
-                items(list) { ticker ->
-                    WatchlistItem(
-                        modifier = modifierListItem,
-                        ticker = ticker,
-                        onRemove = { onClickRemove(ticker) },
-                        onSelect = { onSelect(ticker) }
-                    )
-                }
+            when (state) {
+                is WatchlistUIState.Success -> Success(
+                    list = state.list,
+                    onClickRemove = onClickRemove,
+                    onSelect = onSelect
+                )
+
+                is WatchlistUIState.Empty -> Empty()
             }
+
         }
+    }
+}
+
+@Composable
+fun Success(
+    list: List<Ticker>,
+    onClickRemove: (Ticker) -> Unit,
+    onSelect: (Ticker) -> Unit
+) {
+    println("::WatchList success: ${list.size}")
+    val modifierListItem = Modifier.height(32.dp)
+
+    LazyColumn {
+        items(list) { ticker ->
+            WatchlistItem(
+                modifier = modifierListItem,
+                ticker = ticker,
+                onRemove = { onClickRemove(ticker) },
+                onSelect = { onSelect(ticker) }
+            )
+        }
+    }
+}
+
+@Composable
+fun Empty() {
+    Box(
+        modifier = modifierMaxSize,
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "No symbols in watchlist.\nYou can add it by clicking 'plus' icon above.",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.caption.copy(color = MaterialTheme.colors.white),
+                modifier = Modifier.padding(16.dp)
+            )
+        }
+
     }
 }
 
@@ -93,7 +137,7 @@ fun RowTitle(text: String, textAlign: TextAlign = TextAlign.Start, modifier: Mod
 fun WatchlistBoxPreview() {
     Theme {
         WatchlistBox(
-            list = fakeTickerListFirst(),
+            state = WatchlistUIState.Success(fakeTickerListFirst()),
             onClickAdd = {},
             onClickRemove = {},
             onSelect = {}

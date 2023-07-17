@@ -37,6 +37,8 @@ class ImplWatchListRepository(
         val isExist = database.watchlistQueries.selectIsExist(entry.symbol)
             .executeAsOne() > 0
 
+        println("::Add to watchlist [${entry.symbol}]: $isExist")
+
         if (!isExist)
             database.watchlistQueries.insertItem(
                 symbol = entry.symbol,

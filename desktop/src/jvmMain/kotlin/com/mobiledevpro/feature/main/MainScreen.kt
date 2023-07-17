@@ -18,6 +18,7 @@ import com.mobiledevpro.ui.common.modifierMaxHeight
 import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.watchlist.view.WatchlistBox
+import com.mobiledevpro.watchlist.view.model.WatchlistUIState
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -25,7 +26,7 @@ fun MainScreen(
     serverTimeState: StateFlow<Long>,
     tradingLogState: StateFlow<List<String>>,
     tickerListState: StateFlow<List<Ticker>>,
-    watchListState: StateFlow<List<Ticker>>,
+    watchListUIState: StateFlow<WatchlistUIState>,
     chartState: StateFlow<Chart>,
     alertTriggerListState: StateFlow<List<AlertTrigger>>,
     alertEventListState: StateFlow<List<AlertEvent>>,
@@ -37,7 +38,7 @@ fun MainScreen(
     onAlertConditionUpdate: (AlertCondition) -> Unit,
     onAlertConditionSave: () -> Unit,
 ) {
-    val watchList by watchListState.collectAsState()
+    val watchListState by watchListUIState.collectAsState()
     val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
     val serverTime by serverTimeState.collectAsState()
@@ -63,7 +64,7 @@ fun MainScreen(
             ) {
                 Column(modifier = Modifier.width(430.dp)) {
                     WatchlistBox(
-                        list = watchList,
+                        state = watchListState,
                         onClickAdd = {
                             addToWatchlistDialogVisible = true
                         },
@@ -145,7 +146,7 @@ fun MainScreen(
                 },
                 onSave = onAlertConditionSave,
                 onUpdate = onAlertConditionUpdate,
-                watchList = watchList//fakeTickerListFirst()
+                watchList = (watchListState as WatchlistUIState.Success).list//fakeTickerListFirst()
             )
 
     }

@@ -2,7 +2,6 @@ package com.mobiledevpro.common.domain.interactor
 
 import com.mobiledepro.main.domain.mapper.toDomain
 import com.mobiledepro.main.domain.mapper.toLocal
-import com.mobiledepro.main.domain.mapper.toWatchlistLocal
 import com.mobiledepro.main.domain.model.Candle
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.chart.data.repository.ChartRepository
@@ -123,27 +122,6 @@ class ImplMainScreenInteractor(
         chartRepository.getChartLocal(ticker.symbol, timeFrame)
             .map { it.toDomain() as List<Candle> }
             .flowOn(Dispatchers.IO)
-
-    override suspend fun addToWatchList(ticker: Ticker) {
-        withContext(Dispatchers.IO) {
-            ticker.toWatchlistLocal()
-                .also {
-                    watchListRepository.addLocal(it)
-                }
-        }
-    }
-
-    override suspend fun removeFromWatchlist(ticker: Ticker) {
-        withContext(Dispatchers.IO) {
-            ticker.toWatchlistLocal()
-                .also { entry ->
-                    watchListRepository.removeLocal(entry)
-                    watchListRepository.unsubscribeFromRemote(entry).collectLatest {
-                        println(":: Thread ${Thread.currentThread().name} :: SOCKET UNSUBSCRIBE :: \n$it")
-                    }
-                }
-        }
-    }
 
     override suspend fun setTickerListSearch(value: String) {
         withContext(Dispatchers.IO) {

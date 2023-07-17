@@ -6,7 +6,7 @@ val composeVersion: String = extra["compose.version"] as String
 
 kotlin {
     jvm {
-        jvmToolchain(11)
+        jvmToolchain(Deps.JDK)
         withJava()
     }
 

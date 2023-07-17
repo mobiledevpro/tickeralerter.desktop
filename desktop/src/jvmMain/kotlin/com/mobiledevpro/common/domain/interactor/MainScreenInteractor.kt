@@ -19,10 +19,6 @@ interface MainScreenInteractor {
 
     fun getChart(ticker: Ticker, timeFrame: String): Flow<List<Candle>>
 
-    suspend fun addToWatchList(ticker: Ticker)
-
-    suspend fun removeFromWatchlist(ticker: Ticker)
-
     suspend fun setTickerListSearch(value: String)
 
     suspend fun clearTickerListSearch()

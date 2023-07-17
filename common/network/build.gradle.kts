@@ -7,13 +7,15 @@ val ktorVersion: String = extra["ktor.version"] as String
 
 kotlin {
     jvm {
-        jvmToolchain(11)
+        jvmToolchain(Deps.JDK)
         withJava()
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(Deps.Koin.CORE)
+
                 implementation("io.ktor:ktor-client:$ktorVersion")
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-logging:$ktorVersion")

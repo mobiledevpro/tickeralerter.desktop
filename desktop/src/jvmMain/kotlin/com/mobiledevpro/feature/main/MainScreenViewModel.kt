@@ -21,9 +21,6 @@ class MainScreenViewModel(
     private val _tickerList = MutableStateFlow<List<Ticker>>(emptyList())
     val tickerList: StateFlow<List<Ticker>> = _tickerList.asStateFlow()
 
-    private val _watchlist = MutableStateFlow<List<Ticker>>(emptyList())
-    val watchlist: StateFlow<List<Ticker>> = _watchlist.asStateFlow()
-
     private val _chart = MutableStateFlow<Chart>(Chart(emptyList()))
     val chart: StateFlow<Chart> = _chart.asStateFlow()
 
@@ -42,21 +39,8 @@ class MainScreenViewModel(
     init {
         observeNetworkConnection()
         // observeLog()
-        observeWatchlist()
         observeTickerList()
         observeAlerts()
-    }
-
-    fun addToWatchlist(ticker: Ticker) {
-        scope.launch {
-            interactor.addToWatchList(ticker)
-        }
-    }
-
-    fun removeFromWatchlist(ticker: Ticker) {
-        scope.launch {
-            interactor.removeFromWatchlist(ticker)
-        }
     }
 
     fun tickerListSearch(value: String) {
@@ -117,7 +101,7 @@ class MainScreenViewModel(
         }
     }
 
-    private fun observeWatchlist() {
+  /*  private fun observeWatchlist() {
 
         //Get watchlist saved locally
         scope.launch {
@@ -131,7 +115,7 @@ class MainScreenViewModel(
         scope.launch {
             interactor.syncWatchlist()
         }
-    }
+    }*/
 
     private fun observeChartCandleList(ticker: Ticker) {
         scope.launch {

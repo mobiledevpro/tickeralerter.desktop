@@ -3,21 +3,23 @@ plugins {
     id("app.cash.sqldelight")
 }
 
-val sqlDelightVersion: String = extra["sqldelight.version"] as String
-
 kotlin {
     jvm {
-        jvmToolchain(11)
+        jvmToolchain(Deps.JDK)
         withJava()
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation(Deps.Koin.CORE)
+
                 //Database
-                implementation("app.cash.sqldelight:sqlite-driver:$sqlDelightVersion")
-                api("app.cash.sqldelight:runtime:$$sqlDelightVersion")
-                api("app.cash.sqldelight:coroutines-extensions:$sqlDelightVersion")
+                with(Deps.SQLDelight) {
+                    implementation(DRIVER)
+                    api(RUNTIME)
+                    api(COROUTINE_EXT)
+                }
 
             }
         }
