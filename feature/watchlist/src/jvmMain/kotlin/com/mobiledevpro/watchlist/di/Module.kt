@@ -11,7 +11,7 @@ val featureWatchlistModule = module {
     scope<WatchlistViewModel> {
         scoped {
             WatchlistViewModel(
-                scope = get(),
+                coroutineScope = get(),
                 interactor = get()
             )
         }

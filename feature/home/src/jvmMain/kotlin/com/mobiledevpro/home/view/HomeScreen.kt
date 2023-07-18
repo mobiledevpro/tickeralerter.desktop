@@ -12,13 +12,14 @@ import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
 import com.mobiledevpro.alert.settings.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
+import com.mobiledevpro.chart.view.state.ChartUIState
 import com.mobiledevpro.home.view.component.OnlineStatus
 import com.mobiledevpro.tickerlist.view.TickerListDialog
 import com.mobiledevpro.ui.common.modifierMaxHeight
 import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.watchlist.view.WatchlistBox
-import com.mobiledevpro.watchlist.view.model.WatchlistUIState
+import com.mobiledevpro.watchlist.view.state.WatchlistUIState
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -27,7 +28,7 @@ fun HomeScreen(
     tradingLogState: StateFlow<List<String>>,
     tickerListState: StateFlow<List<Ticker>>,
     watchListUIState: StateFlow<WatchlistUIState>,
-    chartState: StateFlow<Chart>,
+    chartUIState: StateFlow<ChartUIState>,
     alertTriggerListState: StateFlow<List<AlertTrigger>>,
     alertEventListState: StateFlow<List<AlertEvent>>,
     alertSettingsUIState: StateFlow<AlertSettingsUIState>,
@@ -39,10 +40,10 @@ fun HomeScreen(
     onAlertConditionSave: () -> Unit,
 ) {
     val watchListState by watchListUIState.collectAsState()
+    val chartState by chartUIState.collectAsState()
     val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
     val serverTime by serverTimeState.collectAsState()
-    val chart by chartState.collectAsState()
     val alertTriggers by alertTriggerListState.collectAsState()
     val alertEvents by alertEventListState.collectAsState()
     val alertSettingsState by alertSettingsUIState.collectAsState()
@@ -90,7 +91,7 @@ fun HomeScreen(
                 ) {
 
                     ChartBox(
-                        chart = chart,
+                        state = chartState,
                         chartSettings = chartSetting,
                         modifier = modifierMaxWidth
                             .fillMaxHeight(0.7f)

@@ -4,7 +4,7 @@ import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.util.toLog
 import com.mobiledepro.main.view.BaseViewModel
 import com.mobiledevpro.watchlist.domain.interactor.WatchListInteractor
-import com.mobiledevpro.watchlist.view.model.WatchlistUIState
+import com.mobiledevpro.watchlist.view.state.WatchlistUIState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WatchlistViewModel(
-    private val scope: CoroutineScope,
+    private val coroutineScope: CoroutineScope,
     private val interactor: WatchListInteractor
 ) : BaseViewModel<WatchlistUIState>() {
 
@@ -24,20 +24,20 @@ class WatchlistViewModel(
     }
 
     fun addToWatchlist(ticker: Ticker) {
-        scope.launch {
+        coroutineScope.launch {
             interactor.addToWatchList(ticker)
         }
     }
 
     fun removeFromWatchlist(ticker: Ticker) {
-        scope.launch {
+        coroutineScope.launch {
             interactor.removeFromWatchlist(ticker)
         }
     }
 
     private fun observeWatchlist() {
         //Get watchlist saved locally
-        scope.launch {
+        coroutineScope.launch {
             interactor.getWatchlist().catch { throwable ->
                 println("::ERROR ${throwable.toLog<WatchlistViewModel>()}")
             }.collectLatest { list ->
@@ -57,7 +57,7 @@ class WatchlistViewModel(
      */
     private fun syncWatchlist() {
         //Update watchlist tickers price from socket
-        scope.launch {
+        coroutineScope.launch {
             interactor.syncWatchlist()
         }
     }

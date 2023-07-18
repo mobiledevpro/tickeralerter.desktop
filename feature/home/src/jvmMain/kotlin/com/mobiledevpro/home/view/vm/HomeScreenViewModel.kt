@@ -2,7 +2,6 @@ package com.mobiledevpro.home.view.vm
 
 import com.mobiledepro.main.domain.model.*
 import com.mobiledevpro.home.domain.interactor.HomeScreenInteractor
-import io.ktor.utils.io.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -52,10 +51,6 @@ class HomeScreenViewModel(
         }
     }
 
-    fun selectFromWatchlist(ticker: Ticker) {
-        observeChartCandleList(ticker)
-    }
-
     fun updateAlertCondition(alertCondition: AlertCondition) {
 
         _alertSettingsUIState.value = AlertSettingsUIState.Success(alertCondition)
@@ -97,41 +92,6 @@ class HomeScreenViewModel(
             interactor.getTickerList().collectLatest { list ->
                 println("Get local ticker list: ${list.size}")
                 _tickerList.update { list }
-            }
-        }
-    }
-
-  /*  private fun observeWatchlist() {
-
-        //Get watchlist saved locally
-        scope.launch {
-            interactor.getWatchList().collectLatest { list ->
-                println("Get local watchlist: ${list.size}")
-                _watchlist.update { list }
-            }
-        }
-
-        //Update watchlist tickers price from socket
-        scope.launch {
-            interactor.syncWatchlist()
-        }
-    }*/
-
-    private fun observeChartCandleList(ticker: Ticker) {
-        scope.launch {
-            interactor.getChart(ticker, "1h").collectLatest { list ->
-                println("Get local candle list: ${list.size}")
-                _chart.update {
-                    it.apply { candleList = list }
-                }
-            }
-        }
-
-        scope.launch {
-            try {
-                interactor.syncChart(ticker, "1h")
-            } catch (e: Exception) {
-                println("observeChartCandleList: ERROR ${e.printStack()}")
             }
         }
     }

@@ -19,7 +19,7 @@ import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.WidgetBox
 import com.mobiledevpro.ui.white
-import com.mobiledevpro.watchlist.view.model.WatchlistUIState
+import com.mobiledevpro.watchlist.view.state.WatchlistUIState
 
 
 @Composable

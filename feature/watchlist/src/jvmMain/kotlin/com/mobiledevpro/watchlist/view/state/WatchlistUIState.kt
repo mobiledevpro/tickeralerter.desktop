@@ -1,4 +1,4 @@
-package com.mobiledevpro.watchlist.view.model
+package com.mobiledevpro.watchlist.view.state
 
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.view.UiState

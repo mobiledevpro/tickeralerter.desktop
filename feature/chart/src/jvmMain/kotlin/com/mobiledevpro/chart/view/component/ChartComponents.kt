@@ -1,4 +1,4 @@
-package com.mobiledevpro.chart.view.ext
+package com.mobiledevpro.chart.view.component
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.runtime.Composable
@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PointMode
 import androidx.compose.ui.graphics.StrokeCap
 import com.mobiledepro.main.domain.model.Candle
-import com.mobiledevpro.chart.view.drawCandle
+import com.mobiledevpro.chart.view.ext.drawCandle
 
 @Composable
 fun showChart(

@@ -10,8 +10,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.mobiledepro.main.di.commonModules
 import com.mobiledepro.main.ext.injectScope
-import com.mobiledevpro.chart.data.repository.ChartRepository
-import com.mobiledevpro.chart.data.repository.ImplChartRepository
+import com.mobiledevpro.chart.view.vm.ChartViewModel
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.home.domain.interactor.HomeScreenInteractor
 import com.mobiledevpro.home.domain.interactor.ImplHomeScreenInteractor
@@ -42,15 +41,15 @@ fun App() {
 
     val tickerRepository: TickerRepository = ImplTickerListRepository(database, httpClient)
     val watchlistRepository: WatchListRepository = ImplWatchListRepository(database, socketClient)
-    val chartRepository: ChartRepository = ImplChartRepository(database, httpClient)
 
     val mainInteractor: HomeScreenInteractor =
-        ImplHomeScreenInteractor(tickerRepository, watchlistRepository, chartRepository)
+        ImplHomeScreenInteractor(tickerRepository, watchlistRepository)
 
     val scope = rememberCoroutineScope()
     val viewModel = HomeScreenViewModel(scope, mainInteractor)
 
     val watchListViewModel: WatchlistViewModel by remember { injectScope() }
+    val chartViewModel: ChartViewModel by remember { injectScope() }
 
     Theme {
         HomeScreen(
@@ -58,14 +57,14 @@ fun App() {
             tradingLogState = viewModel.tradingLog,
             tickerListState = viewModel.tickerList,
             watchListUIState = watchListViewModel.uiState,
-            chartState = viewModel.chart,
+            chartUIState = chartViewModel.uiState,
             alertTriggerListState = viewModel.alertTriggerList,
             alertEventListState = viewModel.alertEventList,
             alertSettingsUIState = viewModel.alertSettingsUIState,
             onAddToWatchList = watchListViewModel::addToWatchlist,
             onRemoveFromWatchlist = watchListViewModel::removeFromWatchlist,
             onTickerListSearch = viewModel::tickerListSearch,
-            onSelectFromWatchlist = viewModel::selectFromWatchlist,
+            onSelectFromWatchlist = chartViewModel::openChart,
             onAlertConditionUpdate = viewModel::updateAlertCondition,
             onAlertConditionSave = viewModel::saveAlertCondition
         )

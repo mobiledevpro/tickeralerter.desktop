@@ -2,9 +2,7 @@ package com.mobiledevpro.home.domain.interactor
 
 import com.mobiledepro.main.domain.mapper.toDomain
 import com.mobiledepro.main.domain.mapper.toLocal
-import com.mobiledepro.main.domain.model.Candle
 import com.mobiledepro.main.domain.model.Ticker
-import com.mobiledevpro.chart.data.repository.ChartRepository
 import com.mobiledevpro.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.watchlist.data.repository.WatchListRepository
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +15,7 @@ import kotlinx.coroutines.withContext
 
 class ImplHomeScreenInteractor(
     private val tickersRepository: TickerRepository,
-    private val watchListRepository: WatchListRepository,
-    private val chartRepository: ChartRepository
+    private val watchListRepository: WatchListRepository
 ) : HomeScreenInteractor {
 
     private val tickerListSearchTerm = MutableStateFlow("")
@@ -60,16 +57,6 @@ class ImplHomeScreenInteractor(
     }
 
 
-    override suspend fun syncChart(ticker: Ticker, timeFrame: String) {
-        withContext(Dispatchers.IO) {
-            chartRepository.getChartRemote(ticker.symbol, timeFrame)
-                .map { it.toLocal(ticker.symbol, timeFrame) }
-                .also {
-                    println("Candle list to cache: ${it.size}")
-                    chartRepository.cacheLocal(it)
-                }
-        }
-    }
 
     @OptIn(ObsoleteCoroutinesApi::class)
     override fun getServerTime(): Flow<Long> = flow {
@@ -116,11 +103,6 @@ class ImplHomeScreenInteractor(
     override fun getWatchList(): Flow<List<Ticker>> =
         watchListRepository.getListLocal()
             .map { it.toDomain() as List<Ticker> }
-            .flowOn(Dispatchers.IO)
-
-    override fun getChart(ticker: Ticker, timeFrame: String): Flow<List<Candle>> =
-        chartRepository.getChartLocal(ticker.symbol, timeFrame)
-            .map { it.toDomain() as List<Candle> }
             .flowOn(Dispatchers.IO)
 
     override suspend fun setTickerListSearch(value: String) {

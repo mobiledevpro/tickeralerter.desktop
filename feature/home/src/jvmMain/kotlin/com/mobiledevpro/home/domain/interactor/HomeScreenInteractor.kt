@@ -1,6 +1,5 @@
 package com.mobiledevpro.home.domain.interactor
 
-import com.mobiledepro.main.domain.model.Candle
 import com.mobiledepro.main.domain.model.Ticker
 import kotlinx.coroutines.flow.Flow
 
@@ -9,15 +8,11 @@ interface HomeScreenInteractor {
 
     suspend fun syncWatchlist()
 
-    suspend fun syncChart(ticker: Ticker, timeFrame: String)
-
     fun getServerTime(): Flow<Long>
 
     fun getTickerList(): Flow<List<Ticker>>
 
     fun getWatchList(): Flow<List<Ticker>>
-
-    fun getChart(ticker: Ticker, timeFrame: String): Flow<List<Candle>>
 
     suspend fun setTickerListSearch(value: String)
 
