@@ -29,6 +29,7 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/alert_settings" />
             <option value="$PROJECT_DIR$/feature/chart" />
+            <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/tickerlist" />
             <option value="$PROJECT_DIR$/feature/watchlist" />
           </set>

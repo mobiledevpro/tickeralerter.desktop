@@ -8,6 +8,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.mobiledepro.main.di.commonModules
+import com.mobiledepro.main.ext.injectScope
 import com.mobiledevpro.chart.data.repository.ChartRepository
 import com.mobiledevpro.chart.data.repository.ImplChartRepository
 import com.mobiledevpro.database.AppDatabase
@@ -21,9 +23,8 @@ import com.mobiledevpro.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.watchlist.data.repository.ImplWatchListRepository
 import com.mobiledevpro.watchlist.data.repository.WatchListRepository
-import com.mobiledevpro.watchlist.di.scopeWatchlist
 import com.mobiledevpro.watchlist.view.vm.WatchlistViewModel
-import di.appModules
+import di.featureModules
 import io.ktor.client.*
 import org.koin.core.Koin
 import org.koin.core.context.startKoin
@@ -33,11 +34,11 @@ import org.koin.java.KoinJavaComponent.getKoin
 fun App() {
 
     val isTestnet = false //TODO: add switcher to UI
-    val koin: Koin = getKoin()
+    val koin: Koin = remember { getKoin() }
 
-    val database by getKoin().inject<AppDatabase>()
-    val httpClient: HttpClient by getKoin().inject<HttpClient>()
-    val socketClient: SocketClient by getKoin().inject<SocketClient>()
+    val database: AppDatabase by remember { koin.inject<AppDatabase>() }
+    val httpClient: HttpClient by remember { koin.inject<HttpClient>() }
+    val socketClient: SocketClient by remember { koin.inject<SocketClient>() }
 
     val tickerRepository: TickerRepository = ImplTickerListRepository(database, httpClient)
     val watchlistRepository: WatchListRepository = ImplWatchListRepository(database, socketClient)
@@ -49,7 +50,7 @@ fun App() {
     val scope = rememberCoroutineScope()
     val viewModel = HomeScreenViewModel(scope, mainInteractor)
 
-    val watchListViewModel: WatchlistViewModel by remember { scopeWatchlist().inject<WatchlistViewModel>() }
+    val watchListViewModel: WatchlistViewModel by remember { injectScope() }
 
     Theme {
         HomeScreen(
@@ -75,7 +76,7 @@ fun main() = application {
 
     startKoin {
         modules(
-            appModules
+            commonModules + featureModules
         )
     }
 
