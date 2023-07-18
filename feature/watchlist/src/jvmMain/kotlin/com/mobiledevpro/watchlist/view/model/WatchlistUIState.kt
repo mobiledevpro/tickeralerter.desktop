@@ -1,8 +1,9 @@
 package com.mobiledevpro.watchlist.view.model
 
 import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledepro.main.view.UiState
 
-sealed interface WatchlistUIState {
+sealed interface WatchlistUIState : UiState {
     class Success(val list: List<Ticker>) : WatchlistUIState
 
     object Empty : WatchlistUIState

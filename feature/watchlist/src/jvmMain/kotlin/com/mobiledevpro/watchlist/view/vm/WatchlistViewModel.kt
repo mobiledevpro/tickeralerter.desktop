@@ -2,19 +2,21 @@ package com.mobiledevpro.watchlist.view.vm
 
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.util.toLog
+import com.mobiledepro.main.view.BaseViewModel
 import com.mobiledevpro.watchlist.domain.interactor.WatchListInteractor
 import com.mobiledevpro.watchlist.view.model.WatchlistUIState
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class WatchlistViewModel(
     private val scope: CoroutineScope,
     private val interactor: WatchListInteractor
-) {
+) : BaseViewModel<WatchlistUIState>() {
 
-    private val _uiState: MutableStateFlow<WatchlistUIState> = MutableStateFlow(WatchlistUIState.Empty)
-    val uiState: StateFlow<WatchlistUIState> = _uiState.asStateFlow()
+    override fun initUIState(): WatchlistUIState = WatchlistUIState.Empty
 
     init {
         observeWatchlist()
