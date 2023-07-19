@@ -10,24 +10,31 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledevpro.tickerlist.view.state.TickerListUIState
 import com.mobiledevpro.ui.common.modifierMaxWidth
+import com.mobiledevpro.ui.component.TextCaptionBox
 import com.mobiledevpro.ui.component.TickerSearchBar
 import com.mobiledevpro.ui.component.WidgetBox
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
 internal fun TickerListBox(
     modifier: Modifier = Modifier,
-    list: List<Ticker>,
+    uiState: StateFlow<TickerListUIState>,
     onClickAdd: (Ticker) -> Unit,
     onClickRemove: (Ticker) -> Unit,
     onClickClose: () -> Unit,
     onSearchChanged: (String) -> Unit
 ) {
+
+    val state by uiState.collectAsState()
 
     val modifierListItem = modifierMaxWidth
 
@@ -56,15 +63,21 @@ internal fun TickerListBox(
                 modifier = modifierMaxWidth.padding(all = 8.dp)
             )
 
-            LazyColumn {
-                items(list) { ticker ->
-                    TickerItem(
-                        modifier = modifierListItem,
-                        ticker = ticker,
-                        onClickAdd = { onClickAdd(ticker) },
-                        onClickRemove = { onClickRemove(ticker) }
-                    )
-                }
+            when (state) {
+                is TickerListUIState.Success ->
+                    LazyColumn {
+                        items((state as TickerListUIState.Success).list) { ticker ->
+                            TickerItem(
+                                modifier = modifierListItem,
+                                ticker = ticker,
+                                onClickAdd = { onClickAdd(ticker) },
+                                onClickRemove = { onClickRemove(ticker) }
+                            )
+                        }
+                    }
+
+                is TickerListUIState.Loading -> TextCaptionBox("Loading...")
+                is TickerListUIState.Empty -> TextCaptionBox("No symbol found")
             }
         }
     }

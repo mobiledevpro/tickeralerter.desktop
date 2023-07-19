@@ -4,8 +4,7 @@ import com.mobiledevpro.database.TickerEntry
 import com.mobiledevpro.network.model.TickerRemote
 import kotlinx.coroutines.flow.Flow
 
-interface TickerRepository {
-    suspend fun getServerTime(): Long
+interface TickerListRepository {
 
     fun getTickerListLocal(): Flow<List<TickerEntry>>
 

@@ -1,33 +1,17 @@
 package com.mobiledevpro.home.domain.interactor
 
-import com.mobiledepro.main.domain.mapper.toDomain
-import com.mobiledepro.main.domain.mapper.toLocal
-import com.mobiledepro.main.domain.model.Ticker
-import com.mobiledevpro.tickerlist.data.repository.TickerRepository
-import com.mobiledevpro.watchlist.data.repository.WatchListRepository
+import com.mobiledevpro.home.data.repository.HomeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.ticker
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class ImplHomeScreenInteractor(
-    private val tickersRepository: TickerRepository,
-    private val watchListRepository: WatchListRepository
+    private val homeRepository: HomeRepository
 ) : HomeScreenInteractor {
-
-    private val tickerListSearchTerm = MutableStateFlow("")
-
-    override suspend fun syncTickerList() {
-        withContext(Dispatchers.IO) {
-            tickersRepository.getTickerListRemote()
-                .map { it.toLocal() }
-                .also {
-                    tickersRepository.cacheTickerListLocal(it)
-                }
-        }
-    }
 
     @OptIn(ObsoleteCoroutinesApi::class)
     override fun getServerTime(): Flow<Long> = flow {
@@ -35,7 +19,7 @@ class ImplHomeScreenInteractor(
         ticker(3000, 0)
             .consumeEach {
                 try {
-                    tickersRepository.getServerTime().also { timeMs ->
+                    homeRepository.getServerTime().also { timeMs ->
                         emit(timeMs)
                     }
                 } catch (e: Exception) {
@@ -46,40 +30,4 @@ class ImplHomeScreenInteractor(
             }
 
     }.flowOn(Dispatchers.IO)
-
-    override fun getTickerList(): Flow<List<Ticker>> {
-
-        val tickerListFlow = tickersRepository.getTickerListLocal()
-            .map { it.toDomain() as List<Ticker> }
-        val watchlistFlow = watchListRepository.getListLocal()
-            .map { it.toDomain() as List<Ticker> }
-
-        return combine(
-            tickerListFlow,
-            watchlistFlow,
-            tickerListSearchTerm
-        ) { tickers: List<Ticker>, watchlist: List<Ticker>, searchTerm: String ->
-            tickers.onEach { ticker ->
-                ticker.selected = watchlist.find { it.symbol == ticker.symbol } != null
-            }.let { list ->
-                if (searchTerm.isNotEmpty())
-                    list.filter { it.symbol.lowercase().contains(searchTerm.lowercase()) }
-                else
-                    list
-            }
-
-        }.flowOn(Dispatchers.IO)
-    }
-
-    override suspend fun setTickerListSearch(value: String) {
-        withContext(Dispatchers.IO) {
-            tickerListSearchTerm.value = value
-        }
-    }
-
-    override suspend fun clearTickerListSearch() {
-        withContext(Dispatchers.IO) {
-            tickerListSearchTerm.value = ""
-        }
-    }
 }

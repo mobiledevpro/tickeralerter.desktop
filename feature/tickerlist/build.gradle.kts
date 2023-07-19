@@ -13,6 +13,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(project(":common:main"))
+                api(project(":feature:watchlist"))
             }
         }
     }

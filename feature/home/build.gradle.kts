@@ -14,7 +14,6 @@ kotlin {
             dependencies {
                 implementation(project(":common:main"))
                 api(project(":feature:tickerlist"))
-                api(project(":feature:watchlist"))
                 api(project(":feature:chart"))
                 api(project(":feature:alert_settings"))
             }

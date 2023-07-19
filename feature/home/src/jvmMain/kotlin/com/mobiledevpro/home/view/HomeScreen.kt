@@ -16,6 +16,7 @@ import com.mobiledevpro.chart.view.state.ChartUIState
 import com.mobiledevpro.home.view.component.OnlineStatus
 import com.mobiledevpro.home.view.state.HomeUIState
 import com.mobiledevpro.tickerlist.view.TickerListDialog
+import com.mobiledevpro.tickerlist.view.state.TickerListUIState
 import com.mobiledevpro.ui.common.modifierMaxHeight
 import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth
@@ -27,7 +28,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun HomeScreen(
     homeUIState: StateFlow<HomeUIState>,
     tradingLogState: StateFlow<List<String>>,
-    tickerListState: StateFlow<List<Ticker>>,
+    tickerListUIState: StateFlow<TickerListUIState>,
     watchListUIState: StateFlow<WatchlistUIState>,
     chartUIState: StateFlow<ChartUIState>,
     alertTriggerListState: StateFlow<List<AlertTrigger>>,
@@ -44,7 +45,6 @@ fun HomeScreen(
     val homeState by homeUIState.collectAsState()
     val watchListState by watchListUIState.collectAsState()
     val chartState by chartUIState.collectAsState()
-    val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
     val alertTriggers by alertTriggerListState.collectAsState()
     val alertEvents by alertEventListState.collectAsState()
@@ -129,7 +129,7 @@ fun HomeScreen(
         //Show a dialog to add tickers to watchlist
         if (addToWatchlistDialogVisible)
             TickerListDialog(
-                list = tickerList,
+                uiState = tickerListUIState,
                 onAdd = onAddToWatchList,
                 onRemove = onRemoveFromWatchlist,
                 onSearch = onTickerListSearch,

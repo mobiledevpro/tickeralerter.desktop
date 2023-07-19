@@ -35,17 +35,7 @@ class HomeScreenViewModel(
     init {
         observeNetworkConnection()
         // observeLog()
-        observeTickerList()
         observeAlerts()
-    }
-
-    fun tickerListSearch(value: String) {
-        coroutinesScope.launch {
-            if (value.isEmpty())
-                interactor.clearTickerListSearch()
-            else
-                interactor.setTickerListSearch(value)
-        }
     }
 
     fun updateAlertCondition(alertCondition: AlertCondition) {
@@ -74,24 +64,9 @@ class HomeScreenViewModel(
 
                 println("list size ${mutableList.size}")
             }
-
-        }
-
-
-    }
-
-    private fun observeTickerList() {
-        coroutinesScope.launch {
-            interactor.syncTickerList()
-        }
-
-        coroutinesScope.launch {
-            interactor.getTickerList().collectLatest { list ->
-                println("Get local ticker list: ${list.size}")
-                _tickerList.update { list }
-            }
         }
     }
+
 
     private fun observeAlerts() {
         //Alert triggers list

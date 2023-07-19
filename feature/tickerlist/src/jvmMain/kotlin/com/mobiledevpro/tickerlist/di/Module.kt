@@ -1,34 +1,27 @@
-package com.mobiledevpro.home.di
+package com.mobiledevpro.tickerlist.di
 
-import com.mobiledevpro.home.data.repository.HomeRepository
-import com.mobiledevpro.home.data.repository.ImplHomeRepository
-import com.mobiledevpro.home.domain.interactor.HomeScreenInteractor
-import com.mobiledevpro.home.domain.interactor.ImplHomeScreenInteractor
-import com.mobiledevpro.home.view.vm.HomeScreenViewModel
 import com.mobiledevpro.tickerlist.data.repository.ImplTickerListRepository
 import com.mobiledevpro.tickerlist.data.repository.TickerListRepository
+import com.mobiledevpro.tickerlist.domain.interactor.ImplTickerListInteractor
+import com.mobiledevpro.tickerlist.domain.interactor.TickerListInteractor
+import com.mobiledevpro.tickerlist.view.vm.TickerListViewModel
 import com.mobiledevpro.watchlist.data.repository.ImplWatchListRepository
 import com.mobiledevpro.watchlist.data.repository.WatchListRepository
 import org.koin.dsl.module
 
-val featureHomeModule = module {
-    scope<HomeScreenViewModel> {
+val featureTickerListModule = module {
+    scope<TickerListViewModel> {
         scoped {
-            HomeScreenViewModel(
-                coroutinesScope = get(),
+            TickerListViewModel(
+                coroutineScope = get(),
                 interactor = get()
             )
         }
 
-        scoped<HomeScreenInteractor> {
-            ImplHomeScreenInteractor(
-                homeRepository = get()
-            )
-        }
-
-        scoped<HomeRepository> {
-            ImplHomeRepository(
-                httpClient = get()
+        scoped<TickerListInteractor> {
+            ImplTickerListInteractor(
+                tickersRepository = get(),
+                watchListRepository = get()
             )
         }
 
@@ -38,7 +31,6 @@ val featureHomeModule = module {
                 httpClient = get()
             )
         }
-
         scoped<WatchListRepository> {
             ImplWatchListRepository(
                 database = get(),
