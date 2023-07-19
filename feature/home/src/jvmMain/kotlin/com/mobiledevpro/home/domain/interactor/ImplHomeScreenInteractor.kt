@@ -6,7 +6,6 @@ import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.tickerlist.data.repository.TickerRepository
 import com.mobiledevpro.watchlist.data.repository.WatchListRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.ticker
@@ -19,8 +18,6 @@ class ImplHomeScreenInteractor(
 ) : HomeScreenInteractor {
 
     private val tickerListSearchTerm = MutableStateFlow("")
-    private val syncedSymbolsList = MutableStateFlow(listOf<String>())
-
 
     override suspend fun syncTickerList() {
         withContext(Dispatchers.IO) {
@@ -31,32 +28,6 @@ class ImplHomeScreenInteractor(
                 }
         }
     }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun syncWatchlist() {
-        watchListRepository.getSymbolsListLocal()
-            .filter { localSymbolsList ->
-                //It allows to avoid re-subscribing to socket every time ticker updates
-                localSymbolsList != syncedSymbolsList.value
-            }
-            .flatMapLatest { symbolList: List<String> ->
-                syncedSymbolsList.value = symbolList
-                //get updates from the socket
-                watchListRepository.subscribeToSymbolListRemote(symbolList)
-            }
-            .buffer()
-            .flowOn(Dispatchers.IO)
-            .mapLatest { symbolRemote ->
-                //Update watchlist locally
-                symbolRemote.toLocal()
-                    ?.let { entry -> watchListRepository.updateLocal(entry) }
-                    ?: false
-            }
-            .flowOn(Dispatchers.IO)
-            .collect()
-    }
-
-
 
     @OptIn(ObsoleteCoroutinesApi::class)
     override fun getServerTime(): Flow<Long> = flow {
@@ -99,11 +70,6 @@ class ImplHomeScreenInteractor(
 
         }.flowOn(Dispatchers.IO)
     }
-
-    override fun getWatchList(): Flow<List<Ticker>> =
-        watchListRepository.getListLocal()
-            .map { it.toDomain() as List<Ticker> }
-            .flowOn(Dispatchers.IO)
 
     override suspend fun setTickerListSearch(value: String) {
         withContext(Dispatchers.IO) {

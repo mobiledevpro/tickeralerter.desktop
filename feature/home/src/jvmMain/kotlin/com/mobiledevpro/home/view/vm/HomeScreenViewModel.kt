@@ -1,30 +1,25 @@
 package com.mobiledevpro.home.view.vm
 
 import com.mobiledepro.main.domain.model.*
+import com.mobiledepro.main.view.BaseViewModel
 import com.mobiledevpro.home.domain.interactor.HomeScreenInteractor
+import com.mobiledevpro.home.view.state.HomeUIState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 
 class HomeScreenViewModel(
-    private val scope: CoroutineScope,
+    private val coroutinesScope: CoroutineScope,
     private val interactor: HomeScreenInteractor
-) {
+) : BaseViewModel<HomeUIState>() {
 
     private val _tradingLog = MutableStateFlow<List<String>>(emptyList())
     val tradingLog: StateFlow<List<String>> = _tradingLog.asStateFlow()
 
     private val _tickerList = MutableStateFlow<List<Ticker>>(emptyList())
     val tickerList: StateFlow<List<Ticker>> = _tickerList.asStateFlow()
-
-    private val _chart = MutableStateFlow<Chart>(Chart(emptyList()))
-    val chart: StateFlow<Chart> = _chart.asStateFlow()
-
-    private val _serverTime = MutableStateFlow(0L)
-    val serverTime: StateFlow<Long> = _serverTime
 
     private val _alertTriggerList = MutableStateFlow<List<AlertTrigger>>(emptyList())
     val alertTriggerList: StateFlow<List<AlertTrigger>> = _alertTriggerList.asStateFlow()
@@ -35,6 +30,8 @@ class HomeScreenViewModel(
     private val _alertSettingsUIState = MutableStateFlow(AlertSettingsUIState.Success(AlertCondition("BTCUSDT")))
     val alertSettingsUIState: StateFlow<AlertSettingsUIState> = _alertSettingsUIState.asStateFlow()
 
+    override fun initUIState(): HomeUIState = HomeUIState.Empty
+
     init {
         observeNetworkConnection()
         // observeLog()
@@ -43,7 +40,7 @@ class HomeScreenViewModel(
     }
 
     fun tickerListSearch(value: String) {
-        scope.launch {
+        coroutinesScope.launch {
             if (value.isEmpty())
                 interactor.clearTickerListSearch()
             else
@@ -62,7 +59,7 @@ class HomeScreenViewModel(
     }
 
     private fun observeLog() {
-        scope.launch(Dispatchers.IO) {
+        coroutinesScope.launch(Dispatchers.IO) {
 
             val mutableList = ArrayList<String>()
 
@@ -84,11 +81,11 @@ class HomeScreenViewModel(
     }
 
     private fun observeTickerList() {
-        scope.launch {
+        coroutinesScope.launch {
             interactor.syncTickerList()
         }
 
-        scope.launch {
+        coroutinesScope.launch {
             interactor.getTickerList().collectLatest { list ->
                 println("Get local ticker list: ${list.size}")
                 _tickerList.update { list }
@@ -111,12 +108,12 @@ class HomeScreenViewModel(
         //TODO: Show new alerts as pop-up somehow
     }
 
-    @OptIn(ObsoleteCoroutinesApi::class)
     private fun observeNetworkConnection() {
-        scope.launch {
+        coroutinesScope.launch {
             interactor.getServerTime().collectLatest { timeMs ->
-                println("Time $timeMs")
-                _serverTime.update { timeMs }
+                _uiState.update {
+                    HomeUIState.Success(timeMs)
+                }
             }
         }
     }

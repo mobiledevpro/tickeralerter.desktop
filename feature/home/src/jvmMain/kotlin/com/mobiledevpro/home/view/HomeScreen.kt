@@ -14,6 +14,7 @@ import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
 import com.mobiledevpro.chart.view.state.ChartUIState
 import com.mobiledevpro.home.view.component.OnlineStatus
+import com.mobiledevpro.home.view.state.HomeUIState
 import com.mobiledevpro.tickerlist.view.TickerListDialog
 import com.mobiledevpro.ui.common.modifierMaxHeight
 import com.mobiledevpro.ui.common.modifierMaxSize
@@ -24,7 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomeScreen(
-    serverTimeState: StateFlow<Long>,
+    homeUIState: StateFlow<HomeUIState>,
     tradingLogState: StateFlow<List<String>>,
     tickerListState: StateFlow<List<Ticker>>,
     watchListUIState: StateFlow<WatchlistUIState>,
@@ -39,11 +40,12 @@ fun HomeScreen(
     onAlertConditionUpdate: (AlertCondition) -> Unit,
     onAlertConditionSave: () -> Unit,
 ) {
+
+    val homeState by homeUIState.collectAsState()
     val watchListState by watchListUIState.collectAsState()
     val chartState by chartUIState.collectAsState()
     val tickerList by tickerListState.collectAsState()
     val tradingLog by tradingLogState.collectAsState()
-    val serverTime by serverTimeState.collectAsState()
     val alertTriggers by alertTriggerListState.collectAsState()
     val alertEvents by alertEventListState.collectAsState()
     val alertSettingsState by alertSettingsUIState.collectAsState()
@@ -119,7 +121,7 @@ fun HomeScreen(
                 modifier = modifierMaxWidth
                     .align(Alignment.BottomCenter)
                     .height(20.dp),
-                serverTime = serverTime
+                serverTime = (homeState as HomeUIState.Success).serverTimeMs
             )
 
         }
