@@ -19,6 +19,7 @@ class ChartViewModel(
     override fun initUIState(): ChartUIState = ChartUIState.Empty
 
     fun openChart(ticker: Ticker) {
+        _uiState.update { ChartUIState.Loading }
         observeChartCandleList(ticker)
     }
 
@@ -26,9 +27,11 @@ class ChartViewModel(
         coroutineScope.launch {
             interactor.getChart(ticker, "1h").collectLatest { candleList ->
                 println("Get local candle list: ${candleList.size}")
-                _uiState.update {
-                    ChartUIState.Success(chartData = Chart(candleList))
-                }
+
+                if (candleList.isNotEmpty())
+                    _uiState.update {
+                        ChartUIState.Success(chartData = Chart(candleList))
+                    }
             }
         }
 

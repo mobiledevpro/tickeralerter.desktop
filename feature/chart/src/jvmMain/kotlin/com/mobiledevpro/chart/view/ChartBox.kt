@@ -2,7 +2,6 @@ package com.mobiledevpro.chart.view
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -42,6 +41,7 @@ fun ChartBox(state: ChartUIState, chartSettings: ChartSettings, modifier: Modifi
         when (state) {
             is ChartUIState.Success -> Chart(state.chartData, chartSettings, chartSize)
             is ChartUIState.Empty -> Empty()
+            is ChartUIState.Loading -> Loading()
         }
 
     }
@@ -55,20 +55,18 @@ fun Chart(
     chartSize: Size
 ) {
 
-    val higherHighPrice by remember { mutableStateOf(chart.getHigherHighPrice()) }
-    val lowerLowPrice by remember { mutableStateOf(chart.getLowerLowPrice()) }
-    var pricePxFactor by remember { mutableStateOf(0.0) }
-    var candleWith by remember { mutableStateOf(0f) }
+    val higherHighPrice = chart.getHigherHighPrice()
+    val lowerLowPrice = chart.getLowerLowPrice()
 
     if (higherHighPrice == 0.0 || lowerLowPrice == 0.0) return
 
     println("Chart candles ${chart.candleList.size}")
 
     //Find price movement for 1 px
-    pricePxFactor = higherHighPrice.minus(lowerLowPrice) / chartSize.height
+    val pricePxFactor = higherHighPrice.minus(lowerLowPrice) / chartSize.height
 
     //Find candle width
-    candleWith = chartSize.width / chart.candlesCount()
+    val candleWith = chartSize.width / chart.candlesCount()
 
     //Draw the chart
     showChart(
@@ -128,16 +126,27 @@ fun Empty() {
         modifier = modifierMaxSize,
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Please select a symbol in Watchlist to see the chart.",
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.caption.copy(color = MaterialTheme.colors.white),
-                modifier = Modifier.padding(16.dp)
-            )
-        }
+        Text(
+            text = "Please select a symbol in Watchlist to see the chart.",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.caption.copy(color = MaterialTheme.colors.white),
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
+@Composable
+fun Loading() {
+    Box(
+        modifier = modifierMaxSize,
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "Loading...",
+            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.caption.copy(color = MaterialTheme.colors.white),
+            modifier = Modifier.padding(16.dp)
+        )
 
     }
 }

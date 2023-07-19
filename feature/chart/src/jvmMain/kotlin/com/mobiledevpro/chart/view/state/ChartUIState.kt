@@ -7,4 +7,6 @@ sealed interface ChartUIState : UiState {
     class Success(val chartData: Chart) : ChartUIState
 
     object Empty : ChartUIState
+
+    object Loading : ChartUIState
 }
