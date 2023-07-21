@@ -17,9 +17,6 @@ pluginManagement {
         id("app.cash.sqldelight").version(sqldelightVersion)
     }
 }
-
-rootProject.name = "tickeralerter"
-
 include(
     ":common:database",
     ":common:network",
@@ -30,5 +27,10 @@ include(
     ":feature:tickerlist",
     ":feature:watchlist",
     ":feature:chart",
+    ":feature:alerts",
+    ":feature:alert_events",
+    ":feature:alert_triggers",
     ":feature:alert_settings"
 )
+
+rootProject.name = "tickeralerter"

@@ -1,4 +1,4 @@
-package com.mobiledevpro.alert.settings.view
+package com.mobiledevpro.alert.triggers.view.component
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*

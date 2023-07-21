@@ -1,4 +1,4 @@
-package com.mobiledevpro.alert.settings.view
+package com.mobiledevpro.alert.events.view.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

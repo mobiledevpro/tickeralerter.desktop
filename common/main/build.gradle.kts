@@ -13,9 +13,12 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(Deps.Koin.CORE)
-                api(project(":common:ui"))
-                api(project(":common:database"))
-                api(project(":common:network"))
+
+                with(Deps.Common) {
+                    api(project(UI))
+                    api(project(DATABASE))
+                    api(project(NETWORK))
+                }
             }
         }
 

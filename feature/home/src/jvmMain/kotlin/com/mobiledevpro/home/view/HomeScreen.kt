@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.*
 import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
-import com.mobiledevpro.alert.settings.view.AlertsBox
+import com.mobiledevpro.alerts.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
 import com.mobiledevpro.chart.view.state.ChartUIState
@@ -27,7 +27,6 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun HomeScreen(
     homeUIState: StateFlow<HomeUIState>,
-    tradingLogState: StateFlow<List<String>>,
     tickerListUIState: StateFlow<TickerListUIState>,
     watchListUIState: StateFlow<WatchlistUIState>,
     chartUIState: StateFlow<ChartUIState>,
@@ -38,14 +37,13 @@ fun HomeScreen(
     onRemoveFromWatchlist: (Ticker) -> Unit,
     onSelectFromWatchlist: (Ticker) -> Unit,
     onTickerListSearch: (String) -> Unit,
-    onAlertConditionUpdate: (AlertCondition) -> Unit,
-    onAlertConditionSave: () -> Unit,
+    onAlertSettingsChanged: (AlertSettings) -> Unit,
+    onAlertSettingsSave: () -> Unit,
 ) {
 
     val homeState by homeUIState.collectAsState()
     val watchListState by watchListUIState.collectAsState()
     val chartState by chartUIState.collectAsState()
-    val tradingLog by tradingLogState.collectAsState()
     val alertTriggers by alertTriggerListState.collectAsState()
     val alertEvents by alertEventListState.collectAsState()
     val alertSettingsState by alertSettingsUIState.collectAsState()
@@ -121,7 +119,10 @@ fun HomeScreen(
                 modifier = modifierMaxWidth
                     .align(Alignment.BottomCenter)
                     .height(20.dp),
-                serverTime = (homeState as HomeUIState.Success).serverTimeMs
+                serverTime = when (homeState) {
+                    is HomeUIState.Success -> (homeState as HomeUIState.Success).serverTimeMs
+                    else -> 0L
+                }
             )
 
         }
@@ -147,8 +148,8 @@ fun HomeScreen(
                 onClose = {
                     addToAlertsDialogVisible = false
                 },
-                onSave = onAlertConditionSave,
-                onUpdate = onAlertConditionUpdate,
+                onSave = onAlertSettingsSave,
+                onUpdate = onAlertSettingsChanged,
                 watchList = (watchListState as WatchlistUIState.Success).list//fakeTickerListFirst()
             )
 

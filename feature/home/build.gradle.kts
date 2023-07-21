@@ -12,10 +12,13 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":common:main"))
-                api(project(":feature:tickerlist"))
-                api(project(":feature:chart"))
-                api(project(":feature:alert_settings"))
+                implementation(project(Deps.Common.MAIN))
+
+                with(Deps.Feature) {
+                    api(project(TICKER_LIST))
+                    api(project(CHART))
+                    api(project(ALERTS))
+                }
             }
         }
     }

@@ -19,11 +19,11 @@ import com.mobiledevpro.ui.component.WidgetBox
 import com.mobiledevpro.ui.defaults.Defaults
 
 @Composable
-internal fun AlertSettingsBox(
+fun AlertSettingsBox(
     modifier: Modifier = Modifier,
     alertTrigger: AlertTrigger?,
-    alertCondition: AlertCondition,
-    onUpdate: (AlertCondition) -> Unit,
+    alertCondition: AlertSettings,
+    onUpdate: (AlertSettings) -> Unit,
     onClickClose: () -> Unit,
     onClickSave: () -> Unit,
     watchList: List<Ticker>
@@ -92,7 +92,7 @@ fun Header(edit: Boolean, onClose: () -> Unit) {
 }
 
 @Composable
-fun ConditionRules(tickerList: List<Ticker>, alertCondition: AlertCondition, onChange: (AlertCondition) -> Unit) {
+fun ConditionRules(tickerList: List<Ticker>, alertCondition: AlertSettings, onChange: (AlertSettings) -> Unit) {
 
     val targetPrice: Double? =
         if (alertCondition.conditionTarget == ConditionTarget.PRICE)
@@ -202,7 +202,7 @@ fun RowScope.TextLabel(text: String) {
 fun AlertSettingsBoxPreview() {
     Theme {
         AlertSettingsDialog(
-            alertCondition = AlertCondition("BTCUSDT"),
+            alertCondition = AlertSettings("BTCUSDT"),
             onClose = {},
             onSave = {},
             onUpdate = {},

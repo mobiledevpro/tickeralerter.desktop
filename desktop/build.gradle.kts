@@ -22,8 +22,8 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":common:main"))
-                implementation(project(":feature:home"))
+                implementation(project(Deps.Common.MAIN))
+                implementation(project(Deps.Feature.HOME))
             }
         }
         val jvmTest by getting

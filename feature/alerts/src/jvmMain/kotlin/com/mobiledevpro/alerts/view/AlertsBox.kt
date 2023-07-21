@@ -1,4 +1,4 @@
-package com.mobiledevpro.alert.settings.view
+package com.mobiledevpro.alerts.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.AlertEvent
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.fakeAlertTriggersList
+import com.mobiledevpro.alert.events.view.component.EventListItem
+import com.mobiledevpro.alert.triggers.view.component.TriggerListItem
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth

@@ -1,6 +1,6 @@
 package com.mobiledepro.main.domain.model
 
-data class AlertCondition(
+data class AlertSettings(
     var symbol: String,
     val conditionSource: ConditionSource = ConditionSource.TICKER_PRICE,
     var conditionType: ConditionType = ConditionType.CROSSING,
