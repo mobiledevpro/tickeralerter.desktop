@@ -27,7 +27,7 @@ class HomeScreenViewModel(
     private val _alertEventList = MutableStateFlow<List<AlertEvent>>(emptyList())
     val alertEventList: StateFlow<List<AlertEvent>> = _alertEventList.asStateFlow()
 
-    private val _alertSettingsUIState = MutableStateFlow(AlertSettingsUIState.Success(AlertSettings("BTCUSDT")))
+    private val _alertSettingsUIState = MutableStateFlow<AlertSettingsUIState>(AlertSettingsUIState.Empty)
     val alertSettingsUIState: StateFlow<AlertSettingsUIState> = _alertSettingsUIState.asStateFlow()
 
     override fun initUIState(): HomeUIState = HomeUIState.Empty
@@ -38,13 +38,15 @@ class HomeScreenViewModel(
         observeAlerts()
     }
 
-    fun updateAlertCondition(alertCondition: AlertSettings) {
+    fun onAlertSettingsChanged(trigger: AlertTrigger) {
 
-        _alertSettingsUIState.value = AlertSettingsUIState.Success(alertCondition)
-        println("::updateAlertCondition")
+        _alertSettingsUIState.update {
+            AlertSettingsUIState.Success(trigger)
+        }
+        println("::onAlertSettingsChanged ${trigger.alertSettings.targetPrice}")
     }
 
-    fun saveAlertCondition() {
+    fun onAlertSettingsSave(trigger: AlertTrigger) {
         //TODO: update existing or add a new one
     }
 

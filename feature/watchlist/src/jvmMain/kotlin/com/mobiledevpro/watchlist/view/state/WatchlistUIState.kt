@@ -8,3 +8,9 @@ sealed interface WatchlistUIState : UiState {
 
     object Empty : WatchlistUIState
 }
+
+fun WatchlistUIState.getSuccess(): List<Ticker> =
+    when (this) {
+        is WatchlistUIState.Success -> list
+        else -> emptyList()
+    }

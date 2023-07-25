@@ -2,8 +2,12 @@ package com.mobiledevpro.alert.settings.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.mobiledepro.main.domain.model.AlertSettings
+import com.mobiledepro.main.domain.model.AlertSettingsUIState
+import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.component.Dialog
@@ -11,20 +15,30 @@ import com.mobiledevpro.ui.component.Dialog
 @Composable
 fun AlertSettingsDialog(
     modifier: Modifier = Modifier,
-    alertCondition: AlertSettings,
+    state: AlertSettingsUIState,
     onClose: () -> Unit,
-    onSave: () -> Unit,
-    onUpdate: (AlertSettings) -> Unit,
-    watchList: List<Ticker>
+    onSave: (AlertTrigger) -> Unit,
+    onUpdate: (AlertTrigger) -> Unit,
+    tickerList: List<Ticker>
 ) {
+    //Find out an alert trigger to change
+    val alertTrigger: AlertTrigger by remember {
+        mutableStateOf(
+            when (state) {
+                is AlertSettingsUIState.Success -> state.trigger
+                else -> (tickerList.find { it.selected }
+                    ?: tickerList[0]).let { ticker -> AlertTrigger(symbol = ticker.symbol) }
+            }
+        )
+    }
+
     Dialog(modifier = modifier) {
         AlertSettingsBox(
-            alertTrigger = null,
-            alertCondition = alertCondition,
+            trigger = alertTrigger,
+            tickerList = tickerList,
             onUpdate = onUpdate,
             onClickClose = onClose,
-            onClickSave = onSave,
-            watchList = watchList
+            onClickSave = onSave
         )
     }
 }
@@ -34,11 +48,11 @@ fun AlertSettingsDialog(
 fun AlertSettingsDialogPreview() {
     Theme {
         AlertSettingsDialog(
-            alertCondition = AlertSettings("BTCUSDT"),
+            state = AlertSettingsUIState.Empty,
             onClose = {},
             onSave = {},
             onUpdate = {},
-            watchList = emptyList()
+            tickerList = emptyList()
         )
     }
 }
