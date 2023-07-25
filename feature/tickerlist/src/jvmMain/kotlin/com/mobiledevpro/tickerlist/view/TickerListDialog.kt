@@ -9,13 +9,11 @@ import com.mobiledevpro.tickerlist.view.state.TickerListUIState
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.common.modifierMaxHeight
 import com.mobiledevpro.ui.component.Dialog
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun TickerListDialog(
     modifier: Modifier = Modifier,
-    uiState: StateFlow<TickerListUIState>,
+    state: TickerListUIState,
     onAdd: (Ticker) -> Unit,
     onRemove: (Ticker) -> Unit,
     onClose: () -> Unit,
@@ -24,7 +22,7 @@ fun TickerListDialog(
 
     Dialog(modifier = modifier) {
         TickerListBox(
-            uiState = uiState,
+            state = state,
             onClickAdd = onAdd,
             onClickRemove = onRemove,
             onClickClose = onClose,
@@ -39,7 +37,7 @@ fun TickerListDialog(
 fun TickerListDialogPreview() {
     Theme {
         TickerListDialog(
-            uiState = MutableStateFlow(TickerListUIState.Success(fakeTickerListFirst())),
+            state = TickerListUIState.Success(fakeTickerListFirst()),
             onAdd = {},
             onRemove = {},
             onClose = {},

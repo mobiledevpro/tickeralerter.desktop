@@ -43,9 +43,10 @@ fun HomeScreen(
 
     val homeState by homeUIState.collectAsState()
     val watchListState by watchListUIState.collectAsState()
+    val tickerListState by tickerListUIState.collectAsState()
     val chartState by chartUIState.collectAsState()
-    val alertTriggers by alertTriggerListState.collectAsState()
-    val alertEvents by alertEventListState.collectAsState()
+    val alertTriggersState by alertTriggerListState.collectAsState()
+    val alertEventsState by alertEventListState.collectAsState()
     val alertSettingsState by alertSettingsUIState.collectAsState()
 
     var addToWatchlistDialogVisible by remember { mutableStateOf(false) }
@@ -77,8 +78,8 @@ fun HomeScreen(
 
 
                     AlertsBox(
-                        alertTriggerList = alertTriggers,
-                        alertEventList = alertEvents,
+                        alertTriggerList = alertTriggersState,
+                        alertEventList = alertEventsState,
                         modifier = modifierMaxSize,
                         onClickAdd = {
                             addToAlertsDialogVisible = true
@@ -130,7 +131,7 @@ fun HomeScreen(
         //Show a dialog to add tickers to watchlist
         if (addToWatchlistDialogVisible)
             TickerListDialog(
-                uiState = tickerListUIState,
+                state = tickerListState,
                 onAdd = onAddToWatchList,
                 onRemove = onRemoveFromWatchlist,
                 onSearch = onTickerListSearch,

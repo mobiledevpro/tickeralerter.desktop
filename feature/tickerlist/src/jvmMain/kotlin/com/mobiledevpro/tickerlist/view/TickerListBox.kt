@@ -10,8 +10,9 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -21,22 +22,19 @@ import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.TextCaptionBox
 import com.mobiledevpro.ui.component.TickerSearchBar
 import com.mobiledevpro.ui.component.WidgetBox
-import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
 internal fun TickerListBox(
     modifier: Modifier = Modifier,
-    uiState: StateFlow<TickerListUIState>,
+    state: TickerListUIState,
     onClickAdd: (Ticker) -> Unit,
     onClickRemove: (Ticker) -> Unit,
     onClickClose: () -> Unit,
     onSearchChanged: (String) -> Unit
 ) {
 
-    val state by uiState.collectAsState()
-
-    val modifierListItem = modifierMaxWidth
+    val modifierListItem by remember { mutableStateOf(modifierMaxWidth) }
 
     WidgetBox(modifier = modifier) {
         Column {
@@ -66,7 +64,7 @@ internal fun TickerListBox(
             when (state) {
                 is TickerListUIState.Success ->
                     LazyColumn {
-                        items((state as TickerListUIState.Success).list) { ticker ->
+                        items(state.list) { ticker ->
                             TickerItem(
                                 modifier = modifierListItem,
                                 ticker = ticker,

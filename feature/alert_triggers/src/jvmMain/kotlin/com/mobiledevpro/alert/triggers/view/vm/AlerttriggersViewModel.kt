@@ -23,7 +23,7 @@ import com.mobiledevpro.alert.triggers.view.state.AlertTriggersUIState
 import kotlinx.coroutines.CoroutineScope
 
 /**
- * Class for ...
+ * VM for Trigger lis / Alerts list
  *
  * Created on Jul 21, 2023.
  *
