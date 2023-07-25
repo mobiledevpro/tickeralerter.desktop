@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.domain.model.fakeTickerListFirst
+import com.mobiledevpro.tickerlist.view.state.TickerListUIState
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.common.modifierMaxHeight
 import com.mobiledevpro.ui.component.Dialog
@@ -12,7 +13,7 @@ import com.mobiledevpro.ui.component.Dialog
 @Composable
 fun TickerListDialog(
     modifier: Modifier = Modifier,
-    list: List<Ticker>,
+    state: TickerListUIState,
     onAdd: (Ticker) -> Unit,
     onRemove: (Ticker) -> Unit,
     onClose: () -> Unit,
@@ -21,24 +22,22 @@ fun TickerListDialog(
 
     Dialog(modifier = modifier) {
         TickerListBox(
-            list = list,
+            state = state,
             onClickAdd = onAdd,
             onClickRemove = onRemove,
             onClickClose = onClose,
             onSearchChanged = onSearch,
             modifier = modifierMaxHeight
         )
-
     }
 }
-
 
 @Preview
 @Composable
 fun TickerListDialogPreview() {
     Theme {
         TickerListDialog(
-            list = fakeTickerListFirst(),
+            state = TickerListUIState.Success(fakeTickerListFirst()),
             onAdd = {},
             onRemove = {},
             onClose = {},

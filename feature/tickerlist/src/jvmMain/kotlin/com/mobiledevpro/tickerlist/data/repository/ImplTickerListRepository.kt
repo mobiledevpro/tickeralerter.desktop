@@ -3,11 +3,9 @@ package com.mobiledevpro.tickerlist.data.repository
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import com.mobiledevpro.common.data.remote.model.ExchangeInfoRemote
-import com.mobiledevpro.common.data.remote.model.ServerTimeRemote
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.TickerEntry
 import com.mobiledevpro.network.getExchangeInfo
-import com.mobiledevpro.network.getServerTime
 import com.mobiledevpro.network.model.TickerRemote
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -18,12 +16,7 @@ import kotlin.system.measureTimeMillis
 class ImplTickerListRepository(
     private val database: AppDatabase,
     private val httpClient: HttpClient
-) : TickerRepository {
-
-    override suspend fun getServerTime(): Long = httpClient.getServerTime().let { resp ->
-        val body: ServerTimeRemote = resp.body()
-        body.serverTime
-    }
+) : TickerListRepository {
 
     override fun getTickerListLocal(): Flow<List<TickerEntry>> =
         database.tickerListQueries.selectAll()

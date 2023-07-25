@@ -5,15 +5,20 @@ plugins {
 
 kotlin {
     jvm {
+        jvmToolchain(Deps.JDK)
         withJava()
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":common:ui"))
-                api(project(":common:database"))
-                api(project(":common:network"))
+                api(Deps.Koin.CORE)
+
+                with(Deps.Common) {
+                    api(project(UI))
+                    api(project(DATABASE))
+                    api(project(NETWORK))
+                }
             }
         }
 

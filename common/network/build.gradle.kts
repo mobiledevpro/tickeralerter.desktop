@@ -3,25 +3,26 @@ plugins {
     kotlin("plugin.serialization")
 }
 
-val ktorVersion: String = extra["ktor.version"] as String
-
 kotlin {
     jvm {
-        jvmToolchain(11)
+        jvmToolchain(Deps.JDK)
         withJava()
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client:$ktorVersion")
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
-                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation(Deps.Koin.CORE)
 
-                api("io.ktor:ktor-client-okhttp:$ktorVersion")
-                api("io.ktor:ktor-client-websockets:$ktorVersion")
-                api("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                with(Deps.Ktor) {
+                    implementation(CLIENT)
+                    implementation(CLIENT_CORE)
+                    implementation(CLIENT_LOGGING)
+                    implementation(CLIENT_NEGOTIATION)
+                    api(CLIENT_OKHTTP)
+                    api(CLIENT_WEBSOCKETS)
+                    api(SERIALIZATION_JSON)
+                }
             }
         }
     }

@@ -16,19 +16,14 @@ repositories {
 
 kotlin {
     jvm {
-        jvmToolchain(11)
+        jvmToolchain(Deps.JDK)
         withJava()
     }
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":common:main"))
-                implementation(project(":feature:tickerlist"))
-                implementation(project(":feature:watchlist"))
-                implementation(project(":feature:chart"))
-                implementation(project(":feature:alert_settings"))
-
-                // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.6.4")
+                implementation(project(Deps.Common.MAIN))
+                implementation(project(Deps.Feature.HOME))
             }
         }
         val jvmTest by getting
