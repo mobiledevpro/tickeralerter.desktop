@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="network-jvm">
-    <output-path>$PROJECT_DIR$/common/network/build/libs</output-path>
-    <root id="archive" name="network-jvm.jar">
-      <element id="module-output" name="tickeralerter.common.network.jvmMain" />
-    </root>
-  </artifact>
-</component>

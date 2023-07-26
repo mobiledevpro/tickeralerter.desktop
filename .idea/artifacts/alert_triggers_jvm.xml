@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="alert_triggers-jvm">
-    <output-path>$PROJECT_DIR$/feature/alert_triggers/build/libs</output-path>
-    <root id="archive" name="alert_triggers-jvm.jar" />
-  </artifact>
-</component>

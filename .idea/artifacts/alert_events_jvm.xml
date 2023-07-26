@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="alert_events-jvm">
-    <output-path>$PROJECT_DIR$/feature/alert_events/build/libs</output-path>
-    <root id="archive" name="alert_events-jvm.jar" />
-  </artifact>
-</component>
