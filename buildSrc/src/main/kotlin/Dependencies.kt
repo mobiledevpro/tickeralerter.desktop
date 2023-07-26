@@ -48,6 +48,7 @@ object Deps {
         const val ALERT_EVENTS = ":feature:alert_events"
         const val ALERT_TRIGGERS = ":feature:alert_triggers"
         const val ALERT_SETTINGS = ":feature:alert_settings"
+        const val WATCHLIST = ":feature:watchlist"
     }
 
 }
