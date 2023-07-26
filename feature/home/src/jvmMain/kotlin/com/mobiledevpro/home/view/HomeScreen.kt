@@ -39,7 +39,7 @@ fun HomeScreen(
     onRemoveFromWatchlist: (Ticker) -> Unit,
     onSelectFromWatchlist: (Ticker) -> Unit,
     onTickerListSearch: (String) -> Unit,
-    onAlertSettingsChanged: (AlertTrigger) -> Unit,
+    //onAlertSettingsChanged: (AlertTrigger) -> Unit,
     onAlertSettingsSave: (AlertTrigger) -> Unit,
 ) {
 
@@ -154,6 +154,7 @@ fun HomeScreen(
                     else -> emptyList()
                 }
 
+            println("::WATCHLIST LIST SIZE ${tickerList.size}")
 
             AlertSettingsDialog(
                 state = alertSettingsState,
@@ -161,7 +162,7 @@ fun HomeScreen(
                     alertsSettingsDialogVisible = false
                 },
                 onSave = onAlertSettingsSave,
-                onUpdate = onAlertSettingsChanged,
+                // onUpdate = onAlertSettingsChanged,
                 tickerList = tickerList
             )
         }

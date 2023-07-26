@@ -21,14 +21,13 @@ fun AlertSettingsBox(
     modifier: Modifier = Modifier,
     trigger: AlertTrigger,
     tickerList: List<Ticker>,
-    onUpdate: (AlertTrigger) -> Unit,
     onClickSave: (AlertTrigger) -> Unit,
     onClickClose: () -> Unit,
 ) {
 
     var selectedTriggerOption by remember { mutableStateOf(SimpleTab.ONLY_ONCE) }
-    val editTrigger by remember { mutableStateOf(trigger) }
     val isEdit: Boolean = trigger.timeCreated?.let { true } ?: false
+    var isButtonSaveEnabled by remember { mutableStateOf(true) }
 
 
     WidgetBox(modifier = modifier) {
@@ -38,8 +37,12 @@ fun AlertSettingsBox(
 
             ConditionRules(
                 tickerList = tickerList,
-                trigger = editTrigger,
-                onChange = onUpdate
+                trigger = trigger,
+                onChange = { updatedTrigger ->
+                    println("::TRIGGER CHANGED ${updatedTrigger.alertSettings.targetPrice}")
+                    //check if price is 0, don't allow to save settings
+                    isButtonSaveEnabled = updatedTrigger.saveEnabled()
+                }
             )
 
             Divider(thickness = 1.dp, modifier = Modifier.padding(vertical = 8.dp))
@@ -53,9 +56,11 @@ fun AlertSettingsBox(
 
             Divider(thickness = 1.dp, modifier = Modifier.padding(top = 32.dp, bottom = 4.dp))
 
-            ButtonSave(onClick = {
-                onClickSave(trigger)
-            })
+            ButtonSave(
+                enabled = isButtonSaveEnabled,
+                onClick = {
+                    onClickSave(trigger)
+                })
         }
     }
 

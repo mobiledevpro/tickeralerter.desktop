@@ -38,14 +38,6 @@ class HomeScreenViewModel(
         observeAlerts()
     }
 
-    fun onAlertSettingsChanged(trigger: AlertTrigger) {
-
-        _alertSettingsUIState.update {
-            AlertSettingsUIState.Success(trigger)
-        }
-        println("::onAlertSettingsChanged ${trigger.alertSettings.targetPrice}")
-    }
-
     fun onAlertSettingsSave(trigger: AlertTrigger) {
         //TODO: update existing or add a new one
     }

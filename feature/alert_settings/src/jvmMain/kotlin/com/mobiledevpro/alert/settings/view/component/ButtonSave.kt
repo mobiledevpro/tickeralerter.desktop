@@ -9,12 +9,13 @@ import androidx.compose.ui.Modifier
 import com.mobiledevpro.ui.defaults.Defaults
 
 @Composable
-internal fun ButtonSave(onClick: () -> Unit) {
+internal fun ButtonSave(enabled: Boolean, onClick: () -> Unit) {
     Button(
         modifier = Modifier.width(Defaults.Button.Large.Width),
         onClick = onClick,
         colors = Defaults.ButtonColors(false),
-        shape = Defaults.Button.Large.Shape
+        shape = Defaults.Button.Large.Shape,
+        enabled = enabled
     ) {
         Text(
             text = "Save",

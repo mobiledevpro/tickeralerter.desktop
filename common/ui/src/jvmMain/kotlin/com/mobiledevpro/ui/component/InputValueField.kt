@@ -27,18 +27,15 @@ fun InputValueField(
     onTextChanged: (String) -> Unit
 ) {
 
-    var trailingIconVisible by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf(defaultValue) }
-
-    if (text.isNotEmpty())
-        trailingIconVisible = true
+    var trailingIconVisible by remember { mutableStateOf(text.isNotEmpty()) }
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         TextField(
             value = text,
             onValueChange = {
-                trailingIconVisible = it.isNotEmpty()
                 text = it
+                trailingIconVisible = it.isNotEmpty()
                 onTextChanged(it)
             },
             keyboardOptions = KeyboardOptions(
@@ -68,6 +65,7 @@ fun InputValueField(
                         onClick = {
                             text = ""
                             trailingIconVisible = false
+                            onTextChanged(text)
                         },
                         modifier = Modifier.size(16.dp)
                     ) {

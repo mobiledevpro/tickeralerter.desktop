@@ -3,12 +3,11 @@ package com.mobiledevpro.alert.settings.view.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import com.mobiledepro.main.domain.model.*
 import com.mobiledevpro.ui.common.modifierMaxWidth
+import com.mobiledevpro.ui.component.InputValueField
+import com.mobiledevpro.ui.component.InputValueType
 import com.mobiledevpro.ui.component.SelectValueField
 
 @Composable
@@ -26,7 +25,26 @@ internal fun ConditionRules(
             null
     }
 
-    val price: Double? by remember { mutableStateOf(trigger.alertSettings.targetPrice ?: targetPrice(trigger.symbol)) }
+    var selectedSymbol by remember { mutableStateOf(trigger.symbol) }
+    var selectedConditionType by remember { mutableStateOf(trigger.alertSettings.conditionType) }
+    var selectedConditionTarget by remember { mutableStateOf(trigger.alertSettings.conditionTarget) }
+    var editPrice: Double by remember {
+        mutableStateOf(
+            trigger.alertSettings.targetPrice ?: targetPrice(selectedSymbol) ?: 0.0
+        )
+    }
+
+    val changeTrigger: () -> Unit = {
+        trigger.apply {
+            symbol = selectedSymbol
+        }
+            .updateConditionType(selectedConditionType)
+            .updateConditionTarget(selectedConditionTarget)
+            .updateTargetPrice(editPrice)
+            .also(onChange)
+    }
+
+
 
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
         TextLabel("Condition")
@@ -38,10 +56,9 @@ internal fun ConditionRules(
                 defaultValue = trigger.symbol,
                 valueList = tickerList.mapTo(ArrayList<String>()) { it.symbol },
                 onSelect = { symbol ->
-                    trigger.apply {
-                        this.symbol = symbol
-                    }.updateTargetPrice(targetPrice(symbol))
-                        .also(onChange)
+                    selectedSymbol = symbol
+                    editPrice = targetPrice(symbol) ?: 0.0 //TODO this price is not updated
+                    changeTrigger()
                 }
             )
 
@@ -49,35 +66,43 @@ internal fun ConditionRules(
             SelectValueField(
                 modifier = modifierMaxWidth,
                 valueList = conditionTypeList(),
+                defaultValue = selectedConditionType.toStr(),
                 onSelect = { conditionType ->
-                    trigger
-                        .updateConditionType(conditionType.toConditionType())
-                        .also(onChange)
+                    selectedConditionType = conditionType.toConditionType()
+                    changeTrigger()
                 })
 
             //Condition target
             Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = modifierMaxWidth) {
                 SelectValueField(
                     modifier = modifierMaxWidth.weight(1f),
-                    defaultValue = trigger.alertSettings.conditionTarget.toStr(),
+                    defaultValue = selectedConditionTarget.toStr(),
                     valueList = conditionTargetList(),
                     onSelect = { conditionTarget ->
-                        trigger.updateConditionTarget(conditionTarget.toConditionTarget())
-                            .updateTargetPrice(targetPrice(trigger.symbol))
-                            .also(onChange)
+                        selectedConditionTarget = conditionTarget.toConditionTarget()
+                        changeTrigger()
                     })
 
 
-                if (trigger.alertSettings.conditionTarget == ConditionTarget.PRICE)
-                    SelectValueField(
+                if (selectedConditionTarget == ConditionTarget.PRICE)
+                    InputValueField(
                         modifier = modifierMaxWidth.weight(1f),
-                        defaultValue = price.toString(),
-                        valueList = emptyList(),
-                        onSelect = {}
+                        defaultValue = editPrice.toString(),
+                        hint = "0.0",
+                        type = InputValueType.PRICE,
+                        onTextChanged = { text ->
+                            editPrice = try {
+                                text.toDouble()
+                            } catch (e: NumberFormatException) {
+                                0.0
+                            }
+                            changeTrigger()
+                        }
                     )
             }
         }
 
     }
 }
+
 

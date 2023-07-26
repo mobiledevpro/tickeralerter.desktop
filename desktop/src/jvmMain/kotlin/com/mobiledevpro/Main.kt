@@ -41,7 +41,7 @@ fun App() {
             onRemoveFromWatchlist = watchListViewModel::removeFromWatchlist,
             onTickerListSearch = tickerListViewModel::tickerListSearch,
             onSelectFromWatchlist = chartViewModel::openChart,
-            onAlertSettingsChanged = homeViewModel::onAlertSettingsChanged,
+            //  onAlertSettingsChanged = homeViewModel::onAlertSettingsChanged,
             onAlertSettingsSave = homeViewModel::onAlertSettingsSave
         )
     }

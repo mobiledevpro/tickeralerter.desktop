@@ -21,6 +21,11 @@ data class AlertTrigger(
         alertSettings = alertSettings.apply { conditionTarget = target }
     }
 
+    fun saveEnabled(): Boolean = if (alertSettings.conditionTarget == ConditionTarget.PRICE)
+        (alertSettings.targetPrice ?: 0.0) > 0.0
+    else
+        true
+
     private fun source() = when (alertSettings.conditionSource) {
         ConditionSource.TICKER_PRICE -> "$symbol ($timeFrame)"
         else -> alertSettings.conditionSource.toStr()

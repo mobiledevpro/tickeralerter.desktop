@@ -18,7 +18,6 @@ fun AlertSettingsDialog(
     state: AlertSettingsUIState,
     onClose: () -> Unit,
     onSave: (AlertTrigger) -> Unit,
-    onUpdate: (AlertTrigger) -> Unit,
     tickerList: List<Ticker>
 ) {
     //Find out an alert trigger to change
@@ -36,7 +35,6 @@ fun AlertSettingsDialog(
         AlertSettingsBox(
             trigger = alertTrigger,
             tickerList = tickerList,
-            onUpdate = onUpdate,
             onClickClose = onClose,
             onClickSave = onSave
         )
@@ -51,7 +49,6 @@ fun AlertSettingsDialogPreview() {
             state = AlertSettingsUIState.Empty,
             onClose = {},
             onSave = {},
-            onUpdate = {},
             tickerList = emptyList()
         )
     }
