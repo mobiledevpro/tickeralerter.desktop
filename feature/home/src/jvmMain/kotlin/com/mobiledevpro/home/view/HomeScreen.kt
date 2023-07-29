@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.*
 import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
+import com.mobiledevpro.alert.triggers.view.state.AlertTriggersUIState
 import com.mobiledevpro.alerts.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
@@ -32,14 +33,13 @@ fun HomeScreen(
     tickerListUIState: StateFlow<TickerListUIState>,
     watchListUIState: StateFlow<WatchlistUIState>,
     chartUIState: StateFlow<ChartUIState>,
-    alertTriggerListUIState: StateFlow<List<AlertTrigger>>,
+    alertTriggerListUIState: StateFlow<AlertTriggersUIState>,
     alertEventListUIState: StateFlow<List<AlertEvent>>,
     alertSettingsUIState: StateFlow<AlertSettingsUIState>,
     onAddToWatchList: (Ticker) -> Unit,
     onRemoveFromWatchlist: (Ticker) -> Unit,
     onSelectFromWatchlist: (Ticker) -> Unit,
     onTickerListSearch: (String) -> Unit,
-    //onAlertSettingsChanged: (AlertTrigger) -> Unit,
     onAlertSettingsSave: (AlertTrigger) -> Unit,
 ) {
 
@@ -80,7 +80,7 @@ fun HomeScreen(
 
 
                     AlertsBox(
-                        alertTriggerList = alertTriggersState,
+                        alertTriggersState = alertTriggersState,
                         alertEventList = alertEventsState,
                         modifier = modifierMaxSize,
                         onClickAdd = {
@@ -162,7 +162,6 @@ fun HomeScreen(
                     alertsSettingsDialogVisible = false
                 },
                 onSave = onAlertSettingsSave,
-                // onUpdate = onAlertSettingsChanged,
                 tickerList = tickerList
             )
         }

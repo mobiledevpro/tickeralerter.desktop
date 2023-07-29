@@ -17,8 +17,12 @@
  */
 package com.mobiledevpro.alert.triggers.data.repository
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
+import com.mobiledevpro.database.AlertTriggerEntry
 import com.mobiledevpro.database.AppDatabase
-import io.ktor.client.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 
 /**
  *
@@ -27,8 +31,46 @@ import io.ktor.client.*
  */
 
 class ImplAlertTriggersRepository(
-    private val database: AppDatabase,
-    private val httpClient: HttpClient
+    private val database: AppDatabase
 ) : AlertTriggersRepository {
+
+    override fun getListLocal(): Flow<List<AlertTriggerEntry>> =
+        database.alertTriggerQueries.selectAll()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
+
+    override suspend fun addLocal(entry: AlertTriggerEntry) {
+        //check entry is exists
+        val isExist = database.alertTriggerQueries.selectIsExist(entry.timeCreatedAt)
+            .executeAsOne() > 0
+
+        if (!isExist)
+            database.alertTriggerQueries.insertItem(
+                timeCreatedAt = entry.timeCreatedAt,
+                symbol = entry.symbol,
+                timeFrame = entry.timeFrame,
+                active = entry.active,
+                conditionSource = entry.conditionSource,
+                conditionType = entry.conditionType,
+                conditionTarget = entry.conditionTarget
+            )
+    }
+
+    override suspend fun updateLocal(entry: AlertTriggerEntry): Boolean {
+        database.alertTriggerQueries.insertItem(
+            timeCreatedAt = entry.timeCreatedAt,
+            symbol = entry.symbol,
+            timeFrame = entry.timeFrame,
+            active = entry.active,
+            conditionSource = entry.conditionSource,
+            conditionType = entry.conditionType,
+            conditionTarget = entry.conditionTarget
+        )
+        return true
+    }
+
+    override suspend fun removeLocal(entry: AlertTriggerEntry) {
+        database.alertTriggerQueries.deleteItem(entry.timeCreatedAt)
+    }
 
 }

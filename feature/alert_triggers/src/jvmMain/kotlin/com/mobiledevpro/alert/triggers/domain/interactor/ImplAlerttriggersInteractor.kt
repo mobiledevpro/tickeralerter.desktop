@@ -17,7 +17,13 @@
  */
 package com.mobiledevpro.alert.triggers.domain.interactor
 
+import com.mobiledepro.main.domain.mapper.toDomain
+import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledevpro.alert.triggers.data.repository.AlertTriggersRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 /**
  *
@@ -29,4 +35,8 @@ class ImplAlertTriggersInteractor(
     private val repository: AlertTriggersRepository
 ) : AlertTriggersInteractor {
 
+    override fun getTriggersList(): Flow<List<AlertTrigger>> =
+        repository.getListLocal()
+            .map { it.toDomain<AlertTrigger>() }
+            .flowOn(Dispatchers.IO)
 }

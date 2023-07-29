@@ -29,14 +29,13 @@ enum class ConditionTarget {
 fun ConditionSource.toStr() = when (this) {
     ConditionSource.EMA_50 -> "EMA 50"
     ConditionSource.EMA_200 -> "EMA 200"
-    else -> this
+    ConditionSource.TICKER_PRICE -> "Price"
 }
 
 fun ConditionType.toStr() = when (this) {
     ConditionType.CROSSING -> "Crossing"
     ConditionType.CROSSING_DOWN -> "Crossing Down"
     ConditionType.CROSSING_UP -> "Crossing Up"
-    else -> this.toString()
 }
 
 fun ConditionTarget.toStr() = when (this) {
@@ -44,7 +43,6 @@ fun ConditionTarget.toStr() = when (this) {
     ConditionTarget.EMA_50 -> "EMA 50"
     ConditionTarget.EMA_200 -> "EMA 200"
     ConditionTarget.EMA_RIBBON -> "EMA Ribbon"
-    else -> this.toString()
 }
 
 fun String.toConditionType(): ConditionType = when (this) {
@@ -60,6 +58,13 @@ fun String.toConditionTarget(): ConditionTarget = when (this) {
     "EMA 200" -> ConditionTarget.EMA_200
     "EMA Ribbon" -> ConditionTarget.EMA_RIBBON
     else -> throw RuntimeException("Cannot convert '$this' to condition target")
+}
+
+fun String.toConditionSource(): ConditionSource = when (this) {
+    "Price" -> ConditionSource.TICKER_PRICE
+    "EMA 50" -> ConditionSource.EMA_50
+    "EMA 200" -> ConditionSource.EMA_200
+    else -> throw RuntimeException("Cannot convert '$this' to condition source")
 }
 
 fun conditionTypeList(): List<String> =

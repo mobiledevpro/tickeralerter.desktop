@@ -1,5 +1,6 @@
 package di
 
+import com.mobiledevpro.alert.triggers.di.featureAlertTriggersModule
 import com.mobiledevpro.chart.di.featureChartModule
 import com.mobiledevpro.home.di.featureHomeModule
 import com.mobiledevpro.tickerlist.di.featureTickerListModule
@@ -9,5 +10,6 @@ val featureModules = listOf(
     featureHomeModule,
     featureWatchlistModule,
     featureChartModule,
-    featureTickerListModule
+    featureTickerListModule,
+    featureAlertTriggersModule
 )

@@ -1,5 +1,3 @@
-import org.gradle.kotlin.dsl.*
-
 plugins {
     id("kotlin-multiplatform")
     id("org.jetbrains.compose")

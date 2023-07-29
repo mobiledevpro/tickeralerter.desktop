@@ -29,9 +29,9 @@ class ImplTickerListInteractor(
     override fun getTickerList(): Flow<List<Ticker>> {
 
         val tickerListFlow = tickersRepository.getTickerListLocal()
-            .map { it.toDomain() as List<Ticker> }
+            .map { it.toDomain<Ticker>() }
         val watchlistFlow = watchListRepository.getListLocal()
-            .map { it.toDomain() as List<Ticker> }
+            .map { it.toDomain<Ticker>() }
 
         return combine(
             tickerListFlow,

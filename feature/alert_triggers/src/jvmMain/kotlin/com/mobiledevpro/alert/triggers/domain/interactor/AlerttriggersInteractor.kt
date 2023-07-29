@@ -17,6 +17,9 @@
  */
 package com.mobiledevpro.alert.triggers.domain.interactor
 
+import com.mobiledepro.main.domain.model.AlertTrigger
+import kotlinx.coroutines.flow.Flow
+
 /**
  *
  * Created on Jul 21, 2023.
@@ -25,4 +28,5 @@ package com.mobiledevpro.alert.triggers.domain.interactor
 
 interface AlertTriggersInteractor {
 
+    fun getTriggersList(): Flow<List<AlertTrigger>>
 }
