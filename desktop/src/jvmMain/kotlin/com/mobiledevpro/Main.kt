@@ -8,9 +8,8 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.mobiledepro.main.di.commonModules
-import com.mobiledepro.main.domain.model.AlertSettings
-import com.mobiledepro.main.domain.model.AlertSettingsUIState
 import com.mobiledepro.main.ext.injectScope
+import com.mobiledevpro.alert.triggers.view.vm.AlertTriggersViewModel
 import com.mobiledevpro.chart.view.vm.ChartViewModel
 import com.mobiledevpro.home.view.HomeScreen
 import com.mobiledevpro.home.view.vm.HomeScreenViewModel
@@ -18,7 +17,6 @@ import com.mobiledevpro.tickerlist.view.vm.TickerListViewModel
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.watchlist.view.vm.WatchlistViewModel
 import di.featureModules
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.koin.core.context.startKoin
 
 @Composable
@@ -30,6 +28,7 @@ fun App() {
     val watchListViewModel: WatchlistViewModel by remember { injectScope() }
     val chartViewModel: ChartViewModel by remember { injectScope() }
     val tickerListViewModel: TickerListViewModel by remember { injectScope() }
+    val alertTriggerListViewModel: AlertTriggersViewModel by remember { injectScope() }
 
     Theme {
         HomeScreen(
@@ -37,15 +36,14 @@ fun App() {
             tickerListUIState = tickerListViewModel.uiState,
             watchListUIState = watchListViewModel.uiState,
             chartUIState = chartViewModel.uiState,
-            alertTriggerListState = homeViewModel.alertTriggerList,
-            alertEventListState = homeViewModel.alertEventList,
-            alertSettingsUIState = MutableStateFlow(AlertSettingsUIState.Success(AlertSettings("BTCUSDT"))),//viewModel.alertSettingsUIState,
+            alertTriggerListUIState = alertTriggerListViewModel.uiState,
+            alertEventListUIState = homeViewModel.alertEventList,
+            alertSettingsUIState = homeViewModel.alertSettingsUIState,
             onAddToWatchList = watchListViewModel::addToWatchlist,
             onRemoveFromWatchlist = watchListViewModel::removeFromWatchlist,
             onTickerListSearch = tickerListViewModel::tickerListSearch,
             onSelectFromWatchlist = chartViewModel::openChart,
-            onAlertSettingsChanged = homeViewModel::updateAlertCondition,
-            onAlertSettingsSave = homeViewModel::saveAlertCondition
+            onAlertSettingsSave = alertTriggerListViewModel::onSave
         )
     }
 }

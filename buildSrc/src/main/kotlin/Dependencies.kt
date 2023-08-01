@@ -5,6 +5,7 @@ object Versions {
     const val KOIN = "3.2.0"
     const val SQL_DELIGHT = "2.0.0-alpha05"
     const val KTOR = "2.3.0"
+    const val COROUTINES = "1.7.3"
 }
 
 object Deps {
@@ -32,6 +33,11 @@ object Deps {
         const val SERIALIZATION_JSON = "io.ktor:ktor-serialization-kotlinx-json:${Versions.KTOR}"
     }
 
+    object Testing {
+        const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES}"
+        const val KOIN = "io.insert-koin:koin-test:${Versions.KOIN}"
+    }
+
 
     object Common {
         const val MAIN = ":common:main"
@@ -48,6 +54,7 @@ object Deps {
         const val ALERT_EVENTS = ":feature:alert_events"
         const val ALERT_TRIGGERS = ":feature:alert_triggers"
         const val ALERT_SETTINGS = ":feature:alert_settings"
+        const val WATCHLIST = ":feature:watchlist"
     }
 
 }

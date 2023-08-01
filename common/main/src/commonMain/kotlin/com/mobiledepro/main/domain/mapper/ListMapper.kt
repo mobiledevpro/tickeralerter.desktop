@@ -1,15 +1,18 @@
 package com.mobiledepro.main.domain.mapper
 
+import com.mobiledevpro.database.AlertTriggerEntry
 import com.mobiledevpro.database.CandleEntry
 import com.mobiledevpro.database.TickerEntry
 import com.mobiledevpro.database.WatchlistEntry
 
-fun List<Any>.toDomain(): List<Any> =
-    mapTo(ArrayList<Any>()) {
+fun <Out> List<Any>.toDomain(): List<Out> =
+    mapTo(ArrayList<Out>()) {
+
         when (it) {
-            is TickerEntry -> (it as TickerEntry).toDomain()
-            is WatchlistEntry -> (it as WatchlistEntry).toDomain()
-            is CandleEntry -> (it as CandleEntry).toDomain()
+            is TickerEntry -> it.toDomain() as Out
+            is WatchlistEntry -> it.toDomain() as Out
+            is CandleEntry -> it.toDomain() as Out
+            is AlertTriggerEntry -> it.toDomain() as Out
             else -> throw RuntimeException("Mapping error for $it .toDomain()")
         }
     }

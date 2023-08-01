@@ -17,6 +17,9 @@
  */
 package com.mobiledevpro.alert.triggers.data.repository
 
+import com.mobiledevpro.database.AlertTriggerEntry
+import kotlinx.coroutines.flow.Flow
+
 /**
  *
  * Created on Jul 21, 2023.
@@ -24,5 +27,11 @@ package com.mobiledevpro.alert.triggers.data.repository
  */
 
 interface AlertTriggersRepository {
+    fun getListLocal(): Flow<List<AlertTriggerEntry>>
 
+    suspend fun addLocal(entry: AlertTriggerEntry)
+
+    suspend fun removeLocal(entry: AlertTriggerEntry)
+
+    suspend fun updateLocal(entry: AlertTriggerEntry): Boolean
 }

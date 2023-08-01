@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.*
 import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
+import com.mobiledevpro.alert.triggers.view.state.AlertTriggersUIState
 import com.mobiledevpro.alerts.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
@@ -17,11 +18,13 @@ import com.mobiledevpro.home.view.component.OnlineStatus
 import com.mobiledevpro.home.view.state.HomeUIState
 import com.mobiledevpro.tickerlist.view.TickerListDialog
 import com.mobiledevpro.tickerlist.view.state.TickerListUIState
+import com.mobiledevpro.tickerlist.view.state.getSuccess
 import com.mobiledevpro.ui.common.modifierMaxHeight
 import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.watchlist.view.WatchlistBox
 import com.mobiledevpro.watchlist.view.state.WatchlistUIState
+import com.mobiledevpro.watchlist.view.state.getSuccess
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -30,27 +33,26 @@ fun HomeScreen(
     tickerListUIState: StateFlow<TickerListUIState>,
     watchListUIState: StateFlow<WatchlistUIState>,
     chartUIState: StateFlow<ChartUIState>,
-    alertTriggerListState: StateFlow<List<AlertTrigger>>,
-    alertEventListState: StateFlow<List<AlertEvent>>,
+    alertTriggerListUIState: StateFlow<AlertTriggersUIState>,
+    alertEventListUIState: StateFlow<List<AlertEvent>>,
     alertSettingsUIState: StateFlow<AlertSettingsUIState>,
     onAddToWatchList: (Ticker) -> Unit,
     onRemoveFromWatchlist: (Ticker) -> Unit,
     onSelectFromWatchlist: (Ticker) -> Unit,
     onTickerListSearch: (String) -> Unit,
-    onAlertSettingsChanged: (AlertSettings) -> Unit,
-    onAlertSettingsSave: () -> Unit,
+    onAlertSettingsSave: (AlertTrigger) -> Unit,
 ) {
 
     val homeState by homeUIState.collectAsState()
     val watchListState by watchListUIState.collectAsState()
     val tickerListState by tickerListUIState.collectAsState()
     val chartState by chartUIState.collectAsState()
-    val alertTriggersState by alertTriggerListState.collectAsState()
-    val alertEventsState by alertEventListState.collectAsState()
+    val alertTriggersState by alertTriggerListUIState.collectAsState()
+    val alertEventsState by alertEventListUIState.collectAsState()
     val alertSettingsState by alertSettingsUIState.collectAsState()
 
     var addToWatchlistDialogVisible by remember { mutableStateOf(false) }
-    var addToAlertsDialogVisible by remember { mutableStateOf(false) }
+    var alertsSettingsDialogVisible by remember { mutableStateOf(false) }
     var chartSetting by remember { mutableStateOf(ChartSettings()) }
 
     println(":collect as state: ")
@@ -78,11 +80,11 @@ fun HomeScreen(
 
 
                     AlertsBox(
-                        alertTriggerList = alertTriggersState,
+                        alertTriggersState = alertTriggersState,
                         alertEventList = alertEventsState,
                         modifier = modifierMaxSize,
                         onClickAdd = {
-                            addToAlertsDialogVisible = true
+                            alertsSettingsDialogVisible = true
                         }
                     )
                 }
@@ -143,16 +145,29 @@ fun HomeScreen(
             )
 
         //Show a dialog to add/update alerts
-        if (addToAlertsDialogVisible)
+        if (alertsSettingsDialogVisible) {
+
+            val tickerList =
+                when {
+                    watchListState.getSuccess().isNotEmpty() -> watchListState.getSuccess()
+                    tickerListState.getSuccess().isNotEmpty() -> tickerListState.getSuccess()
+                    else -> emptyList()
+                }
+
+            println("::WATCHLIST LIST SIZE ${tickerList.size}")
+
             AlertSettingsDialog(
-                alertCondition = (alertSettingsState as AlertSettingsUIState.Success).alertCondition,
+                state = alertSettingsState,
                 onClose = {
-                    addToAlertsDialogVisible = false
+                    alertsSettingsDialogVisible = false
                 },
-                onSave = onAlertSettingsSave,
-                onUpdate = onAlertSettingsChanged,
-                watchList = (watchListState as WatchlistUIState.Success).list//fakeTickerListFirst()
+                onSave = {
+                    onAlertSettingsSave(it)
+                    alertsSettingsDialogVisible = false
+                },
+                tickerList = tickerList
             )
+        }
 
     }
 }

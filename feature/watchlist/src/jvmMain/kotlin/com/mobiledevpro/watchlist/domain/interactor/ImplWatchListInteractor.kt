@@ -18,7 +18,7 @@ class ImplWatchListInteractor(
 
     override fun getWatchlist(): Flow<List<Ticker>> =
         watchListRepository.getListLocal()
-            .map { it.toDomain() as List<Ticker> }
+            .map { it.toDomain<Ticker>() }
             .flowOn(Dispatchers.IO)
 
     @OptIn(ExperimentalCoroutinesApi::class)

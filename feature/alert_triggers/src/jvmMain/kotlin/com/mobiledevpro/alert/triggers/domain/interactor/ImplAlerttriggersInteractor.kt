@@ -17,7 +17,15 @@
  */
 package com.mobiledevpro.alert.triggers.domain.interactor
 
+import com.mobiledepro.main.domain.mapper.toDomain
+import com.mobiledepro.main.domain.mapper.toLocal
+import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledevpro.alert.triggers.data.repository.AlertTriggersRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 /**
  *
@@ -29,4 +37,24 @@ class ImplAlertTriggersInteractor(
     private val repository: AlertTriggersRepository
 ) : AlertTriggersInteractor {
 
+    override fun getTriggersList(): Flow<List<AlertTrigger>> =
+        repository.getListLocal()
+            .map { it.toDomain<AlertTrigger>() }
+            .flowOn(Dispatchers.IO)
+
+    override suspend fun saveTrigger(trigger: AlertTrigger) {
+        withContext(Dispatchers.IO) {
+            println("::SAVE TRIGGER: time ${trigger.timeCreated} | ${trigger.title()}")
+            if (trigger.isNew())
+                trigger
+                    .let {
+                        it.apply { this.active = true }
+                    }
+                    .toLocal()
+                    .also { entry -> repository.addLocal(entry) }
+            else
+                trigger.toLocal()
+                    .also { entry -> repository.updateLocal(entry) }
+        }
+    }
 }

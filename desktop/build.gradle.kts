@@ -26,7 +26,13 @@ kotlin {
                 implementation(project(Deps.Feature.HOME))
             }
         }
-        val jvmTest by getting
+        val jvmTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+                implementation(Deps.Testing.COROUTINES)
+                implementation(Deps.Testing.KOIN)
+            }
+        }
     }
 }
 

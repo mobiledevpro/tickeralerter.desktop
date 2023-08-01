@@ -1,19 +1,10 @@
 plugins {
-    id("kotlin-multiplatform")
-    id("org.jetbrains.compose")
+    id("desktop-feature")
 }
 
-kotlin {
-    jvm {
-        jvmToolchain(Deps.JDK)
-        withJava()
-    }
-
-    sourceSets {
+kotlin.sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(Deps.Common.MAIN))
-
                 with(Deps.Feature) {
                     api(project(TICKER_LIST))
                     api(project(CHART))
@@ -22,6 +13,5 @@ kotlin {
             }
         }
     }
-}
 
 

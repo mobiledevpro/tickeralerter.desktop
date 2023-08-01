@@ -21,6 +21,7 @@ import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledevpro.alert.events.view.component.EventListItem
 import com.mobiledevpro.alert.triggers.view.component.TriggerListItem
+import com.mobiledevpro.alert.triggers.view.state.AlertTriggersUIState
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.SimpleTab
@@ -30,7 +31,7 @@ import com.mobiledevpro.ui.component.WidgetBox
 
 @Composable
 fun AlertsBox(
-    alertTriggerList: List<AlertTrigger>,
+    alertTriggersState: AlertTriggersUIState,
     alertEventList: List<AlertEvent>,
     modifier: Modifier = Modifier,
     onClickAdd: () -> Unit
@@ -67,11 +68,10 @@ fun AlertsBox(
 
             when (selectedTab) {
                 SimpleTab.ALL ->
-                    if (alertTriggerList.isEmpty())
-                        NoTriggersBox()
-                    else
-                        TriggerList(alertTriggerList)
-
+                    when (alertTriggersState) {
+                        is AlertTriggersUIState.Success -> TriggerList(alertTriggersState.list)
+                        else -> NoTriggersBox()
+                    }
                 SimpleTab.LOG ->
                     if (alertEventList.isEmpty())
                         NoEventsBox()
@@ -133,7 +133,7 @@ fun NoTriggersBox() {
 fun AlertsBoxPreview() {
     Theme {
         AlertsBox(
-            alertTriggerList = fakeAlertTriggersList(),
+            alertTriggersState = AlertTriggersUIState.Success(fakeAlertTriggersList()),
             alertEventList = emptyList(),
             modifier = modifierMaxWidth,
             onClickAdd = {}

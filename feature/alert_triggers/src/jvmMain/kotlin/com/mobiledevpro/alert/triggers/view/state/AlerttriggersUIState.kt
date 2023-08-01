@@ -17,6 +17,7 @@
  */
 package com.mobiledevpro.alert.triggers.view.state
 
+import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.view.UiState
 
 /**
@@ -26,7 +27,7 @@ import com.mobiledepro.main.view.UiState
  */
 
 sealed interface AlertTriggersUIState : UiState {
-    class Success(val data: Any) : AlertTriggersUIState
+    class Success(val list: List<AlertTrigger>) : AlertTriggersUIState
 
     object Empty : AlertTriggersUIState
 

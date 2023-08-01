@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="alert_log-jvm">
-    <output-path>$PROJECT_DIR$/feature/alert_log/build/libs</output-path>
-    <root id="archive" name="alert_log-jvm.jar">
-      <element id="module-output" name="tickeralerter.feature.alert_log.jvmMain" />
-    </root>
-  </artifact>
-</component>

@@ -10,3 +10,9 @@ sealed interface TickerListUIState : UiState {
 
     object Loading : TickerListUIState
 }
+
+fun TickerListUIState.getSuccess(): List<Ticker> =
+    when (this) {
+        is TickerListUIState.Success -> list
+        else -> emptyList()
+    }

@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="watchlist-jvm">
-    <output-path>$PROJECT_DIR$/feature/watchlist/build/libs</output-path>
-    <root id="archive" name="watchlist-jvm.jar">
-      <element id="module-output" name="tickeralerter.feature.watchlist.jvmMain" />
-    </root>
-  </artifact>
-</component>

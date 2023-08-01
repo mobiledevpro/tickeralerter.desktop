@@ -17,7 +17,7 @@ class ImplChartInteractor(
 
     override fun getChart(ticker: Ticker, timeFrame: String): Flow<List<Candle>> =
         repository.getChartLocal(ticker.symbol, timeFrame)
-            .map { it.toDomain() as List<Candle> }
+            .map { it.toDomain<Candle>() }
             .flowOn(Dispatchers.IO)
 
 
