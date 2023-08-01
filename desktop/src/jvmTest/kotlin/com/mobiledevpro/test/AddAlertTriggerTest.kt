@@ -20,7 +20,6 @@ class AddAlertTriggerTest : KoinTest {
         timeCreated = null,
         symbol = "BTCUSDT",
         timeFrame = null,
-        active = true,
         alertSettings = AlertSettings(
             conditionSource = ConditionSource.TICKER_PRICE,
             conditionType = ConditionType.CROSSING_UP,
@@ -69,7 +68,7 @@ class AddAlertTriggerTest : KoinTest {
             alertTrigger.alertSettings.conditionTarget,
             "Condition target is incorrect"
         )
-        assertEquals(fakeTrigger.active, alertTrigger.active, "Trigger status is not active")
+        assertTrue(alertTrigger.active, "Trigger status is not active")
         assertTrue((alertTrigger.alertSettings.targetPrice ?: 0.0) > 0.0, "Price is null or 0")
         assertEquals(
             fakeTrigger.alertSettings.targetPrice,

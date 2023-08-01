@@ -5,6 +5,7 @@ object Versions {
     const val KOIN = "3.2.0"
     const val SQL_DELIGHT = "2.0.0-alpha05"
     const val KTOR = "2.3.0"
+    const val COROUTINES = "1.7.3"
 }
 
 object Deps {
@@ -30,6 +31,11 @@ object Deps {
         const val CLIENT_OKHTTP = "io.ktor:ktor-client-okhttp:${Versions.KTOR}"
         const val CLIENT_WEBSOCKETS = "io.ktor:ktor-client-websockets:${Versions.KTOR}"
         const val SERIALIZATION_JSON = "io.ktor:ktor-serialization-kotlinx-json:${Versions.KTOR}"
+    }
+
+    object Testing {
+        const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.COROUTINES}"
+        const val KOIN = "io.insert-koin:koin-test:${Versions.KOIN}"
     }
 
 

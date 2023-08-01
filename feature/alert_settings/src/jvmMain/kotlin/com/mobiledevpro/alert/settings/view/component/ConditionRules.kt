@@ -44,7 +44,9 @@ internal fun ConditionRules(
             .also(onChange)
     }
 
-
+    //init price for the current trigger if price is null (newly created trigger)
+    if ((trigger.alertSettings.targetPrice ?: 0.0) == 0.0)
+        changeTrigger()
 
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
         TextLabel("Condition")
@@ -57,7 +59,7 @@ internal fun ConditionRules(
                 valueList = tickerList.mapTo(ArrayList<String>()) { it.symbol },
                 onSelect = { symbol ->
                     selectedSymbol = symbol
-                    editPrice = targetPrice(symbol) ?: 0.0 //TODO this price is not updated
+                    editPrice = targetPrice(symbol) ?: 0.0
                     changeTrigger()
                 }
             )
@@ -87,7 +89,7 @@ internal fun ConditionRules(
                 if (selectedConditionTarget == ConditionTarget.PRICE)
                     InputValueField(
                         modifier = modifierMaxWidth.weight(1f),
-                        defaultValue = editPrice.toString(),
+                        value = editPrice.toString(),
                         hint = "0.0",
                         type = InputValueType.PRICE,
                         onTextChanged = { text ->

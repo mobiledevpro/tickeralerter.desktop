@@ -29,4 +29,6 @@ import kotlinx.coroutines.flow.Flow
 interface AlertTriggersInteractor {
 
     fun getTriggersList(): Flow<List<AlertTrigger>>
+
+    suspend fun saveTrigger(trigger: AlertTrigger)
 }

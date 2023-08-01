@@ -18,13 +18,11 @@
 package com.mobiledevpro.alert.triggers.view.vm
 
 import com.mobiledepro.main.domain.model.AlertTrigger
-import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledepro.main.util.toLog
 import com.mobiledepro.main.view.BaseViewModel
 import com.mobiledevpro.alert.triggers.domain.interactor.AlertTriggersInteractor
 import com.mobiledevpro.alert.triggers.view.state.AlertTriggersUIState
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -48,6 +46,12 @@ class AlertTriggersViewModel(
         observeTriggerList()
     }
 
+    fun onSave(trigger: AlertTrigger) {
+        coroutineScope.launch {
+            interactor.saveTrigger(trigger)
+        }
+    }
+
     fun onDelete(trigger: AlertTrigger) {
         //TODO: delete locally
     }
@@ -68,10 +72,14 @@ class AlertTriggersViewModel(
                     else
                         AlertTriggersUIState.Success(list)
                 }
+
+                list.forEach {
+                    println("::ALERT TRIGGER: time ${it.timeCreated} | ${it.title()} | Active ${it.active}")
+                }
             }
         }
 
-        coroutineScope.launch {
+        /*coroutineScope.launch {
             delay(2000)
             fakeAlertTriggersList().also { list ->
                 _uiState.update {
@@ -79,6 +87,8 @@ class AlertTriggersViewModel(
                 }
             }
         }
+
+         */
     }
 
 }

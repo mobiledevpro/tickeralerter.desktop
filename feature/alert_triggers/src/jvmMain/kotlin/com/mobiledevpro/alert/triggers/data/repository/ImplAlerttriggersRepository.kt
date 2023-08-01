@@ -45,18 +45,16 @@ class ImplAlertTriggersRepository(
             .executeAsOne() > 0
 
         if (!isExist)
-            database.alertTriggerQueries.insertItem(
-                timeCreatedAt = entry.timeCreatedAt,
-                symbol = entry.symbol,
-                timeFrame = entry.timeFrame,
-                active = entry.active,
-                conditionSource = entry.conditionSource,
-                conditionType = entry.conditionType,
-                conditionTarget = entry.conditionTarget
-            )
+            insert(entry)
     }
 
-    override suspend fun updateLocal(entry: AlertTriggerEntry): Boolean {
+    override suspend fun updateLocal(entry: AlertTriggerEntry): Boolean = insert(entry)
+
+    override suspend fun removeLocal(entry: AlertTriggerEntry) {
+        database.alertTriggerQueries.deleteItem(entry.timeCreatedAt)
+    }
+
+    private fun insert(entry: AlertTriggerEntry): Boolean {
         database.alertTriggerQueries.insertItem(
             timeCreatedAt = entry.timeCreatedAt,
             symbol = entry.symbol,
@@ -64,13 +62,10 @@ class ImplAlertTriggersRepository(
             active = entry.active,
             conditionSource = entry.conditionSource,
             conditionType = entry.conditionType,
-            conditionTarget = entry.conditionTarget
+            conditionTarget = entry.conditionTarget,
+            targetPrice = entry.targetPrice
         )
         return true
-    }
-
-    override suspend fun removeLocal(entry: AlertTriggerEntry) {
-        database.alertTriggerQueries.deleteItem(entry.timeCreatedAt)
     }
 
 }

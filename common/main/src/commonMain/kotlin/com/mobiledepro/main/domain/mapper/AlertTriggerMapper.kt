@@ -14,7 +14,8 @@ fun AlertTriggerEntry.toDomain(): AlertTrigger =
         alertSettings = AlertSettings(
             conditionSource = conditionSource.toConditionSource(),
             conditionType = conditionType.toConditionType(),
-            conditionTarget = conditionTarget.toConditionTarget()
+            conditionTarget = conditionTarget.toConditionTarget(),
+            targetPrice = targetPrice
         )
     )
 
@@ -26,5 +27,6 @@ fun AlertTrigger.toLocal(): AlertTriggerEntry =
         active = if (active) 1 else 0,
         conditionSource = alertSettings.conditionSource.toStr(),
         conditionType = alertSettings.conditionType.toStr(),
-        conditionTarget = alertSettings.conditionTarget.toStr()
+        conditionTarget = alertSettings.conditionTarget.toStr(),
+        targetPrice = alertSettings.targetPrice
     )

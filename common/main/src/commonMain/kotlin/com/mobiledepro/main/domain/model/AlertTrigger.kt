@@ -5,7 +5,7 @@ data class AlertTrigger(
     var symbol: String,
     val timeFrame: String? = null,
     var alertSettings: AlertSettings = AlertSettings(),
-    val active: Boolean = false
+    var active: Boolean = false
 ) {
     fun title(): String = "${source()} ${alertSettings.conditionType.toStr()} ${target()}"
 
@@ -26,8 +26,10 @@ data class AlertTrigger(
     else
         true
 
+    fun isNew(): Boolean = timeCreated?.let { it == 0L } ?: true
+
     private fun source() = when (alertSettings.conditionSource) {
-        ConditionSource.TICKER_PRICE -> "$symbol ($timeFrame)"
+        ConditionSource.TICKER_PRICE -> symbol + (timeFrame?.let { " (${timeFrame})" } ?: "")
         else -> alertSettings.conditionSource.toStr()
     }
 

@@ -161,7 +161,10 @@ fun HomeScreen(
                 onClose = {
                     alertsSettingsDialogVisible = false
                 },
-                onSave = onAlertSettingsSave,
+                onSave = {
+                    onAlertSettingsSave(it)
+                    alertsSettingsDialogVisible = false
+                },
                 tickerList = tickerList
             )
         }

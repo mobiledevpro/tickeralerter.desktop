@@ -21,20 +21,18 @@ import com.mobiledevpro.ui.defaults.Defaults
 @Composable
 fun InputValueField(
     modifier: Modifier,
-    defaultValue: String = "",
+    value: String = "",
     hint: String = "",
     type: InputValueType,
     onTextChanged: (String) -> Unit
 ) {
 
-    var text by remember { mutableStateOf(defaultValue) }
-    var trailingIconVisible by remember { mutableStateOf(text.isNotEmpty()) }
+    var trailingIconVisible by remember { mutableStateOf(value.isNotEmpty() && (value.toDoubleOrNull() ?: 0.0) > 0.0) }
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         TextField(
-            value = text,
+            value = value,
             onValueChange = {
-                text = it
                 trailingIconVisible = it.isNotEmpty()
                 onTextChanged(it)
             },
@@ -63,9 +61,8 @@ fun InputValueField(
                 if (trailingIconVisible)
                     IconButton(
                         onClick = {
-                            text = ""
                             trailingIconVisible = false
-                            onTextChanged(text)
+                            onTextChanged("")
                         },
                         modifier = Modifier.size(16.dp)
                     ) {
