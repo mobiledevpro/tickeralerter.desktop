@@ -21,6 +21,8 @@ class WatchlistViewModel(
     init {
         observeWatchlist()
         syncWatchlist()
+
+        addDefaultSymbols()
     }
 
     fun addToWatchlist(ticker: Ticker) {
@@ -60,6 +62,26 @@ class WatchlistViewModel(
         coroutineScope.launch {
             interactor.syncWatchlist()
         }
+    }
+
+    private fun addDefaultSymbols() {
+        Ticker(
+            symbol = "BTCUSDT",
+            baseAsset = "BTC",
+            contractType = "PERPETUAL",
+            lastPrice = 0.0,
+            priceChange = 0.0,
+            priceChangePercent = 0.0
+        ).also(this::addToWatchlist)
+
+        Ticker(
+            symbol = "ETHUSDT",
+            baseAsset = "ETH",
+            contractType = "PERPETUAL",
+            lastPrice = 0.0,
+            priceChange = 0.0,
+            priceChangePercent = 0.0
+        ).also(this::addToWatchlist)
     }
 
 }
