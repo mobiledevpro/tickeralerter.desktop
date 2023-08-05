@@ -16,6 +16,7 @@ import com.mobiledevpro.chart.view.ChartSettingsBox
 import com.mobiledevpro.chart.view.state.ChartUIState
 import com.mobiledevpro.home.view.component.OnlineStatus
 import com.mobiledevpro.home.view.state.HomeUIState
+import com.mobiledevpro.orders.view.OrdersBox
 import com.mobiledevpro.tickerlist.view.TickerListDialog
 import com.mobiledevpro.tickerlist.view.state.TickerListUIState
 import com.mobiledevpro.tickerlist.view.state.getSuccess
@@ -85,6 +86,9 @@ fun HomeScreen(
                         modifier = modifierMaxSize,
                         onClickAdd = {
                             alertsSettingsDialogVisible = true
+                        },
+                        onChange = { trigger ->
+
                         }
                     )
                 }
@@ -109,7 +113,8 @@ fun HomeScreen(
                             modifier = modifierMaxHeight.widthIn(max = 250.dp)
                         )
 
-                        //trading bot box here
+                        //Orders
+                        OrdersBox(modifier = modifierMaxSize)
 
                     }
 
