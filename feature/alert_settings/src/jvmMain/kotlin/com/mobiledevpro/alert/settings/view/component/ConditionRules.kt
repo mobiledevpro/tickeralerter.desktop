@@ -19,7 +19,9 @@ internal fun ConditionRules(
     println("::RULES FOR ${trigger.symbol} | ${trigger.alertSettings.targetPrice}")
 
     val targetPrice: (symbol: String) -> Double? = { symbol ->
-        if (trigger.alertSettings.conditionTarget == ConditionTarget.PRICE)
+        if ((trigger.alertSettings.targetPrice ?: 0.0) > 0.0)
+            trigger.alertSettings.targetPrice
+        else if (trigger.alertSettings.conditionTarget == ConditionTarget.PRICE)
             tickerList.find { it.symbol == symbol }?.lastPrice
         else
             null

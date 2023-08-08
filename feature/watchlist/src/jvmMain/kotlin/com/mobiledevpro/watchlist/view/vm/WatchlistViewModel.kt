@@ -20,7 +20,7 @@ class WatchlistViewModel(
 
     init {
         observeWatchlist()
-        syncWatchlist()
+        // syncWatchlist()
 
         addDefaultSymbols()
     }

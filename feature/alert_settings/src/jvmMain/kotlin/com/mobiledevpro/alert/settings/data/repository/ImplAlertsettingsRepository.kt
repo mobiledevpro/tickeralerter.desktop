@@ -18,7 +18,6 @@
 package com.mobiledevpro.alert.settings.data.repository
 
 import com.mobiledevpro.database.AppDatabase
-import io.ktor.client.*
 
 /**
  *
@@ -27,8 +26,7 @@ import io.ktor.client.*
  */
 
 class ImplAlertSettingsRepository(
-    private val database: AppDatabase,
-    private val httpClient: HttpClient
+    private val database: AppDatabase
 ) : AlertSettingsRepository {
 
 }

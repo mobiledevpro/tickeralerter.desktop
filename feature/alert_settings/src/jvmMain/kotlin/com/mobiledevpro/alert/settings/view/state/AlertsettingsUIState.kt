@@ -17,6 +17,8 @@
  */
 package com.mobiledevpro.alert.settings.view.state
 
+import com.mobiledepro.main.domain.model.AlertTrigger
+import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.view.UiState
 
 /**
@@ -26,9 +28,7 @@ import com.mobiledepro.main.view.UiState
  */
 
 sealed interface AlertSettingsUIState : UiState {
-    class Success(val data: Any) : AlertSettingsUIState
+    class Visible(val trigger: AlertTrigger, tickerList: List<Ticker>) : AlertSettingsUIState
 
-    object Empty : AlertSettingsUIState
-
-    object Loading : AlertSettingsUIState
+    object Hidden : AlertSettingsUIState
 }

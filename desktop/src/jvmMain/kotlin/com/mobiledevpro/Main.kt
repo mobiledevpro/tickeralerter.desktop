@@ -9,6 +9,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.mobiledepro.main.di.commonModules
 import com.mobiledepro.main.ext.injectScope
+import com.mobiledevpro.alert.settings.view.vm.AlertSettingsViewModel
 import com.mobiledevpro.alert.triggers.view.vm.AlertTriggersViewModel
 import com.mobiledevpro.chart.view.vm.ChartViewModel
 import com.mobiledevpro.home.view.HomeScreen
@@ -29,6 +30,7 @@ fun App() {
     val chartViewModel: ChartViewModel by remember { injectScope() }
     val tickerListViewModel: TickerListViewModel by remember { injectScope() }
     val alertTriggerListViewModel: AlertTriggersViewModel by remember { injectScope() }
+    val alertSettingsViewModel: AlertSettingsViewModel by remember { injectScope() }
 
     Theme {
         HomeScreen(
@@ -38,12 +40,15 @@ fun App() {
             chartUIState = chartViewModel.uiState,
             alertTriggerListUIState = alertTriggerListViewModel.uiState,
             alertEventListUIState = homeViewModel.alertEventList,
-            alertSettingsUIState = homeViewModel.alertSettingsUIState,
+            alertSettingsUIState = alertSettingsViewModel.uiState,
             onAddToWatchList = watchListViewModel::addToWatchlist,
             onRemoveFromWatchlist = watchListViewModel::removeFromWatchlist,
             onTickerListSearch = tickerListViewModel::tickerListSearch,
             onSelectFromWatchlist = chartViewModel::openChart,
-            onAlertSettingsSave = alertTriggerListViewModel::onSave
+            onAlertSettingsSave = alertSettingsViewModel::onSave,
+            onAlertSettingsClose = alertSettingsViewModel::onClose,
+            onAlertTriggerAdd = alertSettingsViewModel::onAddNew,
+            onAlertTriggerChange = alertSettingsViewModel::onChange
         )
     }
 }

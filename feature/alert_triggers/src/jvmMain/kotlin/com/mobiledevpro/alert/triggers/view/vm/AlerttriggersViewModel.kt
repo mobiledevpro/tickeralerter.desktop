@@ -17,7 +17,7 @@
  */
 package com.mobiledevpro.alert.triggers.view.vm
 
-import com.mobiledepro.main.domain.model.AlertTrigger
+import com.mobiledepro.main.domain.model.*
 import com.mobiledepro.main.util.toLog
 import com.mobiledepro.main.view.BaseViewModel
 import com.mobiledevpro.alert.triggers.domain.interactor.AlertTriggersInteractor
@@ -44,12 +44,9 @@ class AlertTriggersViewModel(
 
     init {
         observeTriggerList()
-    }
 
-    fun onSave(trigger: AlertTrigger) {
-        coroutineScope.launch {
-            interactor.saveTrigger(trigger)
-        }
+        //create fake triggers to test
+        addFakeTriggers()
     }
 
     fun onDelete(trigger: AlertTrigger) {
@@ -89,6 +86,40 @@ class AlertTriggersViewModel(
         }
 
          */
+    }
+
+    private fun onSave(trigger: AlertTrigger) {
+        coroutineScope.launch {
+            interactor.saveTrigger(trigger)
+        }
+    }
+
+    private fun addFakeTriggers() {
+        AlertTrigger(
+            1688180400000,
+            "BTCUSDT",
+            null,
+            AlertSettings(
+                conditionSource = ConditionSource.TICKER_PRICE,
+                conditionType = ConditionType.CROSSING_UP,
+                conditionTarget = ConditionTarget.PRICE,
+                targetPrice = 31_000.00
+            ),
+            active = true
+        ).also(::onSave)
+
+        AlertTrigger(
+            1688182200000,
+            "ETHUSDT",
+            null,
+            AlertSettings(
+                conditionSource = ConditionSource.TICKER_PRICE,
+                conditionType = ConditionType.CROSSING_DOWN,
+                conditionTarget = ConditionTarget.PRICE,
+                targetPrice = 1_800.00
+            ),
+            active = true
+        ).also(::onSave)
     }
 
 }

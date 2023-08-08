@@ -17,13 +17,15 @@
  */
 package com.mobiledevpro.alert.settings.view.vm
 
+import com.mobiledepro.main.domain.model.*
 import com.mobiledepro.main.view.BaseViewModel
-import com.mobiledevpro.alert.settings.domain.interactor.AlertSettingsInteractor
 import com.mobiledevpro.alert.settings.view.state.AlertSettingsUIState
+import com.mobiledevpro.alert.triggers.domain.interactor.AlertTriggersInteractor
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.update
 
 /**
- * Class for ...
+ * View Model for Alert setting dialog box
  *
  * Created on Jul 21, 2023.
  *
@@ -31,9 +33,62 @@ import kotlinx.coroutines.CoroutineScope
 
 class AlertSettingsViewModel(
     private val coroutineScope: CoroutineScope,
-    private val interactor: AlertSettingsInteractor
+    private val interactor: AlertTriggersInteractor,
 ) : BaseViewModel<AlertSettingsUIState>() {
 
-    override fun initUIState(): AlertSettingsUIState = AlertSettingsUIState.Empty
+    override fun initUIState(): AlertSettingsUIState = AlertSettingsUIState.Hidden
+
+    /**
+     * It's called when the user taps gear icon in Alerts list
+     */
+    fun onChange(trigger: AlertTrigger) {
+        _uiState.update {
+            AlertSettingsUIState.Visible(
+                trigger,
+                //TODO: it's to debug. Get WatchList from a watchlist interactor
+                fakeTickerListFirst()
+                    .find { it.symbol == trigger.symbol }
+                    ?.let { listOf(it) }
+                    ?: emptyList<Ticker>()
+            )
+        }
+    }
+
+    /**
+     * It's called on adding a new one Alert
+     */
+    fun onAddNew() {
+        //TODO it should select a Ticker from the watchlist and find either first or selecter ticker
+        val tickerList = fakeTickerListFirst()
+
+        val newTrigger = AlertTrigger(
+            0,
+            "BTCUSDT",
+            "1h",
+            AlertSettings(
+                conditionSource = ConditionSource.TICKER_PRICE,
+                conditionType = ConditionType.CROSSING_UP,
+                conditionTarget = ConditionTarget.PRICE,
+                targetPrice = 33_000.00
+            ),
+            active = false
+        )
+
+
+
+        _uiState.update {
+            AlertSettingsUIState.Visible(newTrigger, tickerList.subList(0, 3))
+        }
+    }
+
+    fun onSave(trigger: AlertTrigger) {
+        println("::TRIGGER SAVE ${trigger.title()}")
+
+        onClose()
+    }
+
+    fun onClose() {
+        _uiState.update { AlertSettingsUIState.Hidden }
+    }
 
 }
