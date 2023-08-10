@@ -15,27 +15,21 @@
  * limitations under the License.
  *
  */
-package com.mobiledevpro.alert.settings.domain.interactor
+package com.mobiledevpro.orders.data.repository
 
-import com.mobiledepro.main.domain.mapper.toDomain
-import com.mobiledepro.main.domain.model.Ticker
-import com.mobiledevpro.alert.settings.data.repository.AlertSettingsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.mobiledevpro.database.AppDatabase
+import io.ktor.client.*
 
 /**
+ * Class for ...
  *
- * Created on Jul 21, 2023.
+ * Created on Aug 04, 2023.
  *
  */
 
-class ImplAlertSettingsInteractor(
-    private val repository: AlertSettingsRepository
-) : AlertSettingsInteractor {
+class ImplOrdersRepository(
+    private val database: AppDatabase,
+    private val httpClient: HttpClient
+) : OrdersRepository {
 
-    override suspend fun getTickerList(): List<Ticker> =
-        withContext(Dispatchers.IO) {
-            repository.getListLocal()
-                .toDomain()
-        }
 }

@@ -21,6 +21,9 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 selectAll:
 SELECT * FROM alertTriggerEntry ORDER BY timeCreatedAt ASC;
 
+select:
+SELECT * FROM alertTriggerEntry WHERE timeCreatedAt = ?;
+
 deleteItem:
 DELETE FROM alertTriggerEntry WHERE timeCreatedAt = ?;
 

@@ -30,5 +30,7 @@ interface AlertTriggersInteractor {
 
     fun getTriggersList(): Flow<List<AlertTrigger>>
 
+    suspend fun getTrigger(timeCreated: Long): AlertTrigger?
+
     suspend fun saveTrigger(trigger: AlertTrigger)
 }

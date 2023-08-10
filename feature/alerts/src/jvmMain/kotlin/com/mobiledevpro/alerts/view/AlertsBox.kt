@@ -34,7 +34,8 @@ fun AlertsBox(
     alertTriggersState: AlertTriggersUIState,
     alertEventList: List<AlertEvent>,
     modifier: Modifier = Modifier,
-    onClickAdd: () -> Unit
+    onClickAdd: () -> Unit,
+    onClickEdit: (AlertTrigger) -> Unit
 ) {
     var selectedTab by remember { mutableStateOf(SimpleTab.ALL) }
 
@@ -67,11 +68,13 @@ fun AlertsBox(
             Divider(thickness = 1.dp, modifier = Modifier.padding(top = 4.dp))
 
             when (selectedTab) {
-                SimpleTab.ALL ->
+                SimpleTab.ALL -> {
                     when (alertTriggersState) {
-                        is AlertTriggersUIState.Success -> TriggerList(alertTriggersState.list)
+                        is AlertTriggersUIState.Success -> TriggerList(alertTriggersState.list, onClickEdit)
                         else -> NoTriggersBox()
                     }
+                }
+
                 SimpleTab.LOG ->
                     if (alertEventList.isEmpty())
                         NoEventsBox()
@@ -87,13 +90,13 @@ fun AlertsBox(
 }
 
 @Composable
-fun TriggerList(list: List<AlertTrigger>) {
+fun TriggerList(list: List<AlertTrigger>, onChange: (AlertTrigger) -> Unit) {
     LazyColumn {
         items(list) { trigger ->
             TriggerListItem(
                 item = trigger,
                 onPause = {},
-                onChange = {},
+                onChange = { onChange(trigger) },
                 onRemove = {}
             )
         }
@@ -136,7 +139,8 @@ fun AlertsBoxPreview() {
             alertTriggersState = AlertTriggersUIState.Success(fakeAlertTriggersList()),
             alertEventList = emptyList(),
             modifier = modifierMaxWidth,
-            onClickAdd = {}
+            onClickAdd = {},
+            onClickEdit = {}
         )
     }
 }

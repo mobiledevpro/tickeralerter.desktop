@@ -39,6 +39,10 @@ class ImplAlertTriggersRepository(
             .asFlow()
             .mapToList(Dispatchers.IO)
 
+    override suspend fun getLocal(timeCreated: Long): AlertTriggerEntry? =
+        database.alertTriggerQueries.select(timeCreated)
+            .executeAsOneOrNull()
+
     override suspend fun addLocal(entry: AlertTriggerEntry) {
         //check entry is exists
         val isExist = database.alertTriggerQueries.selectIsExist(entry.timeCreatedAt)

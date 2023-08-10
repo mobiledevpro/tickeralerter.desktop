@@ -18,7 +18,7 @@
 package com.mobiledevpro.alert.settings.data.repository
 
 import com.mobiledevpro.database.AppDatabase
-import io.ktor.client.*
+import com.mobiledevpro.database.WatchlistEntry
 
 /**
  *
@@ -27,8 +27,10 @@ import io.ktor.client.*
  */
 
 class ImplAlertSettingsRepository(
-    private val database: AppDatabase,
-    private val httpClient: HttpClient
+    private val database: AppDatabase
 ) : AlertSettingsRepository {
 
+    override suspend fun getListLocal(): List<WatchlistEntry> =
+        database.watchlistQueries.selectAll()
+            .executeAsList()
 }

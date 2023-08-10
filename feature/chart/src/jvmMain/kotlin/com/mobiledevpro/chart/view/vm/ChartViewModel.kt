@@ -18,6 +18,11 @@ class ChartViewModel(
 
     override fun initUIState(): ChartUIState = ChartUIState.Empty
 
+    init {
+        //open chart by default for BTC
+        openDefaultChart()
+    }
+
     fun openChart(ticker: Ticker) {
         _uiState.update { ChartUIState.Loading }
         observeChartCandleList(ticker)
@@ -42,5 +47,16 @@ class ChartViewModel(
                 println("observeChartCandleList: ERROR ${e.printStack()}")
             }
         }
+    }
+
+    private fun openDefaultChart() {
+        Ticker(
+            symbol = "BTCUSDT",
+            baseAsset = "BTC",
+            contractType = "PERPETUAL",
+            lastPrice = 0.0,
+            priceChange = 0.0,
+            priceChangePercent = 0.0
+        ).also(this::openChart)
     }
 }

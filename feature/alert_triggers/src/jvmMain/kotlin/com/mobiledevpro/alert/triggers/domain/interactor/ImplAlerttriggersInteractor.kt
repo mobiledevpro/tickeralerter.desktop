@@ -42,6 +42,12 @@ class ImplAlertTriggersInteractor(
             .map { it.toDomain<AlertTrigger>() }
             .flowOn(Dispatchers.IO)
 
+    override suspend fun getTrigger(timeCreated: Long): AlertTrigger? =
+        withContext(Dispatchers.IO) {
+            repository.getLocal(timeCreated)
+                ?.toDomain()
+        }
+
     override suspend fun saveTrigger(trigger: AlertTrigger) {
         withContext(Dispatchers.IO) {
             println("::SAVE TRIGGER: time ${trigger.timeCreated} | ${trigger.title()}")

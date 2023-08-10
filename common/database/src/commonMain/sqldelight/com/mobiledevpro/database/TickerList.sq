@@ -15,7 +15,7 @@ INTO tickerEntry (symbol, baseAsset,contractType, lastPrice, priceChange, priceC
 VALUES (?, ?, ?, ?, ?, ?);
 
 selectAll:
-SELECT * FROM tickerEntry;
+SELECT * FROM tickerEntry ORDER BY baseAsset ASC ;
 
 deleteAll:
 DELETE FROM tickerEntry;

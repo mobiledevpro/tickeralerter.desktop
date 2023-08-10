@@ -13,13 +13,13 @@ import androidx.compose.ui.unit.dp
 import com.mobiledevpro.ui.common.modifierMaxWidth
 
 @Composable
-fun Header(edit: Boolean, onClose: () -> Unit) {
+fun Header(edit: Boolean, symbol: String, onClose: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifierMaxWidth
     ) {
         Text(
-            text = if (edit) "Edit Alert" else "Add Alert",
+            text = if (edit) "Edit Alert for $symbol" else "Add Alert",
             style = MaterialTheme.typography.body1,
             modifier = Modifier.align(Alignment.CenterVertically).padding(8.dp)
         )

@@ -9,6 +9,7 @@ kotlin.sourceSets {
                     api(project(TICKER_LIST))
                     api(project(CHART))
                     api(project(ALERTS))
+                    api(project(ORDERS))
                 }
             }
         }

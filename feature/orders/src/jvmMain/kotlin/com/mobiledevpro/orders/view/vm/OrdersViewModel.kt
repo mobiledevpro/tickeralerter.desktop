@@ -15,27 +15,25 @@
  * limitations under the License.
  *
  */
-package com.mobiledevpro.alert.settings.domain.interactor
+package com.mobiledevpro.orders.view.vm
 
-import com.mobiledepro.main.domain.mapper.toDomain
-import com.mobiledepro.main.domain.model.Ticker
-import com.mobiledevpro.alert.settings.data.repository.AlertSettingsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.mobiledepro.main.view.BaseViewModel
+import com.mobiledevpro.orders.domain.interactor.OrdersInteractor
+import com.mobiledevpro.orders.view.state.OrdersUIState
+import kotlinx.coroutines.CoroutineScope
 
 /**
+ * Orders UI
  *
- * Created on Jul 21, 2023.
+ * Created on Aug 04, 2023.
  *
  */
 
-class ImplAlertSettingsInteractor(
-    private val repository: AlertSettingsRepository
-) : AlertSettingsInteractor {
+class OrdersViewModel(
+    private val coroutineScope: CoroutineScope,
+    private val interactor: OrdersInteractor
+) : BaseViewModel<OrdersUIState>() {
 
-    override suspend fun getTickerList(): List<Ticker> =
-        withContext(Dispatchers.IO) {
-            repository.getListLocal()
-                .toDomain()
-        }
+    override fun initUIState(): OrdersUIState = OrdersUIState.Empty
+
 }

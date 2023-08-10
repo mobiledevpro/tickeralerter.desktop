@@ -21,6 +21,10 @@ data class AlertTrigger(
         alertSettings = alertSettings.apply { conditionTarget = target }
     }
 
+    fun updateSymbol(newSymbol: String) = apply {
+        symbol = newSymbol
+    }
+
     fun saveEnabled(): Boolean = if (alertSettings.conditionTarget == ConditionTarget.PRICE)
         (alertSettings.targetPrice ?: 0.0) > 0.0
     else

@@ -29,6 +29,8 @@ import kotlinx.coroutines.flow.Flow
 interface AlertTriggersRepository {
     fun getListLocal(): Flow<List<AlertTriggerEntry>>
 
+    suspend fun getLocal(timeCreated: Long): AlertTriggerEntry?
+
     suspend fun addLocal(entry: AlertTriggerEntry)
 
     suspend fun removeLocal(entry: AlertTriggerEntry)

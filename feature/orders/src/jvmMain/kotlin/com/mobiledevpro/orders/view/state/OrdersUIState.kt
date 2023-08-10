@@ -15,27 +15,21 @@
  * limitations under the License.
  *
  */
-package com.mobiledevpro.alert.settings.domain.interactor
+package com.mobiledevpro.orders.view.state
 
-import com.mobiledepro.main.domain.mapper.toDomain
-import com.mobiledepro.main.domain.model.Ticker
-import com.mobiledevpro.alert.settings.data.repository.AlertSettingsRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.mobiledepro.main.view.UiState
 
 /**
+ * Class for ...
  *
- * Created on Jul 21, 2023.
+ * Created on Aug 04, 2023.
  *
  */
 
-class ImplAlertSettingsInteractor(
-    private val repository: AlertSettingsRepository
-) : AlertSettingsInteractor {
+sealed interface OrdersUIState : UiState {
+    class Success(val data: Any) : OrdersUIState
 
-    override suspend fun getTickerList(): List<Ticker> =
-        withContext(Dispatchers.IO) {
-            repository.getListLocal()
-                .toDomain()
-        }
+    object Empty : OrdersUIState
+
+    object Loading : OrdersUIState
 }
