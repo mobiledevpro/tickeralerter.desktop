@@ -54,7 +54,12 @@ class AlertTriggersViewModel(
     }
 
     fun onChangeActiveState(trigger: AlertTrigger) {
-        //TODO: update alert settings locally
+        coroutineScope.launch {
+            if (trigger.status == AlertStatus.ACTIVE)
+                interactor.pauseTrigger(trigger)
+            else
+                interactor.runTrigger(trigger)
+        }
     }
 
     private fun observeTriggerList() {
@@ -71,7 +76,7 @@ class AlertTriggersViewModel(
                 }
 
                 list.forEach {
-                    println("::ALERT TRIGGER: time ${it.timeCreated} | ${it.title()} | Active ${it.active}")
+                    println("::ALERT TRIGGER: time ${it.timeCreated} | ${it.title()} | Active ${it.status}")
                 }
             }
         }
@@ -105,7 +110,7 @@ class AlertTriggersViewModel(
                 conditionTarget = ConditionTarget.PRICE,
                 targetPrice = 31_000.00
             ),
-            active = true
+            status = AlertStatus.ACTIVE
         ).also(::onSave)
 
         AlertTrigger(
@@ -118,7 +123,7 @@ class AlertTriggersViewModel(
                 conditionTarget = ConditionTarget.PRICE,
                 targetPrice = 1_800.00
             ),
-            active = true
+            status = AlertStatus.PAUSED
         ).also(::onSave)
     }
 

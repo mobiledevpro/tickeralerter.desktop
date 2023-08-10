@@ -12,7 +12,7 @@ CREATE INDEX ticker_symbol ON tickerEntry(symbol);
 insertItem:
 INSERT OR REPLACE
 INTO tickerEntry (symbol, baseAsset,contractType, lastPrice, priceChange, priceChangePercent)
-VALUES (?, ?, ?, ?, ?, ?);
+VALUES ?;
 
 selectAll:
 SELECT * FROM tickerEntry ORDER BY baseAsset ASC ;

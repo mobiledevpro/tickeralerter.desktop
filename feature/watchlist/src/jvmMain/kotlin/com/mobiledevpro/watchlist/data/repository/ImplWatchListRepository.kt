@@ -40,12 +40,7 @@ class ImplWatchListRepository(
         println("::Add to watchlist [${entry.symbol}]: $isExist")
 
         if (!isExist)
-            database.watchlistQueries.insertItem(
-                symbol = entry.symbol,
-                lastPrice = entry.lastPrice,
-                priceChange = entry.priceChange,
-                priceChangePercent = entry.priceChangePercent
-            )
+            database.watchlistQueries.insertItem(entry)
     }
 
     override suspend fun removeLocal(entry: WatchlistEntry) {
@@ -54,12 +49,7 @@ class ImplWatchListRepository(
 
     override suspend fun updateLocal(entry: WatchlistEntry): Boolean {
         println("Update local: ${Thread.currentThread().name}")
-        database.watchlistQueries.insertItem(
-            symbol = entry.symbol,
-            lastPrice = entry.lastPrice,
-            priceChange = entry.priceChange,
-            priceChangePercent = entry.priceChangePercent
-        )
+        database.watchlistQueries.insertItem(entry)
 
         return true
     }

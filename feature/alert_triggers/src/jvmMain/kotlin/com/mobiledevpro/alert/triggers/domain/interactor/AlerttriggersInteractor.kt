@@ -33,4 +33,8 @@ interface AlertTriggersInteractor {
     suspend fun getTrigger(timeCreated: Long): AlertTrigger?
 
     suspend fun saveTrigger(trigger: AlertTrigger)
+
+    suspend fun pauseTrigger(trigger: AlertTrigger)
+
+    suspend fun runTrigger(trigger: AlertTrigger)
 }

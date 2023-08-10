@@ -4,7 +4,7 @@ CREATE TABLE alertTriggerEntry (
   timeCreatedAt INTEGER NOT NULL PRIMARY KEY,
   symbol TEXT NOT NULL,
   timeFrame TEXT,
-  active INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL,
   conditionSource TEXT NOT NULL,
   conditionType TEXT NOT NULL,
   conditionTarget TEXT NOT NULL,
@@ -15,8 +15,8 @@ CREATE INDEX alert_trigger_symbol ON alertTriggerEntry(symbol);
 
 insertItem:
 INSERT OR REPLACE
-INTO alertTriggerEntry (timeCreatedAt, symbol, timeFrame, active, conditionSource, conditionType,conditionTarget, targetPrice)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+INTO alertTriggerEntry (timeCreatedAt, symbol, timeFrame, status, conditionSource, conditionType,conditionTarget, targetPrice)
+VALUES ?;
 
 selectAll:
 SELECT * FROM alertTriggerEntry ORDER BY timeCreatedAt ASC;
@@ -29,3 +29,7 @@ DELETE FROM alertTriggerEntry WHERE timeCreatedAt = ?;
 
 selectIsExist:
 SELECT count() FROM alertTriggerEntry WHERE timeCreatedAt = ?;
+
+updateState:
+UPDATE alertTriggerEntry
+SET status = ? WHERE timeCreatedAt = ?;

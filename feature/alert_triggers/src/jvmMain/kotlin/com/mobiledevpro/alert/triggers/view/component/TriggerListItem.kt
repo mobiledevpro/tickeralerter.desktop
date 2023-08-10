@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.mobiledepro.main.domain.model.AlertStatus
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledevpro.ui.Theme
@@ -30,13 +31,13 @@ fun TriggerListItem(
     onRemove: () -> Unit
 ) {
 
-    val textColor = if (item.active)
+    val textColor = if (item.status == AlertStatus.ACTIVE)
         MaterialTheme.colors.white
     else
         MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
 
     val statusColor =
-        if (item.active)
+        if (item.status == AlertStatus.ACTIVE)
             MaterialTheme.colors.accent
         else
             MaterialTheme.colors.orange
@@ -62,7 +63,11 @@ fun TriggerListItem(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = if (item.active) "Active" else "Paused",
+                    text = when (item.status) {
+                        AlertStatus.ACTIVE -> "Active"
+                        AlertStatus.PAUSED -> "Paused"
+                        AlertStatus.COMPLETED -> "Completed"
+                    },
                     style = MaterialTheme.typography.caption.copy(color = statusColor)
                 )
             }
@@ -76,9 +81,9 @@ fun TriggerListItem(
                 )
 
                 PlayPauseIconButton(
-                    active = item.active,
+                    active = item.status == AlertStatus.ACTIVE,
                     onClick = {
-                        onPause(!item.active)
+                        onPause(item.status != AlertStatus.ACTIVE)
                     }
                 )
                 RemoveIconButton(

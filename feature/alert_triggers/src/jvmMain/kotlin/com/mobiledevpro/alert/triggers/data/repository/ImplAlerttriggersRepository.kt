@@ -59,16 +59,7 @@ class ImplAlertTriggersRepository(
     }
 
     private fun insert(entry: AlertTriggerEntry): Boolean {
-        database.alertTriggerQueries.insertItem(
-            timeCreatedAt = entry.timeCreatedAt,
-            symbol = entry.symbol,
-            timeFrame = entry.timeFrame,
-            active = entry.active,
-            conditionSource = entry.conditionSource,
-            conditionType = entry.conditionType,
-            conditionTarget = entry.conditionTarget,
-            targetPrice = entry.targetPrice
-        )
+        database.alertTriggerQueries.insertItem(entry)
         return true
     }
 

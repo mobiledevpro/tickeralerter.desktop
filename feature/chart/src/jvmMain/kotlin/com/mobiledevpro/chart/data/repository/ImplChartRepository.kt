@@ -46,17 +46,7 @@ class ImplChartRepository(
                     println("Candle ${candle.openTime} | high ${candle.priceHigh} | low ${candle.priceLow} | open ${candle.priceOpen} | close ${candle.priceClose} exist $exist")
 
                     if (exist == 0L)
-                        database.candleListQueries.insertItem(
-                            symbol = candle.symbol,
-                            timeFrame = candle.timeFrame,
-                            openTime = candle.openTime,
-                            closeTime = candle.closeTime,
-                            priceOpen = candle.priceOpen,
-                            priceClose = candle.priceClose,
-                            priceLow = candle.priceLow,
-                            priceHigh = candle.priceHigh,
-                            volume = candle.volume
-                        )
+                        database.candleListQueries.insertItem(candle)
                 }
             }
         }.also { transactionTime ->

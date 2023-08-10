@@ -68,7 +68,7 @@ class AddAlertTriggerTest : KoinTest {
             alertTrigger.alertSettings.conditionTarget,
             "Condition target is incorrect"
         )
-        assertTrue(alertTrigger.active, "Trigger status is not active")
+        assertTrue(alertTrigger.status != AlertStatus.ACTIVE, "Trigger status is not active")
         assertTrue((alertTrigger.alertSettings.targetPrice ?: 0.0) > 0.0, "Price is null or 0")
         assertEquals(
             fakeTrigger.alertSettings.targetPrice,

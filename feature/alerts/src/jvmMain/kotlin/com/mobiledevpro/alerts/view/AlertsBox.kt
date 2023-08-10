@@ -95,7 +95,7 @@ fun TriggerList(list: List<AlertTrigger>, onChange: (AlertTrigger) -> Unit) {
         items(list) { trigger ->
             TriggerListItem(
                 item = trigger,
-                onPause = {},
+                onPause = { },
                 onChange = { onChange(trigger) },
                 onRemove = {}
             )

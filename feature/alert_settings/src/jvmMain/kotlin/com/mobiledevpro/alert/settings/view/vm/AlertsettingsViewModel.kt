@@ -93,7 +93,7 @@ class AlertSettingsViewModel(
                     conditionTarget = ConditionTarget.PRICE,
                     targetPrice = 33_000.00
                 ),
-                active = false
+                status = AlertStatus.ACTIVE
             )
 
             _uiState.update {

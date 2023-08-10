@@ -19,6 +19,7 @@ package com.mobiledevpro.alert.triggers.domain.interactor
 
 import com.mobiledepro.main.domain.mapper.toDomain
 import com.mobiledepro.main.domain.mapper.toLocal
+import com.mobiledepro.main.domain.model.AlertStatus
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledevpro.alert.triggers.data.repository.AlertTriggersRepository
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +55,7 @@ class ImplAlertTriggersInteractor(
             if (trigger.isNew())
                 trigger
                     .let {
-                        it.apply { this.active = true }
+                        it.apply { this.status = AlertStatus.ACTIVE }
                     }
                     .toLocal()
                     .also { entry -> repository.addLocal(entry) }
@@ -62,5 +63,13 @@ class ImplAlertTriggersInteractor(
                 trigger.toLocal()
                     .also { entry -> repository.updateLocal(entry) }
         }
+    }
+
+    override suspend fun pauseTrigger(trigger: AlertTrigger) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun runTrigger(trigger: AlertTrigger) {
+        TODO("Not yet implemented")
     }
 }

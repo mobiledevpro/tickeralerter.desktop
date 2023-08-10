@@ -5,7 +5,7 @@ data class AlertTrigger(
     var symbol: String,
     val timeFrame: String? = null,
     var alertSettings: AlertSettings = AlertSettings(),
-    var active: Boolean = false
+    var status: AlertStatus = AlertStatus.PAUSED
 ) {
     fun title(): String = "${source()} ${alertSettings.conditionType.toStr()} ${target()}"
 
@@ -43,6 +43,11 @@ data class AlertTrigger(
     }
 }
 
+enum class AlertStatus {
+    ACTIVE,
+    PAUSED,
+    COMPLETED
+}
 
 fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
     AlertTrigger(
@@ -55,7 +60,7 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
             conditionTarget = ConditionTarget.PRICE,
             targetPrice = 33_000.00
         ),
-        active = true
+        status = AlertStatus.ACTIVE
     ),
 
     AlertTrigger(
@@ -68,7 +73,7 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
             conditionTarget = ConditionTarget.PRICE,
             targetPrice = 1_900.00
         ),
-        active = true
+        status = AlertStatus.ACTIVE
     ),
 
     AlertTrigger(
@@ -80,7 +85,7 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
             conditionType = ConditionType.CROSSING,
             conditionTarget = ConditionTarget.EMA_50,
         ),
-        active = false
+        status = AlertStatus.PAUSED
     ),
     AlertTrigger(
         1688182800000,
@@ -91,6 +96,6 @@ fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
             conditionType = ConditionType.CROSSING_DOWN,
             conditionTarget = ConditionTarget.EMA_RIBBON,
         ),
-        active = true
+        status = AlertStatus.COMPLETED
     )
 )

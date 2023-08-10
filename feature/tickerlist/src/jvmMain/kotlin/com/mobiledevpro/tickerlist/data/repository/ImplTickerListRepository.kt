@@ -30,14 +30,7 @@ class ImplTickerListRepository(
         measureTimeMillis {
             database.tickerListQueries.transaction {
                 list.forEach { ticker ->
-                    database.tickerListQueries.insertItem(
-                        symbol = ticker.symbol,
-                        baseAsset = ticker.baseAsset,
-                        contractType = ticker.contractType,
-                        lastPrice = ticker.lastPrice,
-                        priceChange = ticker.priceChange,
-                        priceChangePercent = ticker.priceChangePercent
-                    )
+                    database.tickerListQueries.insertItem(ticker)
                 }
             }
         }.also { transactionTime ->

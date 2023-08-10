@@ -15,7 +15,7 @@ CREATE INDEX candle_symbol_time_frame ON candleEntry(symbol, timeFrame);
 insertItem:
 INSERT OR REPLACE
 INTO candleEntry (symbol, timeFrame, openTime,closeTime, priceOpen, priceClose, priceLow, priceHigh, volume)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+VALUES ?;
 
 selectBySymbol:
 SELECT * FROM candleEntry WHERE symbol = ? AND timeFrame = ?;
