@@ -17,6 +17,8 @@
  */
 package com.mobiledevpro.alert.settings.domain.interactor
 
+import com.mobiledepro.main.domain.model.Ticker
+
 /**
  *
  * Created on Jul 21, 2023.
@@ -24,5 +26,5 @@ package com.mobiledevpro.alert.settings.domain.interactor
  */
 
 interface AlertSettingsInteractor {
-
+    suspend fun getTickerList(): List<Ticker>
 }

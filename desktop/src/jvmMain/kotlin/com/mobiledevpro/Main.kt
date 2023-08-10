@@ -48,7 +48,8 @@ fun App() {
             onAlertSettingsSave = alertSettingsViewModel::onSave,
             onAlertSettingsClose = alertSettingsViewModel::onClose,
             onAlertTriggerAdd = alertSettingsViewModel::onAddNew,
-            onAlertTriggerChange = alertSettingsViewModel::onChange
+            onAlertTriggerEdit = alertSettingsViewModel::onEdit,
+            onAlertTriggerChanged = alertSettingsViewModel::onTriggerChanged
         )
     }
 }

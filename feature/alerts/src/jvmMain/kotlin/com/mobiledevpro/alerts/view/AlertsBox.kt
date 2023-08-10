@@ -35,7 +35,7 @@ fun AlertsBox(
     alertEventList: List<AlertEvent>,
     modifier: Modifier = Modifier,
     onClickAdd: () -> Unit,
-    onChange: (AlertTrigger) -> Unit
+    onClickEdit: (AlertTrigger) -> Unit
 ) {
     var selectedTab by remember { mutableStateOf(SimpleTab.ALL) }
 
@@ -68,11 +68,12 @@ fun AlertsBox(
             Divider(thickness = 1.dp, modifier = Modifier.padding(top = 4.dp))
 
             when (selectedTab) {
-                SimpleTab.ALL ->
+                SimpleTab.ALL -> {
                     when (alertTriggersState) {
-                        is AlertTriggersUIState.Success -> TriggerList(alertTriggersState.list, onChange)
+                        is AlertTriggersUIState.Success -> TriggerList(alertTriggersState.list, onClickEdit)
                         else -> NoTriggersBox()
                     }
+                }
 
                 SimpleTab.LOG ->
                     if (alertEventList.isEmpty())
@@ -139,7 +140,7 @@ fun AlertsBoxPreview() {
             alertEventList = emptyList(),
             modifier = modifierMaxWidth,
             onClickAdd = {},
-            onChange = {}
+            onClickEdit = {}
         )
     }
 }

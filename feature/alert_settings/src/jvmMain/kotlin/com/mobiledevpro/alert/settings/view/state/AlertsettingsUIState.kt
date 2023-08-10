@@ -28,7 +28,7 @@ import com.mobiledepro.main.view.UiState
  */
 
 sealed interface AlertSettingsUIState : UiState {
-    class Visible(val trigger: AlertTrigger, tickerList: List<Ticker>) : AlertSettingsUIState
+    class Visible(val trigger: AlertTrigger, val tickerList: List<Ticker>) : AlertSettingsUIState
 
     object Hidden : AlertSettingsUIState
 }

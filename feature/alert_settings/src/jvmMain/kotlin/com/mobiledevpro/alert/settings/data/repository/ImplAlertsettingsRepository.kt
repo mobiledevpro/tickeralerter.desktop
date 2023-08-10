@@ -18,6 +18,7 @@
 package com.mobiledevpro.alert.settings.data.repository
 
 import com.mobiledevpro.database.AppDatabase
+import com.mobiledevpro.database.WatchlistEntry
 
 /**
  *
@@ -29,4 +30,7 @@ class ImplAlertSettingsRepository(
     private val database: AppDatabase
 ) : AlertSettingsRepository {
 
+    override suspend fun getListLocal(): List<WatchlistEntry> =
+        database.watchlistQueries.selectAll()
+            .executeAsList()
 }

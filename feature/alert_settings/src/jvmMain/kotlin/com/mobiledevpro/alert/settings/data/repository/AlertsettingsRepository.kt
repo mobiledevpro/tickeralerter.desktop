@@ -17,6 +17,8 @@
  */
 package com.mobiledevpro.alert.settings.data.repository
 
+import com.mobiledevpro.database.WatchlistEntry
+
 /**
  *
  * Created on Jul 21, 2023.
@@ -24,5 +26,5 @@ package com.mobiledevpro.alert.settings.data.repository
  */
 
 interface AlertSettingsRepository {
-
+    suspend fun getListLocal(): List<WatchlistEntry>
 }

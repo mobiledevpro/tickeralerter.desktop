@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.AlertEvent
@@ -17,6 +18,7 @@ import com.mobiledevpro.alerts.view.AlertsBox
 import com.mobiledevpro.chart.view.ChartBox
 import com.mobiledevpro.chart.view.ChartSettingsBox
 import com.mobiledevpro.chart.view.state.ChartUIState
+import com.mobiledevpro.home.view.component.OnlineStatus
 import com.mobiledevpro.home.view.state.HomeUIState
 import com.mobiledevpro.orders.view.OrdersBox
 import com.mobiledevpro.tickerlist.view.TickerListDialog
@@ -41,10 +43,11 @@ fun HomeScreen(
     onRemoveFromWatchlist: (Ticker) -> Unit,
     onSelectFromWatchlist: (Ticker) -> Unit,
     onTickerListSearch: (String) -> Unit,
-    onAlertSettingsSave: (AlertTrigger) -> Unit,
+    onAlertSettingsSave: () -> Unit,
     onAlertSettingsClose: () -> Unit,
     onAlertTriggerAdd: () -> Unit,
-    onAlertTriggerChange: (AlertTrigger) -> Unit
+    onAlertTriggerEdit: (AlertTrigger) -> Unit,
+    onAlertTriggerChanged: (AlertTrigger) -> Unit
 ) {
 
     val homeState by homeUIState.collectAsState()
@@ -86,7 +89,7 @@ fun HomeScreen(
                         alertEventList = alertEventsState,
                         modifier = modifierMaxSize,
                         onClickAdd = onAlertTriggerAdd,
-                        onChange = onAlertTriggerChange
+                        onClickEdit = onAlertTriggerEdit
                     )
                 }
 
@@ -120,16 +123,15 @@ fun HomeScreen(
             }
 
             /*Online status*/
-            /*    OnlineStatus(
-                    modifier = modifierMaxWidth
-                        .align(Alignment.BottomCenter)
-                        .height(20.dp),
-                    serverTime = when (homeState) {
-                        is HomeUIState.Success -> (homeState as HomeUIState.Success).serverTimeMs
-                        else -> 0L
-                    }
-                )*/
-
+            OnlineStatus(
+                modifier = modifierMaxWidth
+                    .align(Alignment.BottomCenter)
+                    .height(20.dp),
+                serverTime = when (homeState) {
+                    is HomeUIState.Success -> (homeState as HomeUIState.Success).serverTimeMs
+                    else -> 0L
+                }
+            )
         }
 
         //Show a dialog to add tickers to watchlist
@@ -150,6 +152,7 @@ fun HomeScreen(
         if (alertSettingsState is AlertSettingsUIState.Visible) {
             AlertSettingsDialog(
                 state = alertSettingsState,
+                onChanged = onAlertTriggerChanged,
                 onClose = onAlertSettingsClose,
                 onSave = onAlertSettingsSave
             )

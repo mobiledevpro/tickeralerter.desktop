@@ -18,6 +18,10 @@
 package com.mobiledevpro.alert.settings.di
 
 
+import com.mobiledevpro.alert.settings.data.repository.AlertSettingsRepository
+import com.mobiledevpro.alert.settings.data.repository.ImplAlertSettingsRepository
+import com.mobiledevpro.alert.settings.domain.interactor.AlertSettingsInteractor
+import com.mobiledevpro.alert.settings.domain.interactor.ImplAlertSettingsInteractor
 import com.mobiledevpro.alert.settings.view.vm.AlertSettingsViewModel
 import com.mobiledevpro.alert.triggers.data.repository.AlertTriggersRepository
 import com.mobiledevpro.alert.triggers.data.repository.ImplAlertTriggersRepository
@@ -30,11 +34,12 @@ val featureAlertSettingsModule = module {
         scoped {
             AlertSettingsViewModel(
                 coroutineScope = get(),
-                interactor = get()
+                alertSettingsInteractor = get(),
+                alertTriggersInteractor = get()
             )
         }
 
-        /*  scoped<AlertSettingsInteractor> {
+        scoped<AlertSettingsInteractor> {
               ImplAlertSettingsInteractor(
                   repository = get()
               )
@@ -45,8 +50,6 @@ val featureAlertSettingsModule = module {
                   database = get()
               )
           }
-
-         */
 
         scoped<AlertTriggersInteractor> {
             ImplAlertTriggersInteractor(

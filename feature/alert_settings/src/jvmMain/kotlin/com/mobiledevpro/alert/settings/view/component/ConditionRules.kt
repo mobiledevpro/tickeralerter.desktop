@@ -18,37 +18,10 @@ internal fun ConditionRules(
 ) {
     println("::RULES FOR ${trigger.symbol} | ${trigger.alertSettings.targetPrice}")
 
-    val targetPrice: (symbol: String) -> Double? = { symbol ->
-        if ((trigger.alertSettings.targetPrice ?: 0.0) > 0.0)
-            trigger.alertSettings.targetPrice
-        else if (trigger.alertSettings.conditionTarget == ConditionTarget.PRICE)
-            tickerList.find { it.symbol == symbol }?.lastPrice
-        else
-            null
-    }
-
     var selectedSymbol by remember { mutableStateOf(trigger.symbol) }
     var selectedConditionType by remember { mutableStateOf(trigger.alertSettings.conditionType) }
     var selectedConditionTarget by remember { mutableStateOf(trigger.alertSettings.conditionTarget) }
-    var editPrice: Double by remember {
-        mutableStateOf(
-            trigger.alertSettings.targetPrice ?: targetPrice(selectedSymbol) ?: 0.0
-        )
-    }
-
-    val changeTrigger: () -> Unit = {
-        trigger.apply {
-            symbol = selectedSymbol
-        }
-            .updateConditionType(selectedConditionType)
-            .updateConditionTarget(selectedConditionTarget)
-            .updateTargetPrice(editPrice)
-            .also(onChange)
-    }
-
-    //init price for the current trigger if price is null (newly created trigger)
-    if ((trigger.alertSettings.targetPrice ?: 0.0) == 0.0)
-        changeTrigger()
+    var editPrice: Double by remember { mutableStateOf(trigger.alertSettings.targetPrice ?: 0.0) }
 
     Row(horizontalArrangement = Arrangement.SpaceBetween) {
         TextLabel("Condition")
@@ -57,12 +30,15 @@ internal fun ConditionRules(
             //Symbol
             SelectValueField(
                 modifier = modifierMaxWidth,
-                defaultValue = trigger.symbol,
+                defaultValue = selectedSymbol,
                 valueList = tickerList.mapTo(ArrayList<String>()) { it.symbol },
                 onSelect = { symbol ->
                     selectedSymbol = symbol
-                    editPrice = targetPrice(symbol) ?: 0.0
-                    changeTrigger()
+                    editPrice = tickerList.find { it.symbol == symbol }?.lastPrice ?: 0.0
+
+                    trigger.updateSymbol(symbol)
+                        .updateTargetPrice(editPrice)
+                        .also(onChange)
                 }
             )
 
@@ -73,7 +49,14 @@ internal fun ConditionRules(
                 defaultValue = selectedConditionType.toStr(),
                 onSelect = { conditionType ->
                     selectedConditionType = conditionType.toConditionType()
-                    changeTrigger()
+                    /*
+                                        trigger.updateConditionType(selectedConditionType)
+                                            .also(onChange)
+
+                     */
+                    trigger.apply {
+                        alertSettings = trigger.alertSettings.apply { this.conditionType = selectedConditionType }
+                    }.also(onChange)
                 })
 
             //Condition target
@@ -84,7 +67,9 @@ internal fun ConditionRules(
                     valueList = conditionTargetList(),
                     onSelect = { conditionTarget ->
                         selectedConditionTarget = conditionTarget.toConditionTarget()
-                        changeTrigger()
+
+                        trigger.updateConditionTarget(selectedConditionTarget)
+                            .also(onChange)
                     })
 
 
@@ -100,7 +85,8 @@ internal fun ConditionRules(
                             } catch (e: NumberFormatException) {
                                 0.0
                             }
-                            changeTrigger()
+                            trigger.updateTargetPrice(editPrice)
+                                .also(onChange)
                         }
                     )
             }

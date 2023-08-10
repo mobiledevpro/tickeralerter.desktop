@@ -7,6 +7,7 @@ kotlin.sourceSets {
         dependencies {
             with(Deps.Feature) {
                 api(project(ALERT_TRIGGERS))
+                api(project(WATCHLIST))
             }
         }
     }

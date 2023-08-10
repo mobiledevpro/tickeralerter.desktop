@@ -17,7 +17,11 @@
  */
 package com.mobiledevpro.alert.settings.domain.interactor
 
+import com.mobiledepro.main.domain.mapper.toDomain
+import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.alert.settings.data.repository.AlertSettingsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  *
@@ -29,4 +33,9 @@ class ImplAlertSettingsInteractor(
     private val repository: AlertSettingsRepository
 ) : AlertSettingsInteractor {
 
+    override suspend fun getTickerList(): List<Ticker> =
+        withContext(Dispatchers.IO) {
+            repository.getListLocal()
+                .toDomain()
+        }
 }

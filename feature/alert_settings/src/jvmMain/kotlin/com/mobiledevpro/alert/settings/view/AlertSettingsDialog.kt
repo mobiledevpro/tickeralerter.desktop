@@ -12,13 +12,15 @@ import com.mobiledevpro.ui.component.Dialog
 fun AlertSettingsDialog(
     modifier: Modifier = Modifier,
     state: AlertSettingsUIState,
+    onChanged: (AlertTrigger) -> Unit,
     onClose: () -> Unit,
-    onSave: (AlertTrigger) -> Unit
+    onSave: () -> Unit
 ) {
 
     Dialog(modifier = modifier) {
         AlertSettingsBox(
             state = state,
+            onChanged = onChanged,
             onClickClose = onClose,
             onClickSave = onSave
         )
@@ -32,7 +34,8 @@ fun AlertSettingsDialogPreview() {
         AlertSettingsDialog(
             state = AlertSettingsUIState.Hidden,
             onClose = {},
-            onSave = {}
+            onSave = {},
+            onChanged = {}
         )
     }
 }
