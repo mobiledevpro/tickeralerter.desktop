@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.util.*
 
 /**
  *
@@ -55,7 +56,10 @@ class ImplAlertTriggersInteractor(
             if (trigger.isNew())
                 trigger
                     .let {
-                        it.apply { this.status = AlertStatus.ACTIVE }
+                        it.apply {
+                            this.status = AlertStatus.ACTIVE
+                            this.timeCreated = Date().time
+                        }
                     }
                     .toLocal()
                     .also { entry -> repository.addLocal(entry) }

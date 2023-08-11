@@ -46,7 +46,6 @@ fun TriggerListItem(
 
     Column(
         modifier = modifierMaxWidth
-            .onDoubleClick(onEdit)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -56,7 +55,9 @@ fun TriggerListItem(
 
             //Text
             Column(
-                modifier = Modifier.width(280.dp)
+                modifier = Modifier
+                    .width(280.dp)
+                    .onDoubleClick(onEdit)
             ) {
 
                 Text(

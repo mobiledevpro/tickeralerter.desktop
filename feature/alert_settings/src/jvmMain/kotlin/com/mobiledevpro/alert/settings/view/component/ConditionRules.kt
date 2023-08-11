@@ -49,14 +49,9 @@ internal fun ConditionRules(
                 defaultValue = selectedConditionType.toStr(),
                 onSelect = { conditionType ->
                     selectedConditionType = conditionType.toConditionType()
-                    /*
-                                        trigger.updateConditionType(selectedConditionType)
-                                            .also(onChange)
 
-                     */
-                    trigger.apply {
-                        alertSettings = trigger.alertSettings.apply { this.conditionType = selectedConditionType }
-                    }.also(onChange)
+                    trigger.updateConditionType(selectedConditionType)
+                        .also(onChange)
                 })
 
             //Condition target

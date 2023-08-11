@@ -1,7 +1,7 @@
 package com.mobiledepro.main.domain.model
 
 data class AlertTrigger(
-    val timeCreated: Long? = null,
+    var timeCreated: Long? = null,
     var symbol: String,
     val timeFrame: String? = null,
     var alertSettings: AlertSettings = AlertSettings(),
