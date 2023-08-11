@@ -33,7 +33,7 @@ interface AlertTriggersRepository {
 
     suspend fun addLocal(entry: AlertTriggerEntry)
 
-    suspend fun removeLocal(entry: AlertTriggerEntry)
+    suspend fun deleteLocal(timeCreated: Long)
 
     suspend fun updateLocal(entry: AlertTriggerEntry): Boolean
 }

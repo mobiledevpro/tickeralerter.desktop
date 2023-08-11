@@ -54,8 +54,8 @@ class ImplAlertTriggersRepository(
 
     override suspend fun updateLocal(entry: AlertTriggerEntry): Boolean = insert(entry)
 
-    override suspend fun removeLocal(entry: AlertTriggerEntry) {
-        database.alertTriggerQueries.deleteItem(entry.timeCreatedAt)
+    override suspend fun deleteLocal(timeCreated: Long) {
+        database.alertTriggerQueries.deleteItem(timeCreated)
     }
 
     private fun insert(entry: AlertTriggerEntry): Boolean {

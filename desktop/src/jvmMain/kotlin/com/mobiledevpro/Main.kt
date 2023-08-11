@@ -50,7 +50,8 @@ fun App() {
             onAlertTriggerAdd = alertSettingsViewModel::onAddNew,
             onAlertTriggerEdit = alertSettingsViewModel::onEdit,
             onAlertTriggerChanged = alertSettingsViewModel::onTriggerChanged,
-            onAlertTriggerChangeStatus = alertTriggerListViewModel::onChangeStatus
+            onAlertTriggerChangeStatus = alertTriggerListViewModel::onChangeStatus,
+            onAlertTriggerDelete = alertTriggerListViewModel::onDelete
         )
     }
 }

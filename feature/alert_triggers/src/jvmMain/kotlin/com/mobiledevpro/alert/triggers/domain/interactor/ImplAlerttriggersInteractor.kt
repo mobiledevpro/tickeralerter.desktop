@@ -65,11 +65,9 @@ class ImplAlertTriggersInteractor(
         }
     }
 
-    override suspend fun pauseTrigger(trigger: AlertTrigger) {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun runTrigger(trigger: AlertTrigger) {
-        TODO("Not yet implemented")
+    override suspend fun deleteTrigger(timeCreated: Long) {
+        withContext(Dispatchers.IO) {
+            repository.deleteLocal(timeCreated)
+        }
     }
 }

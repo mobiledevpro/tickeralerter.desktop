@@ -50,7 +50,12 @@ class AlertTriggersViewModel(
     }
 
     fun onDelete(trigger: AlertTrigger) {
-        //TODO: delete locally
+        coroutineScope.launch {
+            trigger.timeCreated?.also {
+                interactor.deleteTrigger(it)
+            }
+
+        }
     }
 
     fun onChangeStatus(trigger: AlertTrigger) {

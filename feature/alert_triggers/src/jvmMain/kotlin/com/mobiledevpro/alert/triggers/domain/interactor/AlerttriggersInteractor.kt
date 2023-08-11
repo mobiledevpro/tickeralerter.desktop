@@ -34,7 +34,5 @@ interface AlertTriggersInteractor {
 
     suspend fun saveTrigger(trigger: AlertTrigger)
 
-    suspend fun pauseTrigger(trigger: AlertTrigger)
-
-    suspend fun runTrigger(trigger: AlertTrigger)
+    suspend fun deleteTrigger(timeCreated: Long)
 }

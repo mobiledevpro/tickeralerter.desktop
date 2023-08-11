@@ -37,6 +37,7 @@ fun AlertsBox(
     modifier: Modifier = Modifier,
     onClickAdd: () -> Unit,
     onClickEdit: (AlertTrigger) -> Unit,
+    onClickDelete: (AlertTrigger) -> Unit,
     onChangeStatus: (AlertTrigger) -> Unit
 ) {
     var selectedTab by remember { mutableStateOf(SimpleTab.ALL) }
@@ -73,10 +74,12 @@ fun AlertsBox(
                 SimpleTab.ALL -> {
                     when (alertTriggersState) {
                         is AlertTriggersUIState.Success -> TriggerList(
-                            alertTriggersState.list,
-                            onClickEdit,
-                            onChangeStatus
+                            list = alertTriggersState.list,
+                            onEdit = onClickEdit,
+                            onDelete = onClickDelete,
+                            onChangeStatus = onChangeStatus
                         )
+
                         else -> NoTriggersBox()
                     }
                 }
@@ -96,7 +99,12 @@ fun AlertsBox(
 }
 
 @Composable
-fun TriggerList(list: List<AlertTrigger>, onEdit: (AlertTrigger) -> Unit, onChangeStatus: (AlertTrigger) -> Unit) {
+fun TriggerList(
+    list: List<AlertTrigger>,
+    onEdit: (AlertTrigger) -> Unit,
+    onDelete: (AlertTrigger) -> Unit,
+    onChangeStatus: (AlertTrigger) -> Unit
+) {
     LazyColumn {
         items(list) { trigger ->
             TriggerListItem(
@@ -104,7 +112,7 @@ fun TriggerList(list: List<AlertTrigger>, onEdit: (AlertTrigger) -> Unit, onChan
                 onPause = { onChangeStatus(trigger.apply { status = AlertStatus.PAUSED }) },
                 onStart = { onChangeStatus(trigger.apply { status = AlertStatus.ACTIVE }) },
                 onEdit = { onEdit(trigger) },
-                onRemove = {}
+                onDelete = { onDelete(trigger) }
             )
         }
     }
@@ -148,6 +156,7 @@ fun AlertsBoxPreview() {
             modifier = modifierMaxWidth,
             onClickAdd = {},
             onClickEdit = {},
+            onClickDelete = {},
             onChangeStatus = {}
         )
     }
