@@ -53,13 +53,8 @@ class AlertTriggersViewModel(
         //TODO: delete locally
     }
 
-    fun onChangeActiveState(trigger: AlertTrigger) {
-        coroutineScope.launch {
-            if (trigger.status == AlertStatus.ACTIVE)
-                interactor.pauseTrigger(trigger)
-            else
-                interactor.runTrigger(trigger)
-        }
+    fun onChangeStatus(trigger: AlertTrigger) {
+        onSave(trigger)
     }
 
     private fun observeTriggerList() {

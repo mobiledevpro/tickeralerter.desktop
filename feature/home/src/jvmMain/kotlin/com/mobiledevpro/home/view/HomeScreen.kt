@@ -47,7 +47,8 @@ fun HomeScreen(
     onAlertSettingsClose: () -> Unit,
     onAlertTriggerAdd: () -> Unit,
     onAlertTriggerEdit: (AlertTrigger) -> Unit,
-    onAlertTriggerChanged: (AlertTrigger) -> Unit
+    onAlertTriggerChanged: (AlertTrigger) -> Unit,
+    onAlertTriggerChangeStatus: (AlertTrigger) -> Unit
 ) {
 
     val homeState by homeUIState.collectAsState()
@@ -89,7 +90,8 @@ fun HomeScreen(
                         alertEventList = alertEventsState,
                         modifier = modifierMaxSize,
                         onClickAdd = onAlertTriggerAdd,
-                        onClickEdit = onAlertTriggerEdit
+                        onClickEdit = onAlertTriggerEdit,
+                        onChangeStatus = onAlertTriggerChangeStatus
                     )
                 }
 

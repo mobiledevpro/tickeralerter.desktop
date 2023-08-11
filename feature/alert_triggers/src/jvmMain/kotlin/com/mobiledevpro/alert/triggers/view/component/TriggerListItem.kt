@@ -1,12 +1,14 @@
 package com.mobiledevpro.alert.triggers.view.component
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -16,6 +18,7 @@ import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.accent
 import com.mobiledevpro.ui.common.modifierMaxWidth
+import com.mobiledevpro.ui.common.onDoubleClick
 import com.mobiledevpro.ui.component.PlayPauseIconButton
 import com.mobiledevpro.ui.component.RemoveIconButton
 import com.mobiledevpro.ui.component.SettingsIconButton
@@ -23,11 +26,13 @@ import com.mobiledevpro.ui.component.WidgetBox
 import com.mobiledevpro.ui.orange
 import com.mobiledevpro.ui.white
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun TriggerListItem(
     item: AlertTrigger,
-    onPause: (Boolean) -> Unit,
-    onChange: () -> Unit,
+    onPause: () -> Unit,
+    onStart: () -> Unit,
+    onEdit: () -> Unit,
     onRemove: () -> Unit
 ) {
 
@@ -44,6 +49,7 @@ fun TriggerListItem(
 
     Column(
         modifier = modifierMaxWidth
+            .onDoubleClick(onEdit)
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -77,13 +83,16 @@ fun TriggerListItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SettingsIconButton(
-                    onClick = onChange
+                    onClick = onEdit
                 )
 
                 PlayPauseIconButton(
                     active = item.status == AlertStatus.ACTIVE,
                     onClick = {
-                        onPause(item.status != AlertStatus.ACTIVE)
+                        if (item.status == AlertStatus.ACTIVE)
+                            onPause()
+                        else
+                            onStart()
                     }
                 )
                 RemoveIconButton(
@@ -104,7 +113,8 @@ fun TriggerListItemPreview() {
             TriggerListItem(
                 item = fakeAlertTriggersList().get(0),
                 onPause = {},
-                onChange = {},
+                onStart = {},
+                onEdit = {},
                 onRemove = {}
             )
         }

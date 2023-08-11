@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.AlertEvent
+import com.mobiledepro.main.domain.model.AlertStatus
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledevpro.alert.events.view.component.EventListItem
@@ -35,7 +36,8 @@ fun AlertsBox(
     alertEventList: List<AlertEvent>,
     modifier: Modifier = Modifier,
     onClickAdd: () -> Unit,
-    onClickEdit: (AlertTrigger) -> Unit
+    onClickEdit: (AlertTrigger) -> Unit,
+    onChangeStatus: (AlertTrigger) -> Unit
 ) {
     var selectedTab by remember { mutableStateOf(SimpleTab.ALL) }
 
@@ -70,7 +72,11 @@ fun AlertsBox(
             when (selectedTab) {
                 SimpleTab.ALL -> {
                     when (alertTriggersState) {
-                        is AlertTriggersUIState.Success -> TriggerList(alertTriggersState.list, onClickEdit)
+                        is AlertTriggersUIState.Success -> TriggerList(
+                            alertTriggersState.list,
+                            onClickEdit,
+                            onChangeStatus
+                        )
                         else -> NoTriggersBox()
                     }
                 }
@@ -90,13 +96,14 @@ fun AlertsBox(
 }
 
 @Composable
-fun TriggerList(list: List<AlertTrigger>, onChange: (AlertTrigger) -> Unit) {
+fun TriggerList(list: List<AlertTrigger>, onEdit: (AlertTrigger) -> Unit, onChangeStatus: (AlertTrigger) -> Unit) {
     LazyColumn {
         items(list) { trigger ->
             TriggerListItem(
                 item = trigger,
-                onPause = { },
-                onChange = { onChange(trigger) },
+                onPause = { onChangeStatus(trigger.apply { status = AlertStatus.PAUSED }) },
+                onStart = { onChangeStatus(trigger.apply { status = AlertStatus.ACTIVE }) },
+                onEdit = { onEdit(trigger) },
                 onRemove = {}
             )
         }
@@ -140,7 +147,8 @@ fun AlertsBoxPreview() {
             alertEventList = emptyList(),
             modifier = modifierMaxWidth,
             onClickAdd = {},
-            onClickEdit = {}
+            onClickEdit = {},
+            onChangeStatus = {}
         )
     }
 }
