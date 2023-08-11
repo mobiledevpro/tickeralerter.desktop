@@ -19,6 +19,7 @@ package com.mobiledevpro.alert.triggers.domain.interactor
 
 import com.mobiledepro.main.domain.mapper.toDomain
 import com.mobiledepro.main.domain.mapper.toLocal
+import com.mobiledepro.main.domain.model.AlertStatus
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledevpro.alert.triggers.data.repository.AlertTriggersRepository
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import java.util.*
 
 /**
  *
@@ -54,13 +56,22 @@ class ImplAlertTriggersInteractor(
             if (trigger.isNew())
                 trigger
                     .let {
-                        it.apply { this.active = true }
+                        it.apply {
+                            this.status = AlertStatus.ACTIVE
+                            this.timeCreated = Date().time
+                        }
                     }
                     .toLocal()
                     .also { entry -> repository.addLocal(entry) }
             else
                 trigger.toLocal()
                     .also { entry -> repository.updateLocal(entry) }
+        }
+    }
+
+    override suspend fun deleteTrigger(timeCreated: Long) {
+        withContext(Dispatchers.IO) {
+            repository.deleteLocal(timeCreated)
         }
     }
 }

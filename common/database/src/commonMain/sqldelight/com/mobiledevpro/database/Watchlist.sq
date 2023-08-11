@@ -10,7 +10,7 @@ CREATE INDEX watchlist_symbol ON watchlistEntry(symbol);
 insertItem:
 INSERT OR REPLACE
 INTO watchlistEntry (symbol, lastPrice, priceChange, priceChangePercent)
-VALUES (?, ?, ?, ?);
+VALUES ?;
 
 selectAll:
 SELECT * FROM watchlistEntry ORDER BY symbol ASC;

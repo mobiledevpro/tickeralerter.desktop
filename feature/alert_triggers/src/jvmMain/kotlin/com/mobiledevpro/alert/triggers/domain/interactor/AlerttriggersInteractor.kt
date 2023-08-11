@@ -33,4 +33,6 @@ interface AlertTriggersInteractor {
     suspend fun getTrigger(timeCreated: Long): AlertTrigger?
 
     suspend fun saveTrigger(trigger: AlertTrigger)
+
+    suspend fun deleteTrigger(timeCreated: Long)
 }

@@ -10,11 +10,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.mobiledepro.main.domain.model.AlertStatus
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.fakeAlertTriggersList
 import com.mobiledevpro.ui.Theme
 import com.mobiledevpro.ui.accent
 import com.mobiledevpro.ui.common.modifierMaxWidth
+import com.mobiledevpro.ui.common.onDoubleClick
 import com.mobiledevpro.ui.component.PlayPauseIconButton
 import com.mobiledevpro.ui.component.RemoveIconButton
 import com.mobiledevpro.ui.component.SettingsIconButton
@@ -25,18 +27,19 @@ import com.mobiledevpro.ui.white
 @Composable
 fun TriggerListItem(
     item: AlertTrigger,
-    onPause: (Boolean) -> Unit,
-    onChange: () -> Unit,
-    onRemove: () -> Unit
+    onPause: () -> Unit,
+    onStart: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
 ) {
 
-    val textColor = if (item.active)
+    val textColor = if (item.status == AlertStatus.ACTIVE)
         MaterialTheme.colors.white
     else
         MaterialTheme.colors.onSurface.copy(alpha = 0.3f)
 
     val statusColor =
-        if (item.active)
+        if (item.status == AlertStatus.ACTIVE)
             MaterialTheme.colors.accent
         else
             MaterialTheme.colors.orange
@@ -52,7 +55,9 @@ fun TriggerListItem(
 
             //Text
             Column(
-                modifier = Modifier.width(280.dp)
+                modifier = Modifier
+                    .width(280.dp)
+                    .onDoubleClick(onEdit)
             ) {
 
                 Text(
@@ -62,7 +67,11 @@ fun TriggerListItem(
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
-                    text = if (item.active) "Active" else "Paused",
+                    text = when (item.status) {
+                        AlertStatus.ACTIVE -> "Active"
+                        AlertStatus.PAUSED -> "Paused"
+                        AlertStatus.COMPLETED -> "Completed"
+                    },
                     style = MaterialTheme.typography.caption.copy(color = statusColor)
                 )
             }
@@ -72,17 +81,20 @@ fun TriggerListItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SettingsIconButton(
-                    onClick = onChange
+                    onClick = onEdit
                 )
 
                 PlayPauseIconButton(
-                    active = item.active,
+                    active = item.status == AlertStatus.ACTIVE,
                     onClick = {
-                        onPause(!item.active)
+                        if (item.status == AlertStatus.ACTIVE)
+                            onPause()
+                        else
+                            onStart()
                     }
                 )
                 RemoveIconButton(
-                    onClick = onRemove
+                    onClick = onDelete
                 )
             }
         }
@@ -99,8 +111,9 @@ fun TriggerListItemPreview() {
             TriggerListItem(
                 item = fakeAlertTriggersList().get(0),
                 onPause = {},
-                onChange = {},
-                onRemove = {}
+                onStart = {},
+                onEdit = {},
+                onDelete = {}
             )
         }
     }

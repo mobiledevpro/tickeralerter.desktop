@@ -10,7 +10,7 @@ fun AlertTriggerEntry.toDomain(): AlertTrigger =
         timeCreated = timeCreatedAt,
         symbol = symbol,
         timeFrame = timeFrame,
-        active = active == 1L,
+        status = AlertStatus.valueOf(status),
         alertSettings = AlertSettings(
             conditionSource = conditionSource.toConditionSource(),
             conditionType = conditionType.toConditionType(),
@@ -24,7 +24,7 @@ fun AlertTrigger.toLocal(): AlertTriggerEntry =
         timeCreatedAt = timeCreated ?: Date().time,
         symbol = symbol,
         timeFrame = timeFrame,
-        active = if (active) 1 else 0,
+        status = status.name,
         conditionSource = alertSettings.conditionSource.toStr(),
         conditionType = alertSettings.conditionType.toStr(),
         conditionTarget = alertSettings.conditionTarget.toStr(),
