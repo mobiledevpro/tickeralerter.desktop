@@ -1,8 +1,10 @@
 package com.mobiledevpro.tickerlist.view
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.onClick
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,6 +18,7 @@ import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.ui.defaults.Defaults
 import com.mobiledevpro.ui.white
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun TickerItem(modifier: Modifier, ticker: Ticker, onClickAdd: () -> Unit, onClickRemove: () -> Unit) {
     Row(
@@ -26,7 +29,12 @@ internal fun TickerItem(modifier: Modifier, ticker: Ticker, onClickAdd: () -> Un
         TickerText(
             value = ticker.symbol,
             textAlign = TextAlign.Start,
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .onClick {
+                    if (!ticker.selected)
+                        onClickAdd()
+                }
         )
 
         Text(
@@ -34,7 +42,12 @@ internal fun TickerItem(modifier: Modifier, ticker: Ticker, onClickAdd: () -> Un
             style = MaterialTheme.typography.body2,
             color = MaterialTheme.colors.white,
             maxLines = 1,
-            modifier = Modifier.padding(horizontal = 8.dp)
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .onClick {
+                    if (!ticker.selected)
+                        onClickAdd()
+                }
         )
 
         Button(

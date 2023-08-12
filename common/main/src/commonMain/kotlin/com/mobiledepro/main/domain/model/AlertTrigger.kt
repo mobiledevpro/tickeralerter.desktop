@@ -5,7 +5,8 @@ data class AlertTrigger(
     var symbol: String,
     val timeFrame: String? = null,
     var alertSettings: AlertSettings = AlertSettings(),
-    var status: AlertStatus = AlertStatus.PAUSED
+    var status: AlertStatus = AlertStatus.PAUSED,
+    var frequency: AlertFrequency = AlertFrequency.ONLY_ONCE
 ) {
     fun title(): String = "${source()} ${alertSettings.conditionType.toStr()} ${target()}"
 
@@ -47,6 +48,11 @@ enum class AlertStatus {
     ACTIVE,
     PAUSED,
     COMPLETED
+}
+
+enum class AlertFrequency {
+    ONLY_ONCE,
+    EVERY_TIME
 }
 
 fun fakeAlertTriggersList(): List<AlertTrigger> = listOf(
