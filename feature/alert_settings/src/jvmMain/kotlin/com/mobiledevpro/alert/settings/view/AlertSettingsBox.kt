@@ -10,10 +10,9 @@ import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledevpro.alert.settings.view.component.ButtonSave
 import com.mobiledevpro.alert.settings.view.component.ConditionRules
+import com.mobiledevpro.alert.settings.view.component.FrequencyRules
 import com.mobiledevpro.alert.settings.view.component.Header
-import com.mobiledevpro.alert.settings.view.component.TriggerRules
 import com.mobiledevpro.alert.settings.view.state.AlertSettingsUIState
-import com.mobiledevpro.ui.component.SimpleTab
 import com.mobiledevpro.ui.component.WidgetBox
 
 @Composable
@@ -31,8 +30,6 @@ fun AlertSettingsBox(
     }
 
     val tickerList = state.tickerList
-
-    var selectedTriggerOption by remember { mutableStateOf(SimpleTab.ONLY_ONCE) }
     val isEdit: Boolean = trigger.timeCreated?.let { it > 0 } ?: false
     var isButtonSaveEnabled by remember { mutableStateOf(true) }
 
@@ -55,10 +52,12 @@ fun AlertSettingsBox(
 
             Divider(thickness = 1.dp, modifier = Modifier.padding(vertical = 8.dp))
 
-            TriggerRules(
-                selectedTrigger = selectedTriggerOption,
-                onSelectTrigger = {
-                    selectedTriggerOption = it
+            FrequencyRules(
+                frequency = trigger.frequency,
+                onSelectFrequency = { alertFrequency ->
+                    trigger
+                        .apply { frequency = alertFrequency }
+                        .also(onChanged)
                 }
             )
 

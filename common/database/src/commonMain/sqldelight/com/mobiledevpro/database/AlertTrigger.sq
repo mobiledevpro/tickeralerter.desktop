@@ -5,6 +5,7 @@ CREATE TABLE alertTriggerEntry (
   symbol TEXT NOT NULL,
   timeFrame TEXT,
   status TEXT NOT NULL,
+  frequency TEXT NOT NULL,
   conditionSource TEXT NOT NULL,
   conditionType TEXT NOT NULL,
   conditionTarget TEXT NOT NULL,
@@ -15,7 +16,7 @@ CREATE INDEX alert_trigger_symbol ON alertTriggerEntry(symbol);
 
 insertItem:
 INSERT OR REPLACE
-INTO alertTriggerEntry (timeCreatedAt, symbol, timeFrame, status, conditionSource, conditionType,conditionTarget, targetPrice)
+INTO alertTriggerEntry (timeCreatedAt, symbol, timeFrame, status, frequency, conditionSource, conditionType,conditionTarget, targetPrice)
 VALUES ?;
 
 selectAll:
