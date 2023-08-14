@@ -55,7 +55,7 @@ class ImplWatchListRepository(
     }
 
     override fun subscribeToSymbolListRemote(list: List<String>): Flow<WatchlistSymbolRemote> =
-        list.toSocketRequest(BinanceSocket.Method.SUBSCRIBE, "ticker")
+        list.toSocketRequest(BinanceSocket.Method.SUBSCRIBE, BinanceSocket.StreamType.TICKER)
             .let(socketClient::wsSubscribe)
             .map {
                 println(":: Thread ${Thread.currentThread().name} :: SOCKET :: \n${it.readText()}")
@@ -63,7 +63,7 @@ class ImplWatchListRepository(
             }
 
     override fun unsubscribeFromRemote(ticker: WatchlistEntry): Flow<String> =
-        ticker.toSocketRequest(BinanceSocket.Method.UNSUBSCRIBE, "ticker")
+        ticker.toSocketRequest(BinanceSocket.Method.UNSUBSCRIBE, BinanceSocket.StreamType.TICKER)
             .let(socketClient::wsUnsubscribe)
             .map(Frame.Text::readText)
 

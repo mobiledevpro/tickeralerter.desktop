@@ -7,10 +7,17 @@ import com.mobiledevpro.network.model.WatchlistSymbolRemote
 import io.ktor.websocket.*
 import kotlinx.serialization.decodeFromString
 
-fun List<String>.toSocketRequest(method: BinanceSocket.Method, streamType: String): BinanceSocket.Request =
+fun List<String>.toSocketRequest(
+    method: BinanceSocket.Method,
+    streamType: BinanceSocket.StreamType
+): BinanceSocket.Request =
     mapTo(ArrayList<String>()) { symbol ->
-        "${symbol.lowercase()}@$streamType"
-    }.toTypedArray()
+        "${symbol.lowercase()}@${streamType.name.lowercase()}"
+    }/*.plus(
+        mapTo(ArrayList<String>()) { symbol ->
+            "${symbol.lowercase()}@kline_1h"
+        }
+    )*/.toTypedArray()
         .let { params ->
             BinanceSocket.Request(
                 method = method,
@@ -19,10 +26,13 @@ fun List<String>.toSocketRequest(method: BinanceSocket.Method, streamType: Strin
             )
         }
 
-fun WatchlistEntry.toSocketRequest(method: BinanceSocket.Method, streamType: String): BinanceSocket.Request =
+fun WatchlistEntry.toSocketRequest(
+    method: BinanceSocket.Method,
+    streamType: BinanceSocket.StreamType
+): BinanceSocket.Request =
     listOf<WatchlistEntry>(this)
         .mapTo(ArrayList<String>()) { ticker ->
-            "${ticker.symbol.lowercase()}@$streamType"
+            "${ticker.symbol.lowercase()}@${streamType.name.lowercase()}"
         }.toTypedArray()
         .let { params ->
             BinanceSocket.Request(

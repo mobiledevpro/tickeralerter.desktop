@@ -15,4 +15,9 @@ object BinanceSocket {
         SUBSCRIBE,
         UNSUBSCRIBE
     }
+
+    enum class StreamType {
+        TICKER,
+        KLINE_1H
+    }
 }
