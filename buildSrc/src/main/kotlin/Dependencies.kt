@@ -56,6 +56,7 @@ object Deps {
         const val ALERT_SETTINGS = ":feature:alert_settings"
         const val WATCHLIST = ":feature:watchlist"
         const val ORDERS = ":feature:orders"
+        const val ACCOUNT = ":feature:account"
     }
 
 }

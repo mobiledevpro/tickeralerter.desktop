@@ -31,7 +31,8 @@ include(
     ":feature:alert_events",
     ":feature:alert_triggers",
     ":feature:alert_settings",
-    ":feature:orders"
+    ":feature:orders",
+    ":feature:account"
 )
 
 rootProject.name = "tickeralerter"

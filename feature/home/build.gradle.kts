@@ -10,6 +10,7 @@ kotlin.sourceSets {
                     api(project(CHART))
                     api(project(ALERTS))
                     api(project(ORDERS))
+                    api(project(ACCOUNT))
                 }
             }
         }
