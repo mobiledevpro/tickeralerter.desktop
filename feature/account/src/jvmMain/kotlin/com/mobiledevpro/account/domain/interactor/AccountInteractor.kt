@@ -25,4 +25,5 @@ package com.mobiledevpro.account.domain.interactor
 
 interface AccountInteractor {
 
+    suspend fun syncAccountData()
 }

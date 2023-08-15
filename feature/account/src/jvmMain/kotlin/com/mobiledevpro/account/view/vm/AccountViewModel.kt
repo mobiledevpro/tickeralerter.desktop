@@ -21,6 +21,7 @@ import com.mobiledepro.main.view.BaseViewModel
 import com.mobiledevpro.account.domain.interactor.AccountInteractor
 import com.mobiledevpro.account.view.state.AccountUIState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 /**
  * View model for account info (PnL, balance)
@@ -36,4 +37,13 @@ class AccountViewModel(
 
     override fun initUIState(): AccountUIState = AccountUIState.Empty
 
+    init {
+        syncAccountData()
+    }
+
+    private fun syncAccountData() {
+        coroutineScope.launch {
+            interactor.syncAccountData()
+        }
+    }
 }

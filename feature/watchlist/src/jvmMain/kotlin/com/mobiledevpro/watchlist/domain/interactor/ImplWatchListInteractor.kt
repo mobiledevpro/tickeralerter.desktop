@@ -7,6 +7,7 @@ import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledevpro.watchlist.data.repository.WatchListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
@@ -33,9 +34,9 @@ class ImplWatchListInteractor(
                 //get updates from the socket
                 watchListRepository.subscribeToSymbolListRemote(symbolList)
             }
-            .buffer()
+            .buffer(onBufferOverflow = BufferOverflow.DROP_OLDEST)
             .flowOn(Dispatchers.IO)
-            .mapLatest { symbolRemote ->
+            .map { symbolRemote ->
                 //Update watchlist locally
                 symbolRemote.toLocal()
                     ?.let { entry -> watchListRepository.updateLocal(entry) }

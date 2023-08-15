@@ -13,7 +13,8 @@ object BinanceSocket {
 
     enum class Method {
         SUBSCRIBE,
-        UNSUBSCRIBE
+        UNSUBSCRIBE,
+        REQUEST
     }
 
     enum class StreamType {

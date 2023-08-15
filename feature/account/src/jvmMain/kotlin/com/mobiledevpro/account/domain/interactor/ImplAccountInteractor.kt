@@ -18,6 +18,12 @@
 package com.mobiledevpro.account.domain.interactor
 
 import com.mobiledevpro.account.data.repository.AccountRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 
 /**
  *
@@ -29,4 +35,14 @@ class ImplAccountInteractor(
     private val repository: AccountRepository
 ) : AccountInteractor {
 
+    override suspend fun syncAccountData() {
+        repository.subscribeOnAccountRemote()
+            .buffer(onBufferOverflow = BufferOverflow.DROP_OLDEST)
+            .flowOn(Dispatchers.IO)
+            .map {
+                //TODO: cache locally
+                println("::ACCOUNT DATA: $it")
+            }
+            .collect()
+    }
 }

@@ -11,6 +11,7 @@ import com.mobiledepro.main.domain.model.AlertEvent
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.ChartSettings
 import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledevpro.account.view.state.AccountUIState
 import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
 import com.mobiledevpro.alert.settings.view.state.AlertSettingsUIState
 import com.mobiledevpro.alert.triggers.view.state.AlertTriggersUIState
@@ -39,6 +40,7 @@ fun HomeScreen(
     alertTriggerListUIState: StateFlow<AlertTriggersUIState>,
     alertEventListUIState: StateFlow<List<AlertEvent>>,
     alertSettingsUIState: StateFlow<AlertSettingsUIState>,
+    accountUIState: StateFlow<AccountUIState>,
     onAddToWatchList: (Ticker) -> Unit,
     onRemoveFromWatchlist: (Ticker) -> Unit,
     onSelectFromWatchlist: (Ticker) -> Unit,

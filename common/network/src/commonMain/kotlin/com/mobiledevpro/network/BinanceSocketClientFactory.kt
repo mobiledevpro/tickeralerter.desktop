@@ -45,8 +45,9 @@ class SocketClient(
 
 val jsonFormat = Json { ignoreUnknownKeys = true }
 
-fun SocketClient.wsSubscribe(request: BinanceSocket.Request) = flow<Frame.Text> {
-    httpClient.wss(host = url(), path = "/ws") {
+fun SocketClient.wsSubscribe(request: BinanceSocket.Request, path: String = "") = flow<Frame.Text> {
+    httpClient.wss(host = url(), path = "/ws$path") {
+        println("::CONNECTION SESSION $this")
         Json.encodeToString(request)
             .let {
                 println("::WS REQUEST $it")

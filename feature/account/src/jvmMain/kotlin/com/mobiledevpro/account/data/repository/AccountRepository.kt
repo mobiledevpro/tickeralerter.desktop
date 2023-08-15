@@ -17,6 +17,8 @@
  */
 package com.mobiledevpro.account.data.repository
 
+import kotlinx.coroutines.flow.Flow
+
 /**
  *
  * Created on Aug 14, 2023.
@@ -24,5 +26,5 @@ package com.mobiledevpro.account.data.repository
  */
 
 interface AccountRepository {
-
+    fun subscribeOnAccountRemote(): Flow<String>
 }

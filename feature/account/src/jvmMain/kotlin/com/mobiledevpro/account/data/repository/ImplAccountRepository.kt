@@ -15,12 +15,16 @@
  * limitations under the License.
  *
  */
-package com.mobiledevpro
+package com.mobiledevpro.account.data.repository
 
-import com.mobiledevpro.account.data.repository.AccountRepository
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.network.SocketClient
-import java.net.http.HttpClient
+import com.mobiledevpro.network.api.BinanceSocket
+import com.mobiledevpro.network.wsSubscribe
+import io.ktor.client.*
+import io.ktor.websocket.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  *
@@ -32,5 +36,21 @@ class ImplAccountRepository(
     private val httpClient: HttpClient,
     private val socketClient: SocketClient,
 ) : AccountRepository {
+
+    //TODO: call Http to get the current account info
+    //TODO: then call http to get listen key for WSS
+    //TODO: and then subscribe to web socket
+    override fun subscribeOnAccountRemote(): Flow<String> =
+        BinanceSocket.Request(
+            method = BinanceSocket.Method.REQUEST,
+            params = listOf("@account", "@balance").toTypedArray(),
+            id = 2
+        ).let { request ->
+            println("::ACCOUNT REQUEST")
+            socketClient.wsSubscribe(request, "/e8pNFdn9PXyTcLS3RuEbMAIsD2NNkTGH2tAilj0bdP30Z6yKc3RZ3nU9Lkqu7ehr")
+        }.map {
+            println(":: Thread ${Thread.currentThread().name} :: SOCKET 2 :: \n${it.readText()}")
+            it.toString()
+        }
 
 }
