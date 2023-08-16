@@ -16,9 +16,9 @@ import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.white
 
 @Composable
-fun TextCaptionBox(text: String, icon: ImageVector? = null) {
+fun TextCaptionBox(modifier: Modifier = Modifier, text: String, icon: ImageVector? = null) {
     Box(
-        modifier = modifierMaxWidth,
+        modifier = modifier.then(modifierMaxWidth),
         contentAlignment = Alignment.Center
     ) {
         Column(

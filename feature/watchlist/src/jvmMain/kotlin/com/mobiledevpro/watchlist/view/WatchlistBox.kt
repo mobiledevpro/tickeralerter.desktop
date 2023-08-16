@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.domain.model.fakeTickerListFirst
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.RowTitle
 import com.mobiledevpro.ui.component.TextCaptionBox
@@ -103,6 +104,7 @@ fun Success(
 @Composable
 fun Empty() {
     TextCaptionBox(
+        modifier = modifierMaxSize,
         text = "No symbols in watchlist.\nYou can add it by clicking 'plus' icon above."
     )
 }
