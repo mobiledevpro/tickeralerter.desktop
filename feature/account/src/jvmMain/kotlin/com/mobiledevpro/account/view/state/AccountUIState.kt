@@ -17,11 +17,12 @@
  */
 package com.mobiledevpro.account.view.state
 
+import com.mobiledepro.main.domain.model.WalletBalance
 import com.mobiledepro.main.view.UiState
 
 
 sealed interface AccountUIState : UiState {
-    class Success(val data: Any) : AccountUIState
+    class Success(val balances: List<WalletBalance>) : AccountUIState
 
     object Empty : AccountUIState
 

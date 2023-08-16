@@ -11,6 +11,7 @@ import com.mobiledepro.main.domain.model.AlertEvent
 import com.mobiledepro.main.domain.model.AlertTrigger
 import com.mobiledepro.main.domain.model.ChartSettings
 import com.mobiledepro.main.domain.model.Ticker
+import com.mobiledevpro.account.view.components.AccountBox
 import com.mobiledevpro.account.view.state.AccountUIState
 import com.mobiledevpro.alert.settings.view.AlertSettingsDialog
 import com.mobiledevpro.alert.settings.view.state.AlertSettingsUIState
@@ -61,6 +62,7 @@ fun HomeScreen(
     val alertTriggersState by alertTriggerListUIState.collectAsState()
     val alertEventsState by alertEventListUIState.collectAsState()
     val alertSettingsState by alertSettingsUIState.collectAsState()
+    val accountState by accountUIState.collectAsState()
 
     var addToWatchlistDialogVisible by remember { mutableStateOf(false) }
     var chartSetting by remember { mutableStateOf(ChartSettings()) }
@@ -76,26 +78,40 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(bottom = 24.dp)
             ) {
-                Column(modifier = Modifier.width(430.dp)) {
-                    WatchlistBox(
-                        state = watchListState,
-                        onClickAdd = {
-                            addToWatchlistDialogVisible = true
-                        },
-                        onClickRemove = onRemoveFromWatchlist,
-                        onSelect = onSelectFromWatchlist,
-                        modifier = modifierMaxWidth
-                            .fillMaxHeight(0.5f)
-                    )
+                Column(
+                    modifier = Modifier.width(430.dp)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Bottom,
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
 
-                    AlertsBox(
-                        alertTriggersState = alertTriggersState,
-                        alertEventList = alertEventsState,
-                        modifier = modifierMaxSize,
-                        onClickAdd = onAlertTriggerAdd,
-                        onClickEdit = onAlertTriggerEdit,
-                        onClickDelete = onAlertTriggerDelete,
-                        onChangeStatus = onAlertTriggerChangeStatus
+                        //Takes 50% of remaining height
+                        WatchlistBox(
+                            state = watchListState,
+                            onClickAdd = {
+                                addToWatchlistDialogVisible = true
+                            },
+                            onClickRemove = onRemoveFromWatchlist,
+                            onSelect = onSelectFromWatchlist,
+                            modifier = modifierMaxWidth.fillMaxHeight(0.5f),
+                        )
+
+                        //Takes 50% of remaining height
+                        AlertsBox(
+                            alertTriggersState = alertTriggersState,
+                            alertEventList = alertEventsState,
+                            modifier = modifierMaxSize,
+                            onClickAdd = onAlertTriggerAdd,
+                            onClickEdit = onAlertTriggerEdit,
+                            onClickDelete = onAlertTriggerDelete,
+                            onChangeStatus = onAlertTriggerChangeStatus
+                        )
+                    }
+
+                    //The height depends on a child content
+                    AccountBox(
+                        modifier = modifierMaxWidth,
+                        state = accountState
                     )
                 }
 

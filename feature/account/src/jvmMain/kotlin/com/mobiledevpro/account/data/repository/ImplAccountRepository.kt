@@ -17,12 +17,16 @@
  */
 package com.mobiledevpro.account.data.repository
 
+import app.cash.sqldelight.coroutines.asFlow
+import app.cash.sqldelight.coroutines.mapToList
 import com.mobiledevpro.database.AppDatabase
+import com.mobiledevpro.database.WalletBalanceEntry
 import com.mobiledevpro.network.SocketClient
 import com.mobiledevpro.network.api.BinanceSocket
 import com.mobiledevpro.network.wsSubscribe
 import io.ktor.client.*
 import io.ktor.websocket.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -36,6 +40,11 @@ class ImplAccountRepository(
     private val httpClient: HttpClient,
     private val socketClient: SocketClient,
 ) : AccountRepository {
+
+    override fun getBalances(): Flow<List<WalletBalanceEntry>> =
+        database.walletBalanceQueries.selectAll()
+            .asFlow()
+            .mapToList(Dispatchers.IO)
 
     //TODO: call Http to get the current account info
     //TODO: then call http to get listen key for WSS

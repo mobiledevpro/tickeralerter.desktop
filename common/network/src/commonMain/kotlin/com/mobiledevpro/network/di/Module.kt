@@ -7,7 +7,7 @@ import io.ktor.client.*
 import org.koin.dsl.module
 
 val networkModule = module {
-    val isTestNet = true
+    val isTestNet = false
 
     single<HttpClient> {
         BinanceHTTPClientFactory.build(

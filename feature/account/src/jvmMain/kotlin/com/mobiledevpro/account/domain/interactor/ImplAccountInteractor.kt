@@ -17,13 +17,12 @@
  */
 package com.mobiledevpro.account.domain.interactor
 
+import com.mobiledepro.main.domain.mapper.toDomain
+import com.mobiledepro.main.domain.model.WalletBalance
 import com.mobiledevpro.account.data.repository.AccountRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
-import kotlinx.coroutines.flow.buffer
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 
 /**
  *
@@ -34,6 +33,11 @@ import kotlinx.coroutines.flow.map
 class ImplAccountInteractor(
     private val repository: AccountRepository
 ) : AccountInteractor {
+
+    override fun getBalances(): Flow<List<WalletBalance>> =
+        repository.getBalances()
+            .map { it.toDomain<WalletBalance>() }
+            .flowOn(Dispatchers.IO)
 
     override suspend fun syncAccountData() {
         repository.subscribeOnAccountRemote()

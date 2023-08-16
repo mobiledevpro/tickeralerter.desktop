@@ -17,6 +17,9 @@
  */
 package com.mobiledevpro.account.domain.interactor
 
+import com.mobiledepro.main.domain.model.WalletBalance
+import kotlinx.coroutines.flow.Flow
+
 /**
  *
  * Created on Aug 14, 2023.
@@ -24,6 +27,8 @@ package com.mobiledevpro.account.domain.interactor
  */
 
 interface AccountInteractor {
+
+    fun getBalances(): Flow<List<WalletBalance>>
 
     suspend fun syncAccountData()
 }
