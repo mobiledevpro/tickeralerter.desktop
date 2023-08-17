@@ -42,3 +42,6 @@ bin/
 ### Mac OS ###
 .DS_Store
 /.idea/*.xml
+
+### Secret properties
+key.properties
