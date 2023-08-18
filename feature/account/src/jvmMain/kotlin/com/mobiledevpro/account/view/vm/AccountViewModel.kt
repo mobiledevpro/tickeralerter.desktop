@@ -17,10 +17,12 @@
  */
 package com.mobiledevpro.account.view.vm
 
+import com.mobiledepro.main.domain.model.fakeBalances
 import com.mobiledepro.main.view.BaseViewModel
 import com.mobiledevpro.account.domain.interactor.AccountInteractor
 import com.mobiledevpro.account.view.state.AccountUIState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
@@ -35,15 +37,33 @@ class AccountViewModel(
     private val interactor: AccountInteractor
 ) : BaseViewModel<AccountUIState>() {
 
-    override fun initUIState(): AccountUIState = AccountUIState.Empty
+    override fun initUIState(): AccountUIState = AccountUIState.Loading
 
     init {
+        observeWalletBalance()
         syncAccountData()
     }
 
     private fun syncAccountData() {
         coroutineScope.launch {
             interactor.syncAccountData()
+        }
+    }
+
+    private fun observeWalletBalance() {
+        coroutineScope.launch {
+            /*interactor.getBalances()
+                .collectLatest { list ->
+                    println("::${this@AccountViewModel.javaClass.name}: ${list.size}")
+                    if (list.isEmpty())
+                        _uiState.update { AccountUIState.Empty }
+                    else
+                        _uiState.update { AccountUIState.Success(list) }
+                }
+
+             */
+
+            _uiState.update { AccountUIState.Success(fakeBalances) }
         }
     }
 }

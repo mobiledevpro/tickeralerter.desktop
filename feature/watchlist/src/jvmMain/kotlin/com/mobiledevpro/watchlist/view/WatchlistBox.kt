@@ -1,7 +1,10 @@
 package com.mobiledevpro.watchlist.view
 
 import androidx.compose.desktop.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -15,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.mobiledepro.main.domain.model.Ticker
 import com.mobiledepro.main.domain.model.fakeTickerListFirst
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.ui.common.modifierListItem
 import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.RowTitle
@@ -87,7 +91,6 @@ fun Success(
     onSelect: (Ticker) -> Unit
 ) {
     println("::WatchList success: ${list.size}")
-    val modifierListItem = Modifier.height(32.dp)
 
     LazyColumn {
         items(list) { ticker ->

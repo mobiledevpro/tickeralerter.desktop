@@ -4,13 +4,18 @@ object Versions {
 
     const val KOIN = "3.2.0"
     const val SQL_DELIGHT = "2.0.0-alpha05"
-    const val KTOR = "2.3.0"
+    const val KTOR = "2.3.3"
     const val COROUTINES = "1.7.3"
 }
 
 object Deps {
 
     const val JDK = 17
+
+    object Compose {
+        const val MATERIAL_ICONS_EXTENDED_PACK =
+            "org.jetbrains.compose.material:material-icons-extended-desktop:${Versions.COMPOSE}"
+    }
 
     object Koin {
         const val CORE = "io.insert-koin:koin-core:${Versions.KOIN}"

@@ -6,10 +6,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -18,6 +19,7 @@ import com.mobiledepro.main.domain.model.WalletBalance
 import com.mobiledepro.main.domain.model.fakeBalances
 import com.mobiledevpro.account.view.state.AccountUIState
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.ui.common.modifierListItem
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.RowTitle
 import com.mobiledevpro.ui.component.TextCaptionBox
@@ -28,6 +30,8 @@ fun AccountBox(
     modifier: Modifier,
     state: AccountUIState
 ) {
+
+    var hideBalance by remember { mutableStateOf(true) }
 
     WidgetBox(modifier = modifier) {
         Column {
@@ -40,6 +44,17 @@ fun AccountBox(
                     style = MaterialTheme.typography.body1,
                     modifier = Modifier.align(Alignment.CenterVertically)
                 )
+
+                IconButton(
+                    onClick = {
+                        hideBalance = !hideBalance
+                    }
+                ) {
+                    Icon(
+                        imageVector = if (hideBalance) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                        contentDescription = null
+                    )
+                }
             }
 
 
@@ -59,7 +74,8 @@ fun AccountBox(
 
             when (state) {
                 is AccountUIState.Success -> Success(
-                    balances = state.balances
+                    balances = state.balances,
+                    hideBalance
                 )
 
                 is AccountUIState.Empty -> Empty()
@@ -71,14 +87,18 @@ fun AccountBox(
 }
 
 @Composable
-internal fun Success(balances: List<WalletBalance>) {
+internal fun Success(balances: List<WalletBalance>, hideBalance: Boolean) {
 
     LazyColumn {
         items(
             items = balances,
             key = { it.listKey() }
         ) { balance ->
-            WalletListItem(balance = balance)
+            WalletListItem(
+                balance = balance,
+                modifier = modifierListItem,
+                hideBalance = hideBalance
+            )
         }
     }
 }
