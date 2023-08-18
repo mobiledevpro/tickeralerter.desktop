@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mobiledevpro.ui.common.modifierMaxSize
+import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.white
 
 @Composable
-fun TextCaptionBox(text: String, icon: ImageVector? = null) {
+fun TextCaptionBox(modifier: Modifier = Modifier, text: String, icon: ImageVector? = null) {
     Box(
-        modifier = modifierMaxSize,
+        modifier = modifier.then(modifierMaxWidth),
         contentAlignment = Alignment.Center
     ) {
         Column(

@@ -9,6 +9,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.mobiledepro.main.di.commonModules
 import com.mobiledepro.main.ext.injectScope
+import com.mobiledevpro.account.view.vm.AccountViewModel
 import com.mobiledevpro.alert.settings.view.vm.AlertSettingsViewModel
 import com.mobiledevpro.alert.triggers.view.vm.AlertTriggersViewModel
 import com.mobiledevpro.chart.view.vm.ChartViewModel
@@ -31,6 +32,7 @@ fun App() {
     val tickerListViewModel: TickerListViewModel by remember { injectScope() }
     val alertTriggerListViewModel: AlertTriggersViewModel by remember { injectScope() }
     val alertSettingsViewModel: AlertSettingsViewModel by remember { injectScope() }
+    val accountViewModel: AccountViewModel by remember { injectScope() }
 
     Theme {
         HomeScreen(
@@ -41,6 +43,7 @@ fun App() {
             alertTriggerListUIState = alertTriggerListViewModel.uiState,
             alertEventListUIState = homeViewModel.alertEventList,
             alertSettingsUIState = alertSettingsViewModel.uiState,
+            accountUIState = accountViewModel.uiState,
             onAddToWatchList = watchListViewModel::addToWatchlist,
             onRemoveFromWatchlist = watchListViewModel::removeFromWatchlist,
             onTickerListSearch = tickerListViewModel::tickerListSearch,

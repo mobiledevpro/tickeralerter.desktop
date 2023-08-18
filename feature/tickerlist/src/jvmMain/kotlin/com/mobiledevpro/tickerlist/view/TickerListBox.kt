@@ -74,8 +74,8 @@ internal fun TickerListBox(
                         }
                     }
 
-                is TickerListUIState.Loading -> TextCaptionBox("Loading...")
-                is TickerListUIState.Empty -> TextCaptionBox("No symbol found")
+                is TickerListUIState.Loading -> TextCaptionBox(text = "Loading...")
+                is TickerListUIState.Empty -> TextCaptionBox(text = "No symbol found")
             }
         }
     }

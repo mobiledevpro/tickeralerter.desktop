@@ -24,6 +24,7 @@ import com.mobiledevpro.alert.events.view.component.EventListItem
 import com.mobiledevpro.alert.triggers.view.component.TriggerListItem
 import com.mobiledevpro.alert.triggers.view.state.AlertTriggersUIState
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.ui.common.modifierMaxSize
 import com.mobiledevpro.ui.common.modifierMaxWidth
 import com.mobiledevpro.ui.component.SimpleTab
 import com.mobiledevpro.ui.component.SimpleTabSwitcher
@@ -132,6 +133,7 @@ fun EventList(list: List<AlertEvent>) {
 @Composable
 fun NoEventsBox() {
     TextCaptionBox(
+        modifier = modifierMaxSize,
         text = "No alerts triggered yet!\nYou will see a list here when they do.",
         icon = Icons.Default.Alarm
     )
@@ -140,6 +142,7 @@ fun NoEventsBox() {
 @Composable
 fun NoTriggersBox() {
     TextCaptionBox(
+        modifier = modifierMaxSize,
         text = "Alerts are immediate notifications when conditions are met. Please use \"plus\" icon to create alert",
         icon = Icons.Default.AddAlert
     )

@@ -15,7 +15,7 @@ val networkModule = module {
         )
     }
 
-    single<SocketClient> {
+    factory<SocketClient> {
         BinanceSocketClientFactory.build(
             isTestnet = isTestNet
         )
