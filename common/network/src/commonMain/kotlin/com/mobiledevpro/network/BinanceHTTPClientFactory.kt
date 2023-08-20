@@ -55,16 +55,12 @@ object BinanceHTTPClientFactory {
                 path("fapi/v1/")
             }
 
-            header("X-MBX-APIKEY", if (isTestNet) TEST_KEY else PROD_KEY)
+            header("X-MBX-APIKEY", if (isTestNet) BuildKonfig.apiKeyTestnet else BuildKonfig.apiKeyLive)
         }
     }
 
-
     const val TEST_URL = "testnet.binancefuture.com"
     const val PROD_URL = "fapi.binance.com"
-    const val TEST_KEY = "a8ca86b682a36b97f7fe679d074c7e4e85495ca2f58d3c7c2870ffec77f85a4b"
-    const val PROD_KEY = "l2UlS6ILK5iQuYA9EeIpzGV6Q7loLNaGpaktB42JWEbArQxvx2s9PDTFhAXMNgdr"
-
 
 }
 

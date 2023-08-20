@@ -1,6 +1,9 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+
 plugins {
     id("kotlin-multiplatform")
     kotlin("plugin.serialization")
+    id("com.codingfeline.buildkonfig")
 }
 
 kotlin {
@@ -25,6 +28,18 @@ kotlin {
                 }
             }
         }
+    }
+}
+
+val apiKeyTestnet: String = extra["api.key.testnet"] as String
+val apiKeyLive: String = extra["api.key.live"] as String
+
+buildkonfig {
+    packageName = "com.mobiledevpro.network"
+
+    defaultConfigs {
+        buildConfigField(STRING, "apiKeyTestnet", apiKeyTestnet)
+        buildConfigField(STRING, "apiKeyLive", apiKeyLive)
     }
 }
 
