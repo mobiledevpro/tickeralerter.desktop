@@ -20,11 +20,11 @@ pluginManagement {
     }
 }
 include(
+    "desktop",
     ":common:database",
     ":common:network",
     ":common:ui",
     ":common:main",
-    ":desktop",
     ":feature:home",
     ":feature:tickerlist",
     ":feature:watchlist",
