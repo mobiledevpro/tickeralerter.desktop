@@ -52,7 +52,7 @@ object BinanceHTTPClientFactory {
             url {
                 protocol = URLProtocol.HTTPS
                 host = if (isTestNet) TEST_URL else PROD_URL
-                path("fapi/v1/")
+                path("fapi/v2/")
             }
 
             header("X-MBX-APIKEY", if (isTestNet) BuildKonfig.apiKeyTestnet else BuildKonfig.apiKeyLive)
@@ -63,20 +63,3 @@ object BinanceHTTPClientFactory {
     const val PROD_URL = "fapi.binance.com"
 
 }
-
-suspend fun HttpClient.getServerTime(): HttpResponse =
-    get("time")
-
-
-suspend fun HttpClient.getExchangeInfo(): HttpResponse =
-    get("exchangeInfo")
-
-
-suspend fun HttpClient.getChart(symbol: String, timeFrame: String): HttpResponse =
-    get("klines") {
-        url {
-            parameters.append("symbol", symbol)
-            parameters.append("interval", timeFrame)
-            parameters.append("limit", "400")
-        }
-    }

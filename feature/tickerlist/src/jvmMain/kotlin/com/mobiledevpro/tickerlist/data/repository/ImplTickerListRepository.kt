@@ -5,7 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import com.mobiledevpro.common.data.remote.model.ExchangeInfoRemote
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.TickerEntry
-import com.mobiledevpro.network.getExchangeInfo
+import com.mobiledevpro.network.api.getExchangeInfo
 import com.mobiledevpro.network.model.TickerRemote
 import io.ktor.client.*
 import io.ktor.client.call.*
