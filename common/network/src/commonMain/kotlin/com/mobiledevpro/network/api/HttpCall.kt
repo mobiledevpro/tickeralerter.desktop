@@ -5,15 +5,15 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 
 suspend fun HttpClient.getServerTime(): HttpResponse =
-    get("time")
+    get("v1/time")
 
 
 suspend fun HttpClient.getExchangeInfo(): HttpResponse =
-    get("exchangeInfo")
+    get("v1/exchangeInfo")
 
 
 suspend fun HttpClient.getChart(symbol: String, timeFrame: String): HttpResponse =
-    get("klines") {
+    get("v1/klines") {
         url {
             parameters.append("symbol", symbol)
             parameters.append("interval", timeFrame)
@@ -22,7 +22,7 @@ suspend fun HttpClient.getChart(symbol: String, timeFrame: String): HttpResponse
     }
 
 suspend fun HttpClient.getAccountBalance(timeStamp : Long, signature : String): HttpResponse =
-    get("balance") {
+    get("v2/balance") {
         url {
             parameters.append("timestamp", timeStamp.toString())
             parameters.append("signature", signature)
