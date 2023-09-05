@@ -34,13 +34,13 @@ class ImplAccountInteractor(
     private val repository: AccountRepository
 ) : AccountInteractor {
 
-    override fun getBalances(): Flow<List<WalletBalance>> =
-        repository.getBalances()
+    override fun getBalance(): Flow<List<WalletBalance>> =
+        repository.getBalanceLocal()
             .map { it.toDomain<WalletBalance>() }
             .flowOn(Dispatchers.IO)
 
     override suspend fun syncAccountData() {
-        repository.subscribeOnAccountRemote()
+        repository.subscribeOnAccountUpdateRemote()
             .buffer(onBufferOverflow = BufferOverflow.DROP_OLDEST)
             .flowOn(Dispatchers.IO)
             .map {

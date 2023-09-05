@@ -36,7 +36,7 @@ class GeAccountBalanceTest : KoinTest {
         //http query params
         val queryMap = mapOf(
             Pair("timestamp", timeStamp),
-            Pair("recvWindow", "3000")
+            Pair("recvWindow", "5000")
         )
         println(queryMap)
 

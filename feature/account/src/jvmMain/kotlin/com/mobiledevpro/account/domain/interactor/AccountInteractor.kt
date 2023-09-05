@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AccountInteractor {
 
-    fun getBalances(): Flow<List<WalletBalance>>
+    fun getBalance(): Flow<List<WalletBalance>>
 
     suspend fun syncAccountData()
 }

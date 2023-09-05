@@ -25,7 +25,7 @@ internal fun WalletListItem(modifier: Modifier = Modifier, balance: WalletBalanc
     ) {
 
         BalanceText(value = balance.asset, textAlign = TextAlign.Start)
-        BalanceText(value = if (hideBalance) "**.**" else balance.marginBalance.toString())
+        BalanceText(value = if (hideBalance) "**.**" else balance.marginBalance().toString())
         BalanceText(value = if (hideBalance) "**.**" else balance.balance.toString())
         BalanceText(value = if (hideBalance) "**.**" else balance.unrealizedPnL.toString())
     }

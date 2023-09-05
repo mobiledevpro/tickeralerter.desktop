@@ -26,6 +26,12 @@ suspend fun HttpClient.getAccountBalance(timeStamp : Long, signature : String): 
         url {
             parameters.append("timestamp", timeStamp.toString())
             parameters.append("signature", signature)
-            parameters.append("recvWindow", "3000")
+            parameters.append("recvWindow", "5000")
         }
     }
+
+suspend fun HttpClient.getStreamDataKey(): HttpResponse =
+    post("v1/listenKey")
+
+suspend fun HttpClient.setStreamDataKeyAlive(): HttpResponse =
+    put("v1/listenKey")
