@@ -10,7 +10,7 @@ fun <Out> List<Any>.toDomain(): List<Out> =
             is WatchlistEntry -> it.toDomain() as Out
             is CandleEntry -> it.toDomain() as Out
             is AlertTriggerEntry -> it.toDomain() as Out
-            is WalletBalanceEntry -> it.toDouble() as Out
+            is WalletBalanceEntry -> it.toDomain() as Out
             else -> throw RuntimeException("Mapping error for $it .toDomain()")
         }
     }

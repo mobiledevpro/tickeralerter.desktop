@@ -31,7 +31,7 @@ class GeAccountBalanceTest : KoinTest {
     @Test
     fun getBalance() = runTest {
         val timeStamp = Date().time
-        val secretKey = "251fc3fa22f1eb429bdeae059d624c29579cd973dd7122c3517d0a25077c7061"
+        val secretKey = "***"
 
         //http query params
         val queryMap = mapOf(

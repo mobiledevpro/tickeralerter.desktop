@@ -32,7 +32,7 @@ kotlin {
     }
 }
 
-val isTestNet: Boolean = false
+val isTestNet: Boolean = true
 
 val apiKeyTestnet: String = extra["api.key.testnet"] as String
 val apiKeyLive: String = extra["api.key.live"] as String

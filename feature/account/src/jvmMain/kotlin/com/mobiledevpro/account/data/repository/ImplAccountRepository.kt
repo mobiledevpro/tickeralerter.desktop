@@ -19,6 +19,7 @@ package com.mobiledevpro.account.data.repository
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
+import com.mobiledepro.main.domain.mapper.toBalanceRemote
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.WalletBalanceEntry
 import com.mobiledevpro.network.SocketClient
@@ -51,7 +52,7 @@ class ImplAccountRepository(
 ) : AccountRepository {
 
     override fun getBalanceLocal(): Flow<List<WalletBalanceEntry>> =
-        database.walletBalanceQueries.selectAll()
+        database.walletBalanceQueries.selectNonZero()
             .asFlow()
             .mapToList(Dispatchers.IO)
 
@@ -59,7 +60,7 @@ class ImplAccountRepository(
     //TODO: then call http to get listen key for WSS
     //TODO: and then subscribe to web socket
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun subscribeOnAccountUpdateRemote(): Flow<String> =
+    override fun subscribeOnBalanceUpdateRemote(): Flow<List<WalletBalanceRemote>> =
         getStreamDataKey()
             .flowOn(Dispatchers.IO)
             .map { listenKey ->
@@ -79,16 +80,20 @@ class ImplAccountRepository(
             .flowOn(Dispatchers.IO)
             .map {
                 println(":: Thread ${Thread.currentThread().name} :: SOCKET 2 :: \n${it.readText()}")
-                it.toString()
+                it.toBalanceRemote()
             }
 
 
-    override fun getAccountBalanceRemote(): List<WalletBalanceRemote> {
+    override fun getBalanceRemote(): List<WalletBalanceRemote> {
         TODO("Not yet implemented")
     }
 
-    override fun cacheAccountBalance(balance: List<WalletBalanceEntry>) {
-        TODO("Not yet implemented")
+    override fun cacheBalanceLocal(balance: List<WalletBalanceEntry>) {
+        database.walletBalanceQueries.transaction {
+            balance.forEach { item ->
+                database.walletBalanceQueries.insert(item)
+            }
+        }
     }
 
     @OptIn(ObsoleteCoroutinesApi::class)
@@ -124,7 +129,7 @@ class ImplAccountRepository(
         }
 
     /**
-     * It should be called every 60 min
+     * It should be called every 30-60 min
      */
     private suspend fun setStreamDataKeyAlive() =
         httpClient.setStreamDataKeyAlive().let {
