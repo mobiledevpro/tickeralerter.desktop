@@ -5,7 +5,7 @@ import app.cash.sqldelight.coroutines.mapToList
 import com.mobiledepro.main.domain.mapper.toCandleList
 import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.CandleEntry
-import com.mobiledevpro.network.getChart
+import com.mobiledevpro.network.api.getChart
 import com.mobiledevpro.network.model.CandleRemote
 import io.ktor.client.*
 import io.ktor.client.call.*

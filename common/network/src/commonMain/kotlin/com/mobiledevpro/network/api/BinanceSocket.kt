@@ -1,6 +1,7 @@
 package com.mobiledevpro.network.api
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 
 object BinanceSocket {
@@ -8,7 +9,9 @@ object BinanceSocket {
     class Request(
         val method: Method,
         val params: Array<String>,
-        val id: Int
+        val id: Int,
+        @Transient
+        val listenKey: String? = null
     )
 
     enum class Method {

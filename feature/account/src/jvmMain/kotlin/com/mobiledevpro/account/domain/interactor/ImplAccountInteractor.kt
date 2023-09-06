@@ -18,6 +18,7 @@
 package com.mobiledevpro.account.domain.interactor
 
 import com.mobiledepro.main.domain.mapper.toDomain
+import com.mobiledepro.main.domain.mapper.toLocal
 import com.mobiledepro.main.domain.model.WalletBalance
 import com.mobiledevpro.account.data.repository.AccountRepository
 import kotlinx.coroutines.Dispatchers
@@ -34,18 +35,23 @@ class ImplAccountInteractor(
     private val repository: AccountRepository
 ) : AccountInteractor {
 
-    override fun getBalances(): Flow<List<WalletBalance>> =
-        repository.getBalances()
+    override fun getBalance(): Flow<List<WalletBalance>> =
+        repository.getBalanceLocal()
             .map { it.toDomain<WalletBalance>() }
             .flowOn(Dispatchers.IO)
 
     override suspend fun syncAccountData() {
-        repository.subscribeOnAccountRemote()
+        repository.subscribeOnBalanceUpdateRemote()
             .buffer(onBufferOverflow = BufferOverflow.DROP_OLDEST)
             .flowOn(Dispatchers.IO)
             .map {
                 //TODO: cache locally
-                println("::ACCOUNT DATA: $it")
+                it.forEach { balance ->
+                    println("::ACCOUNT BALANCE: $balance")
+                }
+
+                it.toLocal().let(repository::cacheBalanceLocal)
+
             }
             .collect()
     }

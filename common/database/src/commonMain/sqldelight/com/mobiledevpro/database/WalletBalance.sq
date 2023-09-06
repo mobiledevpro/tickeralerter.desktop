@@ -1,23 +1,27 @@
 CREATE TABLE walletBalanceEntry (
   asset TEXT NOT NULL PRIMARY KEY,
   balance REAL NOT NULL,
-  marginBalance REAL NOT NULL,
-  unrealizedPNL REAL NOT NULL
+  availableBalance REAL NOT NULL,
+  unrealizedPNL REAL NOT NULL,
+  updateTime INTEGER NOT NULL
 );
 
 CREATE INDEX wallet_balance_asset ON walletBalanceEntry(asset);
 
 insert:
 INSERT OR REPLACE
-INTO walletBalanceEntry (asset, balance, marginBalance, unrealizedPNL)
+INTO walletBalanceEntry (asset, balance, availableBalance, unrealizedPNL, updateTime)
 VALUES ?;
 
 selectAll:
 SELECT * FROM walletBalanceEntry ORDER BY asset ASC;
+
+selectNonZero:
+SELECT * FROM walletBalanceEntry WHERE balance > 0 ORDER BY asset ASC;
 
 deleteAll:
 DELETE FROM walletBalanceEntry;
 
 updateBalance:
 UPDATE walletBalanceEntry
-SET balance = ?, marginBalance = ?, unrealizedPNL = ?  WHERE asset = ?;
+SET balance = ?, availableBalance = ?, unrealizedPNL = ?  WHERE asset = ?;

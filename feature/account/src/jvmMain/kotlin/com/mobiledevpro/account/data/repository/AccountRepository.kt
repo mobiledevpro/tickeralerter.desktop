@@ -18,6 +18,7 @@
 package com.mobiledevpro.account.data.repository
 
 import com.mobiledevpro.database.WalletBalanceEntry
+import com.mobiledevpro.network.model.WalletBalanceRemote
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -28,7 +29,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface AccountRepository {
 
-    fun getBalances(): Flow<List<WalletBalanceEntry>>
+    fun getBalanceLocal(): Flow<List<WalletBalanceEntry>>
 
-    fun subscribeOnAccountRemote(): Flow<String>
+    fun subscribeOnBalanceUpdateRemote(): Flow<List<WalletBalanceRemote>>
+
+    fun getBalanceRemote(): List<WalletBalanceRemote>
+
+    fun cacheBalanceLocal(balance: List<WalletBalanceEntry>)
 }

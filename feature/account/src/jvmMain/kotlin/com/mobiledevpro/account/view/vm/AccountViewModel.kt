@@ -22,6 +22,7 @@ import com.mobiledepro.main.view.BaseViewModel
 import com.mobiledevpro.account.domain.interactor.AccountInteractor
 import com.mobiledevpro.account.view.state.AccountUIState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -52,7 +53,7 @@ class AccountViewModel(
 
     private fun observeWalletBalance() {
         coroutineScope.launch {
-            /*interactor.getBalances()
+            interactor.getBalance()
                 .collectLatest { list ->
                     println("::${this@AccountViewModel.javaClass.name}: ${list.size}")
                     if (list.isEmpty())
@@ -60,8 +61,6 @@ class AccountViewModel(
                     else
                         _uiState.update { AccountUIState.Success(list) }
                 }
-
-             */
 
             _uiState.update { AccountUIState.Success(fakeBalances) }
         }

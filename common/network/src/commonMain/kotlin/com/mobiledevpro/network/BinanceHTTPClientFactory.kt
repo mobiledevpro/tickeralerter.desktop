@@ -6,7 +6,6 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
@@ -14,7 +13,7 @@ import kotlinx.serialization.json.Json
 
 object BinanceHTTPClientFactory {
 
-    fun build(isTestNet: Boolean): HttpClient = HttpClient(OkHttp) {
+    fun build(isTestNet: Boolean, apiKey: String): HttpClient = HttpClient(OkHttp) {
         install(ContentNegotiation) {
             json(Json {
                 prettyPrint = true
@@ -52,10 +51,10 @@ object BinanceHTTPClientFactory {
             url {
                 protocol = URLProtocol.HTTPS
                 host = if (isTestNet) TEST_URL else PROD_URL
-                path("fapi/v1/")
+                path("fapi/")
             }
 
-            header("X-MBX-APIKEY", if (isTestNet) BuildKonfig.apiKeyTestnet else BuildKonfig.apiKeyLive)
+            header("X-MBX-APIKEY", apiKey)
         }
     }
 
@@ -63,20 +62,3 @@ object BinanceHTTPClientFactory {
     const val PROD_URL = "fapi.binance.com"
 
 }
-
-suspend fun HttpClient.getServerTime(): HttpResponse =
-    get("time")
-
-
-suspend fun HttpClient.getExchangeInfo(): HttpResponse =
-    get("exchangeInfo")
-
-
-suspend fun HttpClient.getChart(symbol: String, timeFrame: String): HttpResponse =
-    get("klines") {
-        url {
-            parameters.append("symbol", symbol)
-            parameters.append("interval", timeFrame)
-            parameters.append("limit", "400")
-        }
-    }
