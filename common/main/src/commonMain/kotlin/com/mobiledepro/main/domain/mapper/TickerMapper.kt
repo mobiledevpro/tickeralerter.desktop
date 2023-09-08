@@ -25,9 +25,9 @@ fun WatchlistEntry.toDomain(): Ticker =
         symbol,
         "",
         "",
-        lastPrice,
-        priceChange,
-        priceChangePercent
+        String.format("%.4f", lastPrice).toDouble(),
+        String.format("%.4f", priceChange).toDouble(),
+        String.format("%.4f", priceChangePercent).toDouble()
     )
 
 

@@ -63,8 +63,8 @@ fun WalletBalanceRemote.toLocal() =
 fun WalletBalanceEntry.toDomain() =
     WalletBalance(
         asset = asset,
-        balance = balance,
-        availableBalance = availableBalance,
-        unrealizedPnL = unrealizedPNL,
+        balance = String.format("%.4f", balance).toDouble(),
+        availableBalance = String.format("%.4f", availableBalance).toDouble(),
+        unrealizedPnL = String.format("%.4f", unrealizedPNL).toDouble(),
         updateTime = updateTime
     )

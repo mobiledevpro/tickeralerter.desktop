@@ -54,6 +54,7 @@ fun JsonArray.toCandleList(): List<CandleRemote> {
 fun Any.toDouble(): Double =
     when (this) {
         is JsonPrimitive -> this.doubleOrNull ?: 0.0
+        is String -> this.toDoubleOrNull() ?: 0.0
         else -> throw RuntimeException("Value $this cannot be converted to Double")
     }
 

@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.mobiledepro.main.domain.model.WalletBalance
 import com.mobiledepro.main.domain.model.fakeBalances
 import com.mobiledevpro.ui.Theme
+import com.mobiledevpro.ui.getPriceColor
 import com.mobiledevpro.ui.white
 
 @Composable
@@ -27,7 +28,10 @@ internal fun WalletListItem(modifier: Modifier = Modifier, balance: WalletBalanc
         BalanceText(value = balance.asset, textAlign = TextAlign.Start)
         BalanceText(value = if (hideBalance) "**.**" else balance.marginBalance().toString())
         BalanceText(value = if (hideBalance) "**.**" else balance.balance.toString())
-        BalanceText(value = if (hideBalance) "**.**" else balance.unrealizedPnL.toString())
+        BalanceText(
+            value = if (hideBalance) "**.**" else balance.unrealizedPnL.toString(),
+            color = if (hideBalance) 0.0.getPriceColor() else balance.unrealizedPnL.getPriceColor()
+        )
     }
 }
 

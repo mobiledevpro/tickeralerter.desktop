@@ -17,7 +17,7 @@ selectAll:
 SELECT * FROM walletBalanceEntry ORDER BY asset ASC;
 
 selectNonZero:
-SELECT * FROM walletBalanceEntry WHERE balance > 0 ORDER BY asset ASC;
+SELECT * FROM walletBalanceEntry WHERE balance > 0.0001 ORDER BY asset ASC;
 
 deleteAll:
 DELETE FROM walletBalanceEntry;
