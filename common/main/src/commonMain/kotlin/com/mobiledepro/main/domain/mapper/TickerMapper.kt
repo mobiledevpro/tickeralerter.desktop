@@ -17,7 +17,12 @@ fun TickerRemote.toLocal(): TickerEntry =
 
 fun TickerEntry.toDomain(): Ticker =
     Ticker(
-        symbol, baseAsset, contractType, lastPrice, priceChange, priceChangePercent
+        symbol,
+        baseAsset,
+        contractType,
+        String.format("%.4f", lastPrice).toDouble(),
+        String.format("%.4f", priceChange).toDouble(),
+        String.format("%.4f", priceChangePercent).toDouble()
     )
 
 fun WatchlistEntry.toDomain(): Ticker =
