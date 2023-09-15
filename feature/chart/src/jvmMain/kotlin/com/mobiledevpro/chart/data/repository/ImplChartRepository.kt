@@ -46,15 +46,16 @@ class ImplChartRepository(
     override suspend fun cacheLocal(entryList: List<CandleEntry>) {
         measureTimeMillis {
             database.candleListQueries.transaction {
-                entryList.forEach { candle ->
+                entryList.forEachIndexed { index, candle ->
 
                     val exist = database.candleListQueries
                         .checkIsExist(candle.symbol, candle.timeFrame, candle.openTime, candle.closeTime)
                         .executeAsOne()
 
-                    println("Candle ${candle.openTime} | high ${candle.priceHigh} | low ${candle.priceLow} | open ${candle.priceOpen} | close ${candle.priceClose} exist $exist")
+                    println("Candle ${candle.openTime} | high ${candle.priceHigh} | low ${candle.priceLow} | open ${candle.priceOpen} | close ${candle.priceClose} exist $exist | last ${index == entryList.size - 1}")
 
-                    if (exist == 0L)
+                    //Update candle if it's not exist in the database or it's the last candle
+                    if (exist == 0L || index == entryList.size - 1)
                         database.candleListQueries.insertItem(candle)
                 }
             }
