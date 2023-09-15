@@ -33,7 +33,7 @@ interface AccountRepository {
 
     fun subscribeOnBalanceUpdateRemote(): Flow<List<WalletBalanceRemote>>
 
-    fun getBalanceRemote(): List<WalletBalanceRemote>
+    suspend fun getBalanceRemote(): Flow<List<WalletBalanceRemote>>
 
-    fun cacheBalanceLocal(balance: List<WalletBalanceEntry>)
+    suspend fun cacheBalanceLocal(balance: List<WalletBalanceEntry>)
 }

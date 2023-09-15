@@ -21,7 +21,7 @@ data class Chart(
             candleList
 
     companion object {
-        const val CHART_LIMIT_CANDLE_COUNT = 180 //show only last 180 candles
+        const val CHART_LIMIT_CANDLE_COUNT = 90 //show only last 90 candles
     }
 }
 

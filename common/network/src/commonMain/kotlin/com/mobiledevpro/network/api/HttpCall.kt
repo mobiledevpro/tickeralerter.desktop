@@ -1,8 +1,11 @@
 package com.mobiledevpro.network.api
 
+import com.mobiledevpro.network.BuildKonfig
+import com.mobiledevpro.network.util.SignatureGenerator
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import java.util.*
 
 suspend fun HttpClient.getServerTime(): HttpResponse =
     get("v1/time")
@@ -21,12 +24,23 @@ suspend fun HttpClient.getChart(symbol: String, timeFrame: String): HttpResponse
         }
     }
 
-suspend fun HttpClient.getAccountBalance(timeStamp : Long, signature : String): HttpResponse =
+suspend fun HttpClient.getAccountBalance(): HttpResponse =
     get("v2/balance") {
+        val queryMap = mutableMapOf(
+            Pair("timestamp", Date().time),
+            Pair("recvWindow", "5000")
+        )
+
+        println("BALANCE REQUEST: $queryMap")
+
+        val signature = SignatureGenerator.encode(queryMap, BuildKonfig.apiSecret)
+
+        queryMap.put("signature", signature)
+
         url {
-            parameters.append("timestamp", timeStamp.toString())
-            parameters.append("signature", signature)
-            parameters.append("recvWindow", "5000")
+            queryMap.forEach { (key: String, value: Any) ->
+                parameters.append(key, value.toString())
+            }
         }
     }
 

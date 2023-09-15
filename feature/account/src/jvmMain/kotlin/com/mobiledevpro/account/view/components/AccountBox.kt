@@ -106,7 +106,7 @@ internal fun Success(balances: List<WalletBalance>, hideBalance: Boolean) {
 @Composable
 internal fun Empty() {
     TextCaptionBox(
-        text = "Balance is not gotten from the exchange.\nPlease check API Key restrictions."
+        text = "Balance is not available."
     )
 }
 

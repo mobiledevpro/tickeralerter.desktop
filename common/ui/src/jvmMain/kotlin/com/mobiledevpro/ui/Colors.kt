@@ -1,6 +1,7 @@
 package com.mobiledevpro.ui
 
 import androidx.compose.material.Colors
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
@@ -45,3 +46,10 @@ val Colors.ema200Color: Color
 @get:Composable
 val Colors.ema50Color: Color
     get() = Color(0xFFFBC02D).copy(alpha = 0.9F)
+
+@Composable
+fun Double.getPriceColor(): Color = when {
+    this > 0 -> MaterialTheme.colors.lightGreen
+    this < 0 -> MaterialTheme.colors.red
+    else -> MaterialTheme.colors.white
+}

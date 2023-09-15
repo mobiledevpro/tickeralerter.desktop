@@ -10,8 +10,11 @@ import com.mobiledevpro.network.model.CandleRemote
 import io.ktor.client.*
 import io.ktor.client.call.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.channels.ticker
 import kotlinx.coroutines.flow.Flow
-import kotlinx.serialization.decodeFromString
+import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlin.system.measureTimeMillis
@@ -26,32 +29,43 @@ class ImplChartRepository(
             .asFlow()
             .mapToList(Dispatchers.IO)
 
-    override suspend fun getChartRemote(symbol: String, timeFrame: String): List<CandleRemote> =
-        httpClient.getChart(symbol, timeFrame)
-            .body<String>().let { bodyString ->
-                Json.decodeFromString<JsonArray>(bodyString)
-                    .let(JsonArray::toCandleList)
+    @OptIn(ObsoleteCoroutinesApi::class)
+    override fun getChartRemote(symbol: String, timeFrame: String): Flow<List<CandleRemote>> = flow {
+        ticker(delayMillis = SYNC_CHART_INTERVAL_MS, initialDelayMillis = 0)
+            .consumeEach {
+                httpClient.getChart(symbol, timeFrame)
+                    .body<String>().let { bodyString ->
+                        Json.decodeFromString<JsonArray>(bodyString)
+                            .let(JsonArray::toCandleList)
+                    }.let {
+                        emit(it)
+                    }
             }
-
+    }
 
     override suspend fun cacheLocal(entryList: List<CandleEntry>) {
         measureTimeMillis {
             database.candleListQueries.transaction {
-                entryList.forEach { candle ->
+                entryList.forEachIndexed { index, candle ->
 
                     val exist = database.candleListQueries
                         .checkIsExist(candle.symbol, candle.timeFrame, candle.openTime, candle.closeTime)
                         .executeAsOne()
 
-                    println("Candle ${candle.openTime} | high ${candle.priceHigh} | low ${candle.priceLow} | open ${candle.priceOpen} | close ${candle.priceClose} exist $exist")
+                    println("Candle ${candle.openTime} | high ${candle.priceHigh} | low ${candle.priceLow} | open ${candle.priceOpen} | close ${candle.priceClose} exist $exist | last ${index == entryList.size - 1}")
 
-                    if (exist == 0L)
+                    //Update candle if it's not exist in the database or it's the last candle
+                    if (exist == 0L || index == entryList.size - 1)
                         database.candleListQueries.insertItem(candle)
                 }
             }
         }.also { transactionTime ->
             println("Cache candle list time: $transactionTime ms")
         }
+    }
+
+    companion object {
+        const val SYNC_CHART_INTERVAL_MS: Long = 30_000 //30 sec
     }
 
 }

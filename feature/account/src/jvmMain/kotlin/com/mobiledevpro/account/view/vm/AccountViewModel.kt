@@ -17,7 +17,6 @@
  */
 package com.mobiledevpro.account.view.vm
 
-import com.mobiledepro.main.domain.model.fakeBalances
 import com.mobiledepro.main.view.BaseViewModel
 import com.mobiledevpro.account.domain.interactor.AccountInteractor
 import com.mobiledevpro.account.view.state.AccountUIState
@@ -47,6 +46,7 @@ class AccountViewModel(
 
     private fun syncAccountData() {
         coroutineScope.launch {
+            _uiState.update { AccountUIState.Loading }
             interactor.syncAccountData()
         }
     }
@@ -61,8 +61,6 @@ class AccountViewModel(
                     else
                         _uiState.update { AccountUIState.Success(list) }
                 }
-
-            _uiState.update { AccountUIState.Success(fakeBalances) }
         }
     }
 }

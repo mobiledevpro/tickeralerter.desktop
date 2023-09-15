@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface ChartRepository {
     fun getChartLocal(symbol: String, timeFrame: String): Flow<List<CandleEntry>>
 
-    suspend fun getChartRemote(symbol: String, timeFrame: String): List<CandleRemote>
+    fun getChartRemote(symbol: String, timeFrame: String): Flow<List<CandleRemote>>
 
     suspend fun cacheLocal(entryList: List<CandleEntry>)
 }

@@ -24,6 +24,7 @@ import com.mobiledevpro.database.AppDatabase
 import com.mobiledevpro.database.WalletBalanceEntry
 import com.mobiledevpro.network.SocketClient
 import com.mobiledevpro.network.api.BinanceSocket
+import com.mobiledevpro.network.api.getAccountBalance
 import com.mobiledevpro.network.api.getStreamDataKey
 import com.mobiledevpro.network.api.setStreamDataKeyAlive
 import com.mobiledevpro.network.model.StreamDataKeyRemote
@@ -84,11 +85,17 @@ class ImplAccountRepository(
             }
 
 
-    override fun getBalanceRemote(): List<WalletBalanceRemote> {
-        TODO("Not yet implemented")
+    @OptIn(ObsoleteCoroutinesApi::class)
+    override suspend fun getBalanceRemote(): Flow<List<WalletBalanceRemote>> = flow {
+        ticker(delayMillis = SYNC_BALANCE_INTERVAL_MS, initialDelayMillis = 0)
+            .consumeEach {
+                println("::BALANCE GET PERIODICALLY ")
+                val balanceList = httpClient.getAccountBalance().body<List<WalletBalanceRemote>>()
+                emit(balanceList)
+            }
     }
 
-    override fun cacheBalanceLocal(balance: List<WalletBalanceEntry>) {
+    override suspend fun cacheBalanceLocal(balance: List<WalletBalanceEntry>) {
         database.walletBalanceQueries.transaction {
             balance.forEach { item ->
                 database.walletBalanceQueries.insert(item)
@@ -142,5 +149,6 @@ class ImplAccountRepository(
 
     companion object {
         const val GET_STREAM_KEY_INTERVAL_MS: Long = 1_800_000 //30 min
+        const val SYNC_BALANCE_INTERVAL_MS: Long = 10_000 //10 sec
     }
 }

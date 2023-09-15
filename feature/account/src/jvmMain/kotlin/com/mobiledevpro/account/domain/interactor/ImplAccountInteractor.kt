@@ -21,6 +21,7 @@ import com.mobiledepro.main.domain.mapper.toDomain
 import com.mobiledepro.main.domain.mapper.toLocal
 import com.mobiledepro.main.domain.model.WalletBalance
 import com.mobiledevpro.account.data.repository.AccountRepository
+import com.mobiledevpro.network.model.WalletBalanceRemote
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
@@ -41,7 +42,13 @@ class ImplAccountInteractor(
             .flowOn(Dispatchers.IO)
 
     override suspend fun syncAccountData() {
+
         repository.subscribeOnBalanceUpdateRemote()
+            .combine(repository.getBalanceRemote()) { wsBalance: List<WalletBalanceRemote>,
+                                                      apiBalance: List<WalletBalanceRemote> ->
+                println("::ACCOUNT BALANCE: ${wsBalance.isNotEmpty()} | ${apiBalance.isNotEmpty()}")
+                apiBalance.ifEmpty { wsBalance }
+            }
             .buffer(onBufferOverflow = BufferOverflow.DROP_OLDEST)
             .flowOn(Dispatchers.IO)
             .map {
@@ -50,7 +57,9 @@ class ImplAccountInteractor(
                     println("::ACCOUNT BALANCE: $balance")
                 }
 
-                it.toLocal().let(repository::cacheBalanceLocal)
+                it.toLocal().let { entryList ->
+                    repository.cacheBalanceLocal(entryList)
+                }
 
             }
             .collect()

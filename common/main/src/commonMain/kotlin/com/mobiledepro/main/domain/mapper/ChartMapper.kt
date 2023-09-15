@@ -32,6 +32,11 @@ fun CandleRemote.toLocal(symbol: String, timeFrame: String): CandleEntry =
         volume = volume
     )
 
+fun List<CandleRemote>.toLocal(symbol: String, timeFrame: String): List<CandleEntry> =
+    mapTo(ArrayList()) {
+        it.toLocal(symbol, timeFrame)
+    }
+
 fun JsonArray.toCandleList(): List<CandleRemote> {
     val list = mutableListOf<CandleRemote>()
 
@@ -54,6 +59,7 @@ fun JsonArray.toCandleList(): List<CandleRemote> {
 fun Any.toDouble(): Double =
     when (this) {
         is JsonPrimitive -> this.doubleOrNull ?: 0.0
+        is String -> this.toDoubleOrNull() ?: 0.0
         else -> throw RuntimeException("Value $this cannot be converted to Double")
     }
 
