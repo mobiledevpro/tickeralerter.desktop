@@ -30,7 +30,7 @@ class ChartViewModel(
 
     private fun observeChartCandleList(ticker: Ticker) {
         coroutineScope.launch {
-            interactor.getChart(ticker, "1h").collectLatest { candleList ->
+            interactor.getChart(ticker, "15m").collectLatest { candleList ->
                 println("Get local candle list: ${candleList.size}")
 
                 if (candleList.isNotEmpty())
@@ -42,7 +42,7 @@ class ChartViewModel(
 
         coroutineScope.launch {
             try {
-                interactor.syncChart(ticker, "1h")
+                interactor.syncChart(ticker, "15m")
             } catch (e: Exception) {
                 println("observeChartCandleList: ERROR ${e.printStack()}")
             }

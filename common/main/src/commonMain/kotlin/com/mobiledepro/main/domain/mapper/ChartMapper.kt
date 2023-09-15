@@ -32,6 +32,11 @@ fun CandleRemote.toLocal(symbol: String, timeFrame: String): CandleEntry =
         volume = volume
     )
 
+fun List<CandleRemote>.toLocal(symbol: String, timeFrame: String): List<CandleEntry> =
+    mapTo(ArrayList()) {
+        it.toLocal(symbol, timeFrame)
+    }
+
 fun JsonArray.toCandleList(): List<CandleRemote> {
     val list = mutableListOf<CandleRemote>()
 
