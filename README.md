@@ -39,6 +39,6 @@ There are multiple modules:
 #### Building native desktop distribution
 
 ```
-./gradlew :desktop:packageDistributionForCurrentOS
+./gradlew :desktop:packageReleaseDistributionForCurrentOS
 # outputs are written to desktop/build/compose/binaries
 ```

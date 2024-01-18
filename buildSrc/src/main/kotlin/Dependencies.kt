@@ -1,6 +1,6 @@
 object Versions {
-    const val KOTLIN = "1.8.20"
-    const val COMPOSE = "1.4.0"
+    const val KOTLIN = "1.9.0"
+    const val COMPOSE = "1.5.0"
 
     const val KOIN = "3.2.0"
     const val SQL_DELIGHT = "2.0.0-alpha05"
