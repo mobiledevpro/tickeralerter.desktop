@@ -29,10 +29,10 @@ object BinanceHTTPClientFactory {
 }
 
 ```
-
+##
 ### How to run the project on you local machine:
 
-* You have to be registered on Binance and have an API key
+* You should be registered on Binance Crypto Exchange and create API key - [Register and claim 100USD](https://www.binance.com/activity/referral-entry/CPA?ref=CPA_00XL76XLRC)
 * How to create API keys https://www.binance.com/en/support/faq/360002502072
 * Create a new file ```key.properties``` in the root of the project
 * Add the following lines to the file:
@@ -44,6 +44,7 @@ object BinanceHTTPClientFactory {
   ```
 * Run the project ````./gradlew :desktop:run````
 
+##
 ### Roadmap
 
 * [x] Connect to Binance API WebSocket
@@ -63,6 +64,7 @@ object BinanceHTTPClientFactory {
 * [ ] Display current PL
 * [ ] Ability to run backtest for selected ticker + time frame + period
 
+##
 ### Modules:
 
 - `:common:utils` - just some useful helpers
@@ -73,14 +75,47 @@ object BinanceHTTPClientFactory {
 - `:feature:tickerlist`
 - `:feature:tradinglog`
 
+##
 ### Running desktop application
 
 * To run, launch command: `./gradlew :desktop:run`
 * Or choose **desktop** configuration in IDE and run it.
 
-#### Building native desktop distribution
+##
+### Building native desktop distribution
 
 ```
 ./gradlew :desktop:packageReleaseDistributionForCurrentOS
 # outputs are written to desktop/build/compose/binaries
 ```
+
+##
+### Author
+
+<a href="https://github.com/dmitriy-chernysh" target="_blank">
+  <img src="https://s.gravatar.com/avatar/72c649d298a8f0f088fd0850e19b9147?s=400" width="70" align="left">
+</a>
+
+**Dmitri Chernysh**
+
+[![Instagram](https://img.shields.io/badge/-instagram-E4405F?logo=instagram&message=Tech+insights+on&label=Tech+insights+on&logoColor=white&style=for-the-badge)](https://www.instagram.com/mobiledevpro/)
+[![Youtube](https://img.shields.io/badge/-youtube-red?logo=youtube&message=Youtube&label=Watch+on&style=for-the-badge)](https://www.youtube.com/@mobiledevpro?sub_confirmation=1&utm_source=github_main_profile)
+[![Patreon](https://img.shields.io/badge/-patreon-f2a09b?logo=patreon&logoColor=white&label=Join+on&style=for-the-badge)](https://patreon.com/mobiledevpro)
+[![Linkedin](https://img.shields.io/badge/-linkedin-0A66C2?logo=linkedin&logoColor=white&label=Follow+on&style=for-the-badge)](https://www.linkedin.com/in/dmitriychernysh/)
+[![Upwork](https://img.shields.io/badge/-upwork-14a800?logo=Upwork&logoColor=white&label=Work+with+me+on&style=for-the-badge)](https://www.upwork.com/freelancers/dmitrich)
+
+## License:
+
+Copyright 2025 Dmitri Chernysh
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
