@@ -1,4 +1,7 @@
-# Ticker Alerter Desktop App
+# Ticker Alerter Desktop App 
+## Built with Kotlin & Compose Multiplatform
+
+![github-preview](https://github.com/user-attachments/assets/55c4ea47-a252-4884-aa22-1be2c38ccb35)
 
 Connected to Binance Futures API and get real-time data for available tickers.
 
