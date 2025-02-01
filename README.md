@@ -1,6 +1,45 @@
 # Ticker Alerter Desktop App
 
-* Build a native package ```./gradlew package```
+Connected to Binance Futures API and get real-time data for available tickers.
+
+Web Sockets DOC https://github.com/binance/binance-spot-api-docs/blob/master/web-socket-streams.md
+
+```kotlin
+object BinanceSocketClientFactory {
+
+    // ......
+
+    const val TEST_URL = "stream.binancefuture.com"
+    const val PROD_URL = "fstream.binance.com"
+}
+```
+
+Rest API DOC https://developers.binance.com/docs/derivatives/usds-margined-futures/general-info
+
+```kotlin
+object BinanceHTTPClientFactory {
+
+    // ......
+
+    const val TEST_URL = "testnet.binancefuture.com"
+    const val PROD_URL = "fapi.binance.com"
+}
+
+```
+
+### How to run the project on you local machine:
+
+* You have to be registered on Binance and have an API key
+* How to create API keys https://www.binance.com/en/support/faq/360002502072
+* Create a new file ```key.properties``` in the root of the project
+* Add the following lines to the file:
+  ```
+  api.key.testnet= [your key]
+  api.key.live= [your key]
+  api.secret.testnet= [your key]
+  api.secret.live= [your key]
+  ```
+* Run the project ````./gradlew :desktop:run````
 
 ### Roadmap
 
@@ -21,7 +60,7 @@
 * [ ] Display current PL
 * [ ] Ability to run backtest for selected ticker + time frame + period
 
-There are multiple modules:
+### Modules:
 
 - `:common:utils` - just some useful helpers
 - `:common:database` - SQLDelight database definition
