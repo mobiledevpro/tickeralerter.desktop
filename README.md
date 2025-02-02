@@ -30,7 +30,7 @@ object BinanceHTTPClientFactory {
 
 ```
 ##
-### How to run the project on you local machine:
+### How to run the project on your local machine:
 
 * You should be registered on Binance Crypto Exchange and create API key - [Register and claim 100USD](https://www.binance.com/activity/referral-entry/CPA?ref=CPA_00XL76XLRC)
 * How to create API keys https://www.binance.com/en/support/faq/360002502072
