@@ -1,4 +1,4 @@
-# Ticker Alerter Desktop App 
+# Ticker Alerter Desktop App
 ## Built with Kotlin & Compose Multiplatform
 
 ![github-preview](https://github.com/user-attachments/assets/55c4ea47-a252-4884-aa22-1be2c38ccb35)
@@ -57,7 +57,7 @@ object BinanceHTTPClientFactory {
 * [ ] Real-time Chart by selected timeframe
 * [ ] Timeframe picker for Chart (5m, 15m, 30m, 1h, 4h, 1d, 1m)
 * [ ] Backtesting for selected period (date from - date to)
-* ~~[ ] Think about strategy RSI + MACD ?~~
+* [ ] Think about strategy RSI + MACD ?
 * [ ] Calculate RSI and display for selected ticker
 * [ ] Calculate MACD
 * [ ] Getting all opened positions
@@ -102,7 +102,7 @@ object BinanceHTTPClientFactory {
 [![Youtube](https://img.shields.io/badge/-youtube-red?logo=youtube&message=Youtube&label=Watch+on&style=for-the-badge)](https://www.youtube.com/@mobiledevpro?sub_confirmation=1&utm_source=github_main_profile)
 [![Patreon](https://img.shields.io/badge/-patreon-f2a09b?logo=patreon&logoColor=white&label=Join+on&style=for-the-badge)](https://patreon.com/mobiledevpro)
 [![Linkedin](https://img.shields.io/badge/-linkedin-0A66C2?logo=linkedin&logoColor=white&label=Follow+on&style=for-the-badge)](https://www.linkedin.com/in/dmitriychernysh/)
-[![Upwork](https://img.shields.io/badge/-upwork-14a800?logo=Upwork&logoColor=white&label=Work+with+me+on&style=for-the-badge)](https://www.upwork.com/freelancers/dmitrich)
+
 
 ## License:
 
